@@ -1,0 +1,51 @@
+.dangerbutton {
+            /*background: pink;*/
+            color: maroon;
+            }
+            
+.lightgreymedborder {
+            
+            /*background-color: red;*/
+            border: 2px solid lightgrey;
+            margin-right: 40px;
+            
+            }            
+            
+ 
+.invoiceitemsrb {
+            
+            /*background-color: red;
+            border-bottom: 1px solid lightgrey; */
+            padding: 5px;
+            } 
+  	
+.inventoryviewrb {
+            
+            /*background-color: red;*/
+            border-bottom: 1px solid lightgrey;
+            padding: 5px;
+            }
+            
+.boldsimplelabel {
+            font-weight: bold;
+            /*color: green;*/
+            } 
+            
+.boldgreenlabel {
+            font-weight: bold;
+            color: green;           
+            }           
+            
+.adinfotext {
+            /*font-weight: bold;*/
+            color: grey;           
+            }                                       
+  	  	
+.testarea {
+            background-color: yellow;            
+            }
+            
+.testareaanother {
+            background-color: blue;            
+            }            
+               
