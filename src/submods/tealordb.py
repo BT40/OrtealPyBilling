@@ -219,8 +219,8 @@ class Tealor():
         colindex=self.collist.index(columnname)
         rowdata=self.rowcollection[rowindex]
         val=rowdata[colindex]
-        print("Value of required field is : ")
-        print (val)
+        #print("Value of required field is : ")
+        #print (val)
         return val
 	
 	

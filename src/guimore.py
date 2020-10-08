@@ -5,6 +5,8 @@ import gi
 from submods import functions
 from submods import dbmani
 from submods import guicommon
+from submods import guihelp
+from submods import guitaxslabs
 from submods import guiprocessor
 from datetime import datetime
 
@@ -41,18 +43,18 @@ class GtkMore():
         prefbox.pack_start(preflabel, True, True, 0)
         #print("Loaded pref pane")   
         
+        ctaxbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        guitaxslabsins=guitaxslabs.GtkTaxSlabs()
+        cth=guitaxslabsins.generatepage() #customtax holder
+        ctaxbox.pack_start(cth, False, False, 0)
+        
         helpbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        helplabel = Gtk.Label()
-        helplabel.set_margin_top(100)
-        helplabel.set_markup("Press tab to switch between input fields.")
-        helplabel2 = Gtk.Label()
-        helplabel2.set_markup("Rest is self explanatory being a simple software.")
-        helpbox.pack_start(helplabel, False, False, 0)
-        helpbox.pack_start(helplabel2, False, False, 0)
+        hth=guihelp.helptips() #help tips holder
+        helpbox.pack_start(hth, False, False, 0)
         
         aboutbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         aboutlabel = Gtk.Label()
-        aboutlabel.set_markup("Alpha Version September 2020, Try at your own risk. Software is open source.")
+        aboutlabel.set_markup("Development Version October 2020, Try at your own risk. Software is open source.")
         aboutbox.pack_start(aboutlabel, True, True, 0)
         #print("Loaded about pane")  
         
@@ -69,6 +71,7 @@ class GtkMore():
         
         #morestack.add_titled(fybox, "fysettingsbox", "FY Settings")
         morestack.add_titled(prefbox, "preferencesbox", "Preferences")
+        morestack.add_titled(ctaxbox, "customtaxslabsbox", "Tax Slabs")
         morestack.add_titled(helpbox, "helpguidebox", "Help")
         morestack.add_titled(aboutbox, "aboutinfobox", "About")
         morestack.add_titled(exitbox, "exitappbox", "Exit")

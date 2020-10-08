@@ -5,6 +5,7 @@ import gi
 from submods import functions
 from submods import guicommon
 from submods import guiprocessor
+from submods import saleinvoicingprocessor
 from datetime import datetime
 
 gi.require_version('Gtk', '3.0')
@@ -20,8 +21,9 @@ class GtkInvoicing():
     def billingpage(self):
         #print('billing page coding start')        
         
-        self.guiprocessor_ins=guiprocessor.GtkProcessor()
+        self.temp_basicamt=0 #initializing for tax combo compatibility
         
+        self.guiprocessor_ins=guiprocessor.GtkProcessor()        
         
         invoicingmasterbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)    
         billbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
@@ -67,10 +69,10 @@ class GtkInvoicing():
         self.invcompany = Gtk.Entry()
         self.invcompany.set_width_chars(32)
         self.invcompany.set_text('')
-        nciname_completion = Gtk.EntryCompletion()
-        nciname_completion.set_model(guicommon.companyname_store)
-        nciname_completion.set_text_column(0)
-        self.invcompany.set_completion(nciname_completion)      
+        self.nciname_completion = Gtk.EntryCompletion()
+        self.nciname_completion.set_model(guicommon.companyname_store)
+        self.nciname_completion.set_text_column(0)
+        self.invcompany.set_completion(self.nciname_completion)      
             
         polabel = Gtk.Label()
         polabel.set_markup("Purchase order No.")        
@@ -90,11 +92,12 @@ class GtkInvoicing():
         name_store.append([31, "Xavier McRoberts"])
             
         
-        taxcombo = Gtk.ComboBoxText.new_with_entry()
-        taxcombo.insert(position=0, id="g12", text="GST-12%")
-        taxcombo.insert(position=1, id="g18", text="GST-18%")
-        taxcombo.set_active(1)
-        taxcombo.get_child().set_width_chars(16)       
+        self.taxcombo = Gtk.ComboBoxText.new_with_entry()
+        for ets in guicommon.taxtableins.rowlist:
+            self.taxcombo.append_text(ets)        
+        self.taxcombo.set_active(3)
+        self.taxcombo.get_child().set_width_chars(16)   
+        self.taxcombo.connect("changed", self.grandcaller)     
             
         taxontaxlabel = Gtk.Label() # comments
         taxontaxlabel.set_markup("Tax on Tax slab")
@@ -118,7 +121,7 @@ class GtkInvoicing():
         gridheader.attach(polabel, 4, 0, 1, 1)
         gridheader.attach(self.ponmbr, 4, 1, 1, 1)
         gridheader.attach(taxlabel, 5, 0, 1, 1)
-        gridheader.attach(taxcombo, 5, 1, 1, 1)
+        gridheader.attach(self.taxcombo, 5, 1, 1, 1)
         gridheader.attach(taxontaxlabel, 6, 0, 1, 1)
         gridheader.attach(self.taxontaxcombo, 6, 1, 1, 1)
         #grid.attach_next_to(invnolabel, invnolabel, Gtk.PositionType.RIGHT, 1, 1)
@@ -133,10 +136,10 @@ class GtkInvoicing():
         bihb_iqtylabel.set_width_chars(10)
         bihb_isplabel = Gtk.Label(label="Selling price")
         bihb_isplabel.set_width_chars(15)
-        bihb_idisclabel = Gtk.Label(label="Discount")
-        bihb_idisclabel.set_width_chars(8)
+        bihb_idisclabel = Gtk.Label(label="Discount %")
+        bihb_idisclabel.set_width_chars(10)
         bihb_iamtlabel = Gtk.Label(label="Amount")
-        bihb_iamtlabel.set_width_chars(16)
+        bihb_iamtlabel.set_width_chars(12)
         bihb_icommentlabel = Gtk.Label(label="  Short comments")
         bihb_icommentlabel.set_width_chars(16)
         bihb_icommentlabel.set_margin_left(20)
@@ -163,7 +166,6 @@ class GtkInvoicing():
             self.nciilb_idiscountlist=[]
             self.nciilb_iamtlist=[]
             self.nciilb_icommlist=[]
-            self.nciilb_ihsnlist=[]
             while ncii_tempcount<howmany:
                            
                 nciilb_temprow = Gtk.ListBoxRow()
@@ -212,19 +214,72 @@ class GtkInvoicing():
                 self.nciilb_inamelist.append(nciiname_tempentry) 
                 self.nciilb_isplist.append(nciisp_tempentry)
                 self.nciilb_iqtylist.append(nciiqty_tempentry)
+                self.nciilb_idiscountlist.append(nciidiscount_tempentry)
                 self.nciilb_iamtlist.append(nciiamt_templabel)
                 self.nciilb_icommlist.append(nciicomm_tempentry)
                 
-                def ncii_settempamt(ncii_valuesig):
-                    tempindex=self.nciilb_iqtylist.index(ncii_valuesig)
-                    self.nciilb_iamtlist[tempindex].set_markup(ncii_valuesig.get_text()) 
-                    print(ncii_valuesig.get_text())
-                    #print('====below is index of text field')
+                def ncii_calcu(tempindex, temprate_str, tempqty_str, tempdisc_str):
+                    if tempqty_str=='' or temprate_str=='': 
+                        #print('qty or rate not present')
+                        pass
                     
-                    #print(self.nciilb_iqtylist[ncii_tempcount].get_text())  
-                nciiqty_tempentry.connect("changed", ncii_settempamt)      
+                    else:
+                        #print('conditions met, now calculating') 
+                        #print(tempqty_str)  
+                        #print('above is tempqty str')
+                        tempqty_int=int(tempqty_str)
+                        temprate_int=int(temprate_str)                       
+                        if tempdisc_str=='':
+                            tempdisc_float=0
+                            #print('discount not set')
+                        else:    
+                            tempdisc_float=float(tempdisc_str)
+                            #print('discount set')
+                        tempamt=temprate_int*tempqty_int*((100-tempdisc_float)/100)
+                        
+                        self.nciilb_iamtlist[tempindex].set_markup(str(tempamt)) 
+                        self.temp_basicamt=saleinvoicingprocessor.saleamounting(self.nciilb_iamtlist)
+                        self.basicamtdisp.set_markup(str(self.temp_basicamt))
+                        
+                        self.grandcaller('mimicevent')
+                        
+                    
+              
+                def ncii_setterini(ncii_valuesig):
+                    tempindex=self.nciilb_inamelist.index(ncii_valuesig)
+                    tempname=ncii_valuesig.get_text()
+                    tempdbindex=guicommon.itemtableins.rowlist.index(tempname)
+                    tempmrp=guicommon.itemtableins.rowcollection[tempdbindex][17]
+                    self.nciilb_isplist[tempindex].set_text(str(tempmrp))
+                nciiname_tempentry.connect("changed", ncii_setterini) 
                 
+                def ncii_changedqty(ncii_valuesig):
+                    tempindex=self.nciilb_iqtylist.index(ncii_valuesig)
+                    tempqty_str=ncii_valuesig.get_text()
+                    temprate_str=self.nciilb_isplist[tempindex].get_text()
+                    tempdisc_str=self.nciilb_idiscountlist[tempindex].get_text()
+                    ncii_calcu(tempindex, temprate_str, tempqty_str, tempdisc_str)
+                    
+                nciiqty_tempentry.connect("changed", ncii_changedqty)      
                 
+                def ncii_changedsp(ncii_valuesig):
+                    tempindex=self.nciilb_isplist.index(ncii_valuesig)
+                    temprate_str=ncii_valuesig.get_text()
+                    tempqty_str=self.nciilb_iqtylist[tempindex].get_text()
+                    tempdisc_str=self.nciilb_idiscountlist[tempindex].get_text()
+                    ncii_calcu(tempindex, temprate_str, tempqty_str, tempdisc_str)
+               
+                nciisp_tempentry.connect("changed", ncii_changedsp)  
+                
+                def ncii_changedisc(ncii_valuesig):
+                    tempindex=self.nciilb_idiscountlist.index(ncii_valuesig)
+                    tempdisc_str=ncii_valuesig.get_text()
+                    temprate_str=self.nciilb_isplist[tempindex].get_text()
+                    tempqty_str=self.nciilb_iqtylist[tempindex].get_text()
+                    ncii_calcu(tempindex, temprate_str, tempqty_str, tempdisc_str)
+               
+                nciidiscount_tempentry.connect("changed", ncii_changedisc)          
+               
                 ncii_tempcount=ncii_tempcount+1
             return ncii_listbox
             
@@ -234,7 +289,7 @@ class GtkInvoicing():
             invoicesw.add(createinvoicerows("blankevent"))
             print('added new')                
         
-        itemstobebilled=createinvoicerows(100)
+        itemstobebilled=createinvoicerows(50) #50 invoice items support
             
         amibutton = Gtk.Button.new_with_label("Add more items") #add more items
         amibutton.set_name('amibut')
@@ -271,6 +326,7 @@ class GtkInvoicing():
         self.discountentry = Gtk.Entry()
         #self.discountentry.set_text("10")
         self.discountentry.set_width_chars(8)
+        self.discountentry.connect("changed", self.grandcaller) 
         
         freightlabel = Gtk.Label() # freight courier charges
         freightlabel.set_markup("Freight")
@@ -278,6 +334,7 @@ class GtkInvoicing():
         self.freightentry = Gtk.Entry()
         #self.freightentry.set_text("")
         self.freightentry.set_width_chars(8)
+        self.freightentry.connect("changed", self.grandcaller) 
            
         mischlabel = Gtk.Label() # miscellaneous charges
         mischlabel.set_markup("Other charges")        
@@ -285,6 +342,7 @@ class GtkInvoicing():
         self.mischentry = Gtk.Entry()
         #self.mischentry.set_text("200")
         self.mischentry.set_width_chars(8)
+        self.mischentry.connect("changed", self.grandcaller) 
         
         taxlabel = Gtk.Label() # tax
         taxlabel.set_margin_left(10)
@@ -327,12 +385,18 @@ class GtkInvoicing():
         offsetterlabel2.set_markup("        ")
         offsetterlabel2.set_width_chars(8)
         
+        self.nsi_header_widgets=[self.invoicenmbr, self.invoicedate, self.invcompany, self.ponmbr, self.taxcombo, self.taxontaxcombo]
         
-        def processnci(butonevent):
-            self.guiprocessor_ins.cni_processnci(self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist, self.nciilb_iamtlist, self.nciilb_icommlist, self.nciilb_ihsnlist)
+        self.nsi_footer_widgets=[self.basicamtdisp, self.discountentry, self.freightentry, self.mischentry, self.taxamount, self.taxontaxamount,  self.gtotaldisp ]
+         
+        self.nsi_itemswidgets=[self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist, self.nciilb_iamtlist, self.nciilb_icommlist]
+        
+        
+        def processnci(nextbutton):
+            saleinvoicingprocessor.processnci(self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_itemswidgets)
         
         def resetncifields(butonevent):
-            nciname_completion.set_model(guicommon.companyname_store)
+            self.nciname_completion.set_model(guicommon.companyname_store)
                        
         invoiceresetbutton = Gtk.Button.new_with_label("Reset")
         invoiceresetbutton.get_style_context().add_class("dangerbutton")
@@ -383,5 +447,15 @@ class GtkInvoicing():
         return invoicingmasterbox
             
         #---------------------------Billbox contents end    
+    
+    def estimate_tax(self, changedevent):         
+        self.estd_tax=saleinvoicingprocessor.estimatetax(self.taxcombo, self.temp_basicamt, self.discountentry, self.freightentry, self.mischentry)
+        self.taxamount.set_markup(str(self.estd_tax))     
+    
+        
+    def grandcaller(self, changedevent):        
+        self.estimate_tax('mimicevent') 
+        geetotal=saleinvoicingprocessor.grand_saleamounting(self.temp_basicamt, self.discountentry, self.freightentry, self.mischentry, self.estd_tax)
+        self.gtotaldisp.set_markup(str(geetotal))     
         
  

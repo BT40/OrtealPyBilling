@@ -68,7 +68,7 @@ class MainWindow(Gtk.ApplicationWindow):
         #print("Inventory box loaded, now trying loading Create box")        
         
         companybox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)        
-        cph=guicompanyins.generatepage(invoicingbox, bph, guiinvoicingins) # company page holder
+        cph=guicompanyins.generatepage(guiinvoicingins) # company page holder
         companybox.add(cph)
         stack.add_titled(companybox, "companyboxmain", "Company")        
         
@@ -85,5 +85,12 @@ class MainWindow(Gtk.ApplicationWindow):
         mph=guimoreins.generatepage(applic) #mph=more page holder
         morebox.add(mph)
         stack.add_titled(morebox, "moremain", "More")
+        
+        style_provider = Gtk.CssProvider()      
+        style_provider.load_from_path("submods/styl.css")
+        Gtk.StyleContext.add_provider_for_screen(
+            Gdk.Screen.get_default(), style_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
               
         #print("GUI creating done, reporting from main window")        

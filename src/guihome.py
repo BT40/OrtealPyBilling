@@ -16,7 +16,7 @@ from gi.repository import Gdk
 
 class GtkHome():
 
-    #----------------------------------Create box contents start
+    #--------------------------------- box contents start
 
         
         

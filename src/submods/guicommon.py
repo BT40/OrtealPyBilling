@@ -19,6 +19,8 @@ def loadguicommon():
     itemtableins=dbmani.itemtableins
     global companytableins
     companytableins=dbmani.companytableins
+    global taxtableins   
+    taxtableins=dbmani.taxtableins
     global invoicetableins
     invoicetableins=dbmani.invoicetableins
     global miscdbins
@@ -54,5 +56,10 @@ def loadguicommon():
         itemgroup_store.append([eachitem_tmp])
         #print (eachitem_tmp)  
         
-           
+    global taxslabs_store 
+    taxslabs_store=Gtk.ListStore(str)
+    for eachtslab_tmp in taxtableins.rowlist:
+        taxslabs_store.append([eachtslab_tmp])
+        #print (eachtslab_tmp)   
+    
     #print('above was guicommon initialisation')      

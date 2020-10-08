@@ -1,7 +1,11 @@
 .dangerbutton {
-            /*background: pink;*/
-            color: maroon;
+            background: firebrick;
+            color: white;
+            text-shadow: None;
+            border: solid firebrick;
             }
+            
+
             
 .lightgreymedborder {
             

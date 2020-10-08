@@ -1,7 +1,6 @@
-# This file contains functions which will be called from elsewhere to perform the required operation
-# Examples are creating new supplier, creating item, calculating tax
+# This file contains standard data which will be copied to databases.
+# Examples are standard tax rates, countries list.
 
-from datetime import datetime
 
 countrieslist=['afghanistan', 'albania', 'algeria', 'andorra', 'angola', 'antigua and barbuda', 'argentina', 'armenia', 'australia', 'austria', 'azerbaijan', 
     'bahamas', 'bahrain', 'bangladesh', 'barbados', 'belarus', 'belgium', 'belize', 'benin', 'bhutan', 'bolivia', 'bosnia and herzegovina', 'botswana', 'brazil', 'brunei', 'bulgaria', 'burkina faso', 'burundi', 
@@ -30,43 +29,32 @@ countrieslist=['afghanistan', 'albania', 'algeria', 'andorra', 'angola', 'antigu
      'usa', 'east timor', 'england', 'kosovo', 'britain', 'swaziland (eswatini)', 'vatican city (holy see)', 'other']
 
 
-dobj = datetime.now() #object for datetime class accessing
-todayobj=dobj.date()
-todaysdate_string=str(todayobj) 
-current_timeobj=dobj.time()
-currenttime_string=str(current_timeobj) 
 
 
-class Company():
-    def createcompany(self, namecf, gstcf, addresscf, statecf, contactcf, catcf):
-        self.namec=namecf
+
+gstslabs_list_std=['GST 0% (SGST+CGST)', 'GST 5% (SGST+CGST)', 'GST 12% (SGST+CGST)', 'GST 18% (SGST+CGST)', 'GST 28% (SGST+CGST)', 'IGST 0%',  'IGST 5%', 'IGST 12%', 'IGST 18%', 'IGST 28%']
+
+gstslabs_data_std=[
+['GST 0% (SGST+CGST)', 'y', 'y', 'n', 'SGST', 'CGST', '', '0', '0', '0', '0' ], 
+['GST 5% (SGST+CGST)', 'y', 'y', 'n', 'SGST', 'CGST', '', '2.5', '2.5', '0', '5'],
+['GST 12% (SGST+CGST)', 'y', 'y', 'n', 'SGST', 'CGST', '', '6', '6', '0', '12'],
+['GST 18% (SGST+CGST)', 'y', 'y', 'n', 'SGST', 'CGST', '', '9', '9', '0', '18'],
+['GST 28% (SGST+CGST)', 'y', 'y', 'n', 'SGST', 'CGST', '', '14', '14', '0', '28'],
+['IGST 0%', 'y', 'n', 'n', 'IGST', '', '', '0', '0', '0', '0'],
+['IGST 5%', 'y', 'n', 'n', 'IGST', '', '', '5', '0', '0', '5'],
+['IGST 12%', 'y', 'n', 'n', 'IGST', '', '', '12', '0', '0', '12'],
+['IGST 18%', 'y', 'n', 'n', 'IGST', '', '', '18', '0', '0', '18'],
+['IGST 28%', 'y', 'n', 'n', 'IGST', '', '', '28', '0', '0', '28']
+]
+
 
 	
+taxontax_list_std=['Not Applicable', 'Demo Cess 1%']
+
+taxontax_trates_std=[0, 1]
 
 
 
-class Items():
-    def createitem(self, idata):
-        self.name=idata[0]
-        self.hsn=idata[1]
-        self.group=idata[2]
-        self.unit=idata[3]
-        self.tax=idata[4]
-        self.openstock=idata[5]
-        self.critical=idata[6]
-        self.listprice=idata[7]
-        self.stddisc=idata[8]
-        self.sellprice=idata[9]
-        self.purprice=idata[10]
-        self.comments=idata[11]
-        return idata
-        
-        
-    
-    def precreateitem(self): #preprocessor for creating item
-        pass
-
-    
 
         
         

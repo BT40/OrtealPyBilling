@@ -54,7 +54,7 @@ class GtkInventory():
         #ihb_sortbyqtybutton.connect("clicked", self.blankfunc)         
         ihb_loadbutton = Gtk.Button.new_with_label("Refresh")
         ihb_loadbutton.set_name('loaditemsbutton')
-        ihb_loadbutton.get_style_context().add_class("dangerbutton")        
+        #ihb_loadbutton.get_style_context().add_class("dangerbutton")        
         
         def loaditems(event):
             iblistbox = Gtk.ListBox() #ib=inventory box
