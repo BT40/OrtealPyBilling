@@ -52,7 +52,7 @@ class MainWindow(Gtk.ApplicationWindow):
         stack.add_titled(homebox, "homepage", "Home")
         
         invoicingbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
-        bph=guiinvoicingins.billingpage()
+        bph=guiinvoicingins.billingpage(self)
         invoicingbox.add(bph)
         stack.add_titled(invoicingbox, "billboxmain", "Invoicing") 
         #invoicingbox_pass=[invoicingbox, bph, guiinvoicingins]   

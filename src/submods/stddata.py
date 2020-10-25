@@ -49,9 +49,12 @@ gstslabs_data_std=[
 
 
 	
-taxontax_list_std=['Not Applicable', 'Demo Cess 1%']
+taxontax_list_std=['None', 'Demo Cess 1%']
 
-taxontax_trates_std=[0, 1]
+taxontax_data_std=[
+['None', 'n', 'n', 'n', '', '', '', '0', '0', '0', '0' ], 
+['Demo Cess 1%', 'y', 'n', 'n', 'Cess', '', '', '1', '0', '0', '1' ]
+]
 
 
 

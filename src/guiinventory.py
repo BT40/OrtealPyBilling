@@ -136,6 +136,7 @@ class GtkInventory():
         cinamelabel = Gtk.Label()
         cinamelabel.set_markup("Item name")        
         self.cinameentry = Gtk.Entry()
+        self.cinameentry.set_max_length(47)
                
         cigrouplabel = Gtk.Label()
         cigrouplabel.set_markup("Item group")        
@@ -153,10 +154,12 @@ class GtkInventory():
         cisubgrouplabel = Gtk.Label()
         cisubgrouplabel.set_markup("Sub-group (Optional)  ")
         self.cisubgroupentry = Gtk.Entry()
+        self.cisubgroupentry.set_max_length(32)
         
         cihsnlabel = Gtk.Label()
         cihsnlabel.set_markup("HSN code")
         self.cihsnentry = Gtk.Entry()
+        self.cihsnentry.set_max_length(8)
         
         ciunitlabel = Gtk.Label()
         ciunitlabel.set_markup("Unit")
@@ -169,34 +172,42 @@ class GtkInventory():
         ciopenstlabel = Gtk.Label()
         ciopenstlabel.set_markup("Opening stock")       
         self.ciopenstentry = Gtk.Entry()
+        self.ciopenstentry.set_max_length(11)
         
         cicritlabel = Gtk.Label()
         cicritlabel.set_markup("Critical level")        
         self.cicritentry = Gtk.Entry()
+        self.cicritentry.set_max_length(11)
         
         cilplabel = Gtk.Label()
         cilplabel.set_markup("List Price (MRP)") 
         self.cilpentry = Gtk.Entry()
+        self.cilpentry.set_max_length(11)
         
         cisdlabel = Gtk.Label()
         cisdlabel.set_markup("Standard discount ")        
         self.cisdentry = Gtk.Entry()
+        self.cisdentry.set_max_length(47)
         
         cisplabel = Gtk.Label()
         cisplabel.set_markup("Selling price")        
         self.cispentry = Gtk.Entry()
+        self.cispentry.set_max_length(11)
         
         cipplabel = Gtk.Label()
         cipplabel.set_markup("Purchase price")       
         self.cippentry = Gtk.Entry()
+        self.cippentry.set_max_length(11)
         
         cicommlabel = Gtk.Label()
         cicommlabel.set_markup("Comments")        
         self.cicommentry = Gtk.Entry()
+        self.cicommentry.set_max_length(47)
         
         ciflaglabel = Gtk.Label()
         ciflaglabel.set_markup("Flag")        
         self.ciflagentry = Gtk.Entry()
+        self.ciflagentry.set_max_length(16)
         
         ciblanklabel = Gtk.Label()
         ciblanklabel.set_markup(" ")
@@ -282,6 +293,7 @@ class GtkInventory():
         
         self.ei_nameentry = Gtk.Entry()
         self.ei_nameentry.set_width_chars(32)
+        self.ei_nameentry.set_max_length(47)
         self.einame_completion = Gtk.EntryCompletion()
         self.einame_completion.set_model(guicommon.itemname_store)
         self.einame_completion.set_text_column(0)
@@ -306,6 +318,7 @@ class GtkInventory():
         einamelabel = Gtk.Label()
         einamelabel.set_markup("Item name (new) ")
         self.einameentry = Gtk.Entry()
+        self.einameentry.set_max_length(47)
                       
         eigrouplabel = Gtk.Label()
         eigrouplabel.set_markup("Item group")
@@ -321,10 +334,12 @@ class GtkInventory():
         eisubgrouplabel = Gtk.Label()
         eisubgrouplabel.set_markup("Sub-group (Optional)  ")        
         self.eisubgroupentry = Gtk.Entry()
+        self.eisubgroupentry.set_max_length(32)
         
         eihsnlabel = Gtk.Label()
         eihsnlabel.set_markup("HSN code")        
         self.eihsnentry = Gtk.Entry()
+        self.eihsnentry.set_max_length(8)
         
         eiunitlabel = Gtk.Label()
         eiunitlabel.set_markup("Unit")
@@ -354,34 +369,42 @@ class GtkInventory():
         eiopenstlabel = Gtk.Label()
         eiopenstlabel.set_markup("Opening stock")        
         self.eiopenstentry = Gtk.Entry()
+        self.eiopenstentry.set_max_length(11)
         
         eicritlabel = Gtk.Label()
         eicritlabel.set_markup("Critical level") 
         self.eicritentry = Gtk.Entry()
+        self.eicritentry.set_max_length(11)
         
         eilplabel = Gtk.Label()
         eilplabel.set_markup("List Price (MRP)")        
         self.eilpentry = Gtk.Entry()
+        self.eilpentry.set_max_length(11)
         
         eisdlabel = Gtk.Label()
         eisdlabel.set_markup("Standard discount ")
         self.eisdentry = Gtk.Entry()
+        self.eisdentry.set_max_length(47)
         
         eisplabel = Gtk.Label()
         eisplabel.set_markup("Selling price")
         self.eispentry = Gtk.Entry()
+        self.eispentry.set_max_length(11)
         
         eipplabel = Gtk.Label()
         eipplabel.set_markup("Purchase price")
         self.eippentry = Gtk.Entry()
+        self.cippentry.set_max_length(11)
         
         eicommlabel = Gtk.Label()
         eicommlabel.set_markup("Comments")       
         self.eicommentry = Gtk.Entry()
+        self.eicommentry.set_max_length(47)
         
         eiflaglabel = Gtk.Label()
         eiflaglabel.set_markup("Flag")        
         self.eiflagentry = Gtk.Entry()
+        self.eiflagentry.set_max_length(16)
         
         eiblanklabel = Gtk.Label()
         eiblanklabel.set_markup(" ")
@@ -459,6 +482,7 @@ class GtkInventory():
         
         self.cignameentry = Gtk.Entry() 
         self.cignameentry.set_width_chars(25)
+        self.cignameentry.set_max_length(32)
         self.cignameentry.set_hexpand(False)
         self.cignameentry.set_halign(Gtk.Align.CENTER) # to avoid expansion horizontally 
         

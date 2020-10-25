@@ -82,7 +82,7 @@ class GtkCompany():
         ccphonelabel = Gtk.Label()
         ccphonelabel.set_markup("Office Phone")
         self.ccphoneentry = Gtk.Entry()
-        self.ccphoneentry.set_max_length(32)
+        self.ccphoneentry.set_max_length(24)
         
         ccmobilelabel = Gtk.Label()
         ccmobilelabel.set_markup("Mobile ")
@@ -129,7 +129,7 @@ class GtkCompany():
         ccdistancelabel = Gtk.Label()
         ccdistancelabel.set_markup("Distance in Kms ")        
         self.ccdistanceentry = Gtk.Entry()
-        self.ccdistanceentry.set_max_length(12)
+        self.ccdistanceentry.set_max_length(8)
         
         ccdosplabel = Gtk.Label()
         ccdosplabel.set_markup("Discount on selling price ")        
@@ -138,12 +138,10 @@ class GtkCompany():
         
         ccseplabel = Gtk.Label() # separator for grid columns
         ccseplabel.set_markup("  ")
-        ccseplabel.set_width_chars(16)
-        
+        ccseplabel.set_width_chars(16)     
         ccminiseplabel = Gtk.Label() # payment block separator for second row columns
         ccminiseplabel.set_markup("     ")
-        ccminiseplabel.set_width_chars(16)
-        
+        ccminiseplabel.set_width_chars(16)        
         
         # do not temper below section, compatibility mode start CMCMCMCMCMCMCMCMCMCMCMCMCMCMCMCMCMCM
         # sec bank widgets start
@@ -204,13 +202,12 @@ class GtkCompany():
         #self.ccsecbankaddientry.set_no_show_all(True)
         #self.ccsecbankaddientry.hide()     
         # sec bank widgets end
-        # From now u can make changes, compatibility mode ends   CMECMECMECMECMECMECMECMECMECME
-        
+        # From now u can make changes, compatibility mode ends   CMECMECMECMECMECMECMECMECMECME       
         
         cccreditlimitlabel = Gtk.Label()
         cccreditlimitlabel.set_markup("Credit Limit ")       
         self.cccreditlimitentry = Gtk.Entry()
-        self.cccreditlimitentry.set_max_length(16)
+        self.cccreditlimitentry.set_max_length(11)
         
         ccpaydayslabel = Gtk.Label()
         ccpaydayslabel.set_markup("Payment terms ")        
@@ -241,12 +238,17 @@ class GtkCompany():
         ccblacklistlabel = Gtk.Label()
         ccblacklistlabel.set_markup("Blacklist this company ")
         ccblacklistlabel.set_margin_top(10)
-        
-        ccblacklist='notset' 
         self.ccblacklistbutton = Gtk.CheckButton()
         self.ccblacklistbutton.set_margin_top(10)
         #self.ccblacklistbutton.set_label("  (Reminder only)")    
         self.ccblacklistbutton.set_active(False) # By default false
+        
+        ccshippingaddress_label = Gtk.Label()
+        ccshippingaddress_label.set_markup("Different shipping address  ")
+        ccshippingaddress_label.set_margin_top(10)
+        self.ccshippingaddress_button = Gtk.CheckButton()
+        self.ccshippingaddress_button.set_margin_top(10)  
+        self.ccshippingaddress_button.set_active(False) # By default false
             
         self.ccvarg=[self.ccnameentry, self.ccgstentry, self.ccaddressentry, self.cccityentry, self.ccstateentry, self.ccccombo, self.ccpinentry, self.ccphoneentry, self.cccpersonentry, self.ccmobileentry, self.ccemailentry, self.ccwebsiteentry,  self.ccbankaccountentry, self.ccbankifscentry, self.ccbanknameentry, self.ccbankaddientry,  self.ccdistanceentry, self.ccbusinessareaentry, self.cccommentsentry, self.ccflagentry,  self.ccdospentry, self.cccreditlimitentry, self.ccpaydaysentry,  self.ccinstapaybutton, self.ccblacklistbutton]
         
@@ -318,23 +320,22 @@ class GtkCompany():
         gridccbox.attach(cccommentslabel, 3, 7, 1, 1)
         gridccbox.attach(self.cccommentsentry, 4, 7, 1, 1) 
         gridccbox.attach(ccflaglabel, 3, 8, 1, 1)
-        gridccbox.attach(self.ccflagentry, 4, 8, 1, 1)         
-        
+        gridccbox.attach(self.ccflagentry, 4, 8, 1, 1)                 
         gridccbox.attach(ccdosplabel, 3, 9, 1, 1)
         gridccbox.attach(self.ccdospentry, 4, 9, 1, 1)
         gridccbox.attach(cccreditlimitlabel, 3, 10, 1, 1)
         gridccbox.attach(self.cccreditlimitentry, 4, 10, 1, 1)
         gridccbox.attach(ccpaydayslabel, 3, 11, 1, 1)
-        gridccbox.attach(self.ccpaydaysentry, 4, 11, 1, 1)
-        
+        gridccbox.attach(self.ccpaydaysentry, 4, 11, 1, 1)        
         gridccbox.attach(ccminiseplabel, 3, 12, 1, 1) 
         gridccbox.attach(ccinstapaylabel, 3, 13, 1, 1)
         gridccbox.attach(self.ccinstapaybutton, 4, 13, 1, 1)
         gridccbox.attach(ccblacklistlabel, 3, 14, 1, 1)
-        gridccbox.attach(self.ccblacklistbutton, 4, 14, 1, 1)
-      
-        gridccbox.attach(cccreatebutton, 4, 16, 1, 1)
-        gridccbox.attach(ccresetbutton, 3, 16, 1, 1)
+        gridccbox.attach(self.ccblacklistbutton, 4, 14, 1, 1)  
+        gridccbox.attach(ccshippingaddress_label, 3, 15, 1, 1)
+        gridccbox.attach(self.ccshippingaddress_button, 4, 15, 1, 1)        
+        gridccbox.attach(cccreatebutton, 4, 17, 1, 1)
+        gridccbox.attach(ccresetbutton, 3, 17, 1, 1)
         
         self.companystack.add_titled(ccbox, "createcompanymain", "Create Company")
         
@@ -397,7 +398,7 @@ class GtkCompany():
         ecphonelabel = Gtk.Label()
         ecphonelabel.set_markup("Office Phone")
         self.ecphoneentry = Gtk.Entry()
-        self.ecphoneentry.set_max_length(32)
+        self.ecphoneentry.set_max_length(24)
         
         ecmobilelabel = Gtk.Label()
         ecmobilelabel.set_markup("Mobile ")
@@ -444,7 +445,7 @@ class GtkCompany():
         ecdistancelabel = Gtk.Label()
         ecdistancelabel.set_markup("Distance in Kms ")
         self.ecdistanceentry = Gtk.Entry()
-        self.ecdistanceentry.set_max_length(12)
+        self.ecdistanceentry.set_max_length(8)
         
         ecdosplabel = Gtk.Label()
         ecdosplabel.set_markup("Discount on selling price ")
@@ -523,7 +524,7 @@ class GtkCompany():
         eccreditlimitlabel = Gtk.Label()
         eccreditlimitlabel.set_markup("Credit Limit ")
         self.eccreditlimitentry = Gtk.Entry()
-        self.eccreditlimitentry.set_max_length(16)
+        self.eccreditlimitentry.set_max_length(11)
         
         ecpaydayslabel = Gtk.Label()
         ecpaydayslabel.set_markup("Payment terms ")
@@ -553,13 +554,17 @@ class GtkCompany():
         
         ecblacklistlabel = Gtk.Label()
         ecblacklistlabel.set_markup("Blacklist this company ")
-        ecblacklistlabel.set_margin_top(10)
-        
-        ecblacklist='notset' 
+        ecblacklistlabel.set_margin_top(10)      
         self.ecblacklistbutton = Gtk.CheckButton()
-        self.ecblacklistbutton.set_margin_top(10)
-        #self.ecblacklistbutton.set_label("  (Reminder only)")    
-        self.ecblacklistbutton.set_active(False) # By default false    
+        self.ecblacklistbutton.set_margin_top(10)   
+        self.ecblacklistbutton.set_active(False) # By default false  
+        
+        ecshippingaddress_label = Gtk.Label()
+        ecshippingaddress_label.set_markup("Different shipping address  ")
+        ecshippingaddress_label.set_margin_top(10)
+        self.ecshippingaddress_button = Gtk.CheckButton()
+        self.ecshippingaddress_button.set_margin_top(10)  
+        self.ecshippingaddress_button.set_active(False) # By default false  
             
         self.ecvarg=[self.ecnameentry, self.ecgstentry, self.ecaddressentry, self.eccityentry, self.ecstateentry, self.ecccombo, self.ecpinentry, self.ecphoneentry, self.eccpersonentry, self.ecmobileentry, self.ecemailentry, self.ecwebsiteentry,  self.ecbankaccountentry, self.ecbankifscentry, self.ecbanknameentry, self.ecbankaddientry,  self.ecdistanceentry, self.ecbusinessareaentry, self.eccommentsentry, self.ecflagentry,  self.ecdospentry, self.eccreditlimitentry, self.ecpaydaysentry,  self.ecinstapaybutton, self.ecblacklistbutton]
         
@@ -642,17 +647,17 @@ class GtkCompany():
         gridecbox.attach(eccreditlimitlabel, 3, 10, 1, 1)
         gridecbox.attach(self.eccreditlimitentry, 4, 10, 1, 1)
         gridecbox.attach(ecpaydayslabel, 3, 11, 1, 1)
-        gridecbox.attach(self.ecpaydaysentry, 4, 11, 1, 1)
-        
+        gridecbox.attach(self.ecpaydaysentry, 4, 11, 1, 1)        
         gridecbox.attach(ecminiseplabel, 3, 12, 1, 1) 
         gridecbox.attach(ecinstapaylabel, 3, 13, 1, 1)
         gridecbox.attach(self.ecinstapaybutton, 4, 13, 1, 1)
         gridecbox.attach(ecblacklistlabel, 3, 14, 1, 1)
-        gridecbox.attach(self.ecblacklistbutton, 4, 14, 1, 1)
-      
-        gridecbox.attach(ecsavebutton, 4, 16, 1, 1)
-        gridecbox.attach(ecresetbutton, 3, 16, 1, 1)
-        gridecbox.attach(ecdeletebutton, 5, 16, 1, 1)
+        gridecbox.attach(self.ecblacklistbutton, 4, 14, 1, 1)  
+        gridecbox.attach(ecshippingaddress_label, 3, 15, 1, 1)
+        gridecbox.attach(self.ecshippingaddress_button, 4, 15, 1, 1)           
+        gridecbox.attach(ecsavebutton, 4, 17, 1, 1)
+        gridecbox.attach(ecresetbutton, 3, 17, 1, 1)
+        gridecbox.attach(ecdeletebutton, 5, 17, 1, 1)
         
         ec_editbutton.connect("clicked", self.set_ecentries, self.ecentries)  
         

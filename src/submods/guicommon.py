@@ -28,6 +28,12 @@ def loadguicommon():
     global itemgroups
     itemgroups=miscdbins.get('itemgroups')
     
+    global taxontax_list
+    taxontax_list=miscdbins.get('taxontaxslabslist')   
+    global taxontax_data
+    taxontax_data=miscdbins.get('taxontaxslabsdata')
+    
+    
     global items_alphabetic
     items_alphabetic=itemtableins.rowcollection.copy()
     items_alphabetic.sort(key=operator.itemgetter(0))

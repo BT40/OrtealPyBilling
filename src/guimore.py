@@ -7,6 +7,7 @@ from submods import dbmani
 from submods import guicommon
 from submods import guihelp
 from submods import guitaxslabs
+from submods import guitaxontaxslabs
 from submods import guiprocessor
 from datetime import datetime
 
@@ -39,7 +40,7 @@ class GtkMore():
         
         prefbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         preflabel = Gtk.Label()
-        preflabel.set_markup("Automatic invoice numbering option, tax slabs, invoice number prefix, hide purchases, will be added in future.")
+        preflabel.set_markup("Automatic invoice no., invouce item comments, invoice no. prefix, hide purchases, will be added in future.")
         prefbox.pack_start(preflabel, True, True, 0)
         #print("Loaded pref pane")   
         
@@ -47,6 +48,11 @@ class GtkMore():
         guitaxslabsins=guitaxslabs.GtkTaxSlabs()
         cth=guitaxslabsins.generatepage() #customtax holder
         ctaxbox.pack_start(cth, False, False, 0)
+        
+        ctaxontax_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        guitaxontaxslabs_ins=guitaxontaxslabs.GtkTaxonTaxSlabs()
+        ctoth=guitaxontaxslabs_ins.generatepage() #custom tax on tax holder
+        ctaxontax_box.pack_start(ctoth, False, False, 0)
         
         helpbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         hth=guihelp.helptips() #help tips holder
@@ -71,7 +77,8 @@ class GtkMore():
         
         #morestack.add_titled(fybox, "fysettingsbox", "FY Settings")
         morestack.add_titled(prefbox, "preferencesbox", "Preferences")
-        morestack.add_titled(ctaxbox, "customtaxslabsbox", "Tax Slabs")
+        morestack.add_titled(ctaxbox, "customtaxslabsbox", "Tax slabs")
+        morestack.add_titled(ctaxontax_box, "ctaxontaxslabsmbox", "Tax on Tax slabs")        
         morestack.add_titled(helpbox, "helpguidebox", "Help")
         morestack.add_titled(aboutbox, "aboutinfobox", "About")
         morestack.add_titled(exitbox, "exitappbox", "Exit")
