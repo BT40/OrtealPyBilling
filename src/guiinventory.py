@@ -16,9 +16,10 @@ from gi.repository import Gdk
 
 class GtkInventory():
         
-    def generatepage(self, invoicingbox, bph, guiinvoicingins):
+    def generatepage(self, invoicingbox, bph, guiinvoicingins, mainwindow): #mainwindow is for guiinvoicing reference
         
         #some initializations
+        self.mainwindow=mainwindow
         self.itemtableins=dbmani.itemtableins        
         self.companytableins=dbmani.companytableins
         self.invoicetableins=dbmani.invoicetableins       
@@ -601,7 +602,7 @@ class GtkInventory():
         for eachchild in children:
             invoicingbox.remove(eachchild)
             eachchild.destroy()
-        bph=guiinvoicingins.billingpage()
+        bph=guiinvoicingins.billingpage(self.mainwindow)
         invoicingbox.add(bph)
         invoicingbox.show_all()        
         

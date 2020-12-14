@@ -10,14 +10,10 @@ from gi.repository import Gdk
 
 
 
-
-#===================================================== SCROLL BOX FOR COMPANIES VIEWING ====================
-
-
 def loadtips():
     tbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20) 
     switchtext_label = Gtk.Label(label='Press tab to switch between input fields.')
-    enableinvitemcomments_label = Gtk.Label(label='Future option: Enable invoice item short comments from preferences if needed')
+    enableinv_label = Gtk.Label(label='Future option: Enable xyz from preferences if needed')
     cnamelimit_label = Gtk.Label(label='Company name, item name, comments, email, address line limit: 47 characters')
     inamelimit_label = Gtk.Label(label=' Qty and price limit: 11 characters')
     commentslimit_label = Gtk.Label(label='HSN limit: 9 characters')
@@ -34,7 +30,7 @@ def loadtips():
     tbox.pack_start(personnamelimit_label, False, False, 0)    
     tbox.pack_start(invitemslimit_label, False, False, 0)    
     tbox.pack_start(limit24_label, False, False, 0)    
-    tbox.pack_start(enableinvitemcomments_label, False, False, 0)                  
+    tbox.pack_start(enableinv_label, False, False, 0)                  
                 
     tbox.show_all()
     return tbox

@@ -1,5 +1,5 @@
 # Table wrapper over Pickledb. Store data in tabular form utilizing nosql.
-# Revision 7 sept 2020
+# Revision 12 dec 2020
 
 import sys
 import os
@@ -168,11 +168,17 @@ class Tealor():
 	### READ OPERATIONS
     def readrow(self, rowname):
         #print ("Finding Index for your search... ") 
-        rowindex=self.rowlist.index(rowname) 
-        #print ("Matching row for your search is :  ") 
-        rowdata=self.rowcollection[rowindex]
-        #print(rowdata)
-        return rowdata
+        try:
+            rowindex=self.rowlist.index(rowname) 
+            #print ("Matching row for your search is :  ") 
+            rowdata=self.rowcollection[rowindex]
+            #print(rowdata)
+            return rowdata
+        
+        except:
+            print("Not found, reporting from tealordb readrow")    
+            val='not_found_row'
+            return val
 	
 		
     def createid(self, rowname):
@@ -215,13 +221,18 @@ class Tealor():
 	
 
     def getval(self, rowname, columnname):
-        rowindex=self.rowlist.index(rowname) 
-        colindex=self.collist.index(columnname)
-        rowdata=self.rowcollection[rowindex]
-        val=rowdata[colindex]
-        #print("Value of required field is : ")
-        #print (val)
-        return val
+        try:
+            rowindex=self.rowlist.index(rowname) 
+            colindex=self.collist.index(columnname)
+            rowdata=self.rowcollection[rowindex]
+            val=rowdata[colindex]
+            #print("Value of required field is : ")
+            #print (val)
+            return val
+        except:
+            print("Not found, reporting from tealordb getval")    
+            val='not_found_row'
+            return val
 	
 	
     def thresher(self, tothresh):

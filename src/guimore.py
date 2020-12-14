@@ -8,6 +8,7 @@ from submods import guicommon
 from submods import guihelp
 from submods import guitaxslabs
 from submods import guitaxontaxslabs
+from submods import guipreferences
 from submods import guiprocessor
 from datetime import datetime
 
@@ -21,7 +22,7 @@ class GtkMore():
       
     #----------------------------------More box contents start         
         
-    def generatepage(self, applic):
+    def generatepage(self, applic, mainwindow):
            
         moremasterbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
                 
@@ -39,9 +40,9 @@ class GtkMore():
         #print("Started item pane coding in Preferences pane")   
         
         prefbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        preflabel = Gtk.Label()
-        preflabel.set_markup("Automatic invoice no., invouce item comments, invoice no. prefix, hide purchases, will be added in future.")
-        prefbox.pack_start(preflabel, True, True, 0)
+        guipref_ins=guipreferences.GtkPreferences()
+        prefholder=guipref_ins.generatepage(mainwindow)
+        prefbox.pack_start(prefholder, False, False, 0)
         #print("Loaded pref pane")   
         
         ctaxbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)

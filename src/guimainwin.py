@@ -1,6 +1,6 @@
 import sys
 import gi
-import guihome
+from submods import b4gui
 import guiinvoicing
 import guiinventory
 import guicompany
@@ -22,7 +22,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_border_width(10)
         
-        guihomeins=guihome.GtkHome()
+        b4guiins=b4gui.Startt()
+        b4guiins.some_initialisations()    
         guiinvoicingins=guiinvoicing.GtkInvoicing()
         guiinventoryins=guiinventory.GtkInventory()
         guicompanyins=guicompany.GtkCompany() 
@@ -46,23 +47,14 @@ class MainWindow(Gtk.ApplicationWindow):
         stacksidebar.set_stack(stack)
         leftvbox.pack_start(stacksidebar, True, True, 0)
         
-        homebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
-        hph=guihomeins.generatepage() #hph home page holder
-        homebox.add(hph)
-        stack.add_titled(homebox, "homepage", "Home")
-        
-        invoicingbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
-        bph=guiinvoicingins.billingpage(self)
+        invoicingbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        bph=guiinvoicingins.generatepage(self)
         invoicingbox.add(bph)
         stack.add_titled(invoicingbox, "billboxmain", "Invoicing") 
         #invoicingbox_pass=[invoicingbox, bph, guiinvoicingins]   
-        
-        #invoicingsw = Gtk.ScrolledWindow() #invoicing page scroll window
-        #invoicingsw.add(invoicingbox)
-        #stack.add_titled(invoicingsw, "billboxmainsw", "Invoicing")            
-        
+           
         inventorybox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
-        iph=guiinventoryins.generatepage(invoicingbox, bph, guiinvoicingins) #iph=inventory page holder
+        iph=guiinventoryins.generatepage(invoicingbox, bph, guiinvoicingins, self) #iph=inventory page holder
         inventorybox.add(iph)
         stack.add_titled(inventorybox, "inventorymain", "Inventory")
         #print("Inventory box loaded, now trying loading Create box")        
@@ -82,7 +74,7 @@ class MainWindow(Gtk.ApplicationWindow):
         #stack.add_titled(reportsbox, "reportsboxmain", "Reports")              
         
         morebox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
-        mph=guimoreins.generatepage(applic) #mph=more page holder
+        mph=guimoreins.generatepage(applic, self) #mph=more page holder
         morebox.add(mph)
         stack.add_titled(morebox, "moremain", "More")
         

@@ -9,8 +9,6 @@ from gi.repository import Gio
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-
-
  
 def loadguicommon():
        
@@ -31,8 +29,7 @@ def loadguicommon():
     global taxontax_list
     taxontax_list=miscdbins.get('taxontaxslabslist')   
     global taxontax_data
-    taxontax_data=miscdbins.get('taxontaxslabsdata')
-    
+    taxontax_data=miscdbins.get('taxontaxslabsdata')    
     
     global items_alphabetic
     items_alphabetic=itemtableins.rowcollection.copy()
