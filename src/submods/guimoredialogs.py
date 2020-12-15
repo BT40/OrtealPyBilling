@@ -74,10 +74,7 @@ class GtkMoreDialogs():
         
         ccountry_label = Gtk.Label() 
         ccountry_label.set_markup("Country ")                    
-        self.ccountry_entry = Gtk.Entry() 
-        self.ccountry_entry.set_width_chars(32)
-        self.ccountry_entry.set_max_length(32)  
-        self.ccountry_entry.set_halign(Gtk.Align.START)   
+        
         
         self.cccombo = Gtk.ComboBoxText.new_with_entry()
         for countryname in functions.countrieslist:
@@ -125,9 +122,9 @@ class GtkMoreDialogs():
         contentgrid.attach(cstate_label, 0, 7, 1, 1)
         contentgrid.attach(self.cstate_entry, 1, 7, 1, 1)
         contentgrid.attach(ccountry_label , 0, 8, 1, 1)
-        contentgrid.attach(self.ccountry_entry, 1, 8, 1, 1)
+        contentgrid.attach(self.cccombo, 1, 8, 1, 1)
         contentgrid.attach(cphone_label, 0, 9, 1, 1)
-        contentgrid.attach(self.cccombo, 1, 9, 1, 1)
+        contentgrid.attach(self.cphone_entry, 1, 9, 1, 1)
         contentgrid.attach(cmail_label, 0, 10, 1, 1)
         contentgrid.attach(self.cmail_entry, 1, 10, 1, 1)
         contentgrid.attach(cstatecode_label, 0, 12, 1, 1)
@@ -168,7 +165,15 @@ class GtkMoreDialogs():
     def load_mycompany_data(self):  
     
         self.cnentry.set_text(guicommon.miscdbins.get('mycompanyname'))
+        self.gst_entry.set_text(guicommon.miscdbins.get('mycompanygstin'))
         self.ca_entry.set_text(guicommon.miscdbins.get('mycompanyaddress'))
+        self.ccity_entry.set_text(guicommon.miscdbins.get('mycompanycity'))
+        self.cpin_entry.set_text(guicommon.miscdbins.get('mycompanypin'))
+        self.cstate_entry.set_text(guicommon.miscdbins.get('mycompanystate'))
+        self.cccombo.get_child().set_text(guicommon.miscdbins.get('mycompanycountry'))
+        self.cphone_entry.set_text(guicommon.miscdbins.get('mycompanyphone'))
+        self.cmail_entry.set_text(guicommon.miscdbins.get('mycompanyemail'))
+        self.cstatecode_entry.set_text(guicommon.miscdbins.get('mycompanystatecode'))
     
             
 

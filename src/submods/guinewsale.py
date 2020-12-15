@@ -441,12 +441,10 @@ class GtkNewSale():
         
         self.nsi_header_widgets=[self.invoicenmbr, self.invoicedate, self.invcompany, self.ponmbr, self.taxcombo, self.taxontaxcombo]
         
-        self.nsi_footer_widgets=[self.basicamtdisp, self.discountentry, self.freightentry, self.mischentry, self.paymentmode_entry, self.taxamount, self.taxontaxamount, self.gtotaldisp]
+        self.nsi_footer_widgets=[self.basicamtdisp, self.discountentry, self.freightentry, self.mischentry, self.paymentmode_entry,  self.taxamount, self.taxontaxamount, self.gtotaldisp, self.transportmode_entry]
          
         self.nsi_itemswidgets=[self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist,self.nciilb_ic, self.nciilb_iamtlist]   
-        
-        self.nsi_oth_val= [self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.rcvalue, self.more_opened ]
-        
+       
        
         invoicingmasterbox.pack_start(billbox, False, False, 0)      
         
@@ -483,12 +481,17 @@ class GtkNewSale():
         self.estimate_tax('mimicevent')
         self.estd_taxontax=saleinvoicingprocessor.estimate_taxontax(self.taxontaxcombo, self.estd_tax) 
         self.taxontaxamount.set_markup(str(self.estd_taxontax))
-        geetotal=saleinvoicingprocessor.grand_saleamounting(self.temp_basicamt, self.discountentry, self.freightentry, self.mischentry, self.estd_tax, self.estd_taxontax, self.roundoff_enabled, self.roundoff_amt)
+        print('grandcaller b4 grand')
+        geetotal, self.roundoff_amt=saleinvoicingprocessor.grand_saleamounting(self.temp_basicamt, self.discountentry, self.freightentry, self.mischentry, self.estd_tax, self.estd_taxontax, self.roundoff_enabled, self.roundoff_amt)
         self.gtotaldisp.set_markup(str(geetotal))  
+        print('grandcaller complete')
         
            
     def processnci(self, nextbutton):
-        self.invoicedata_temp=saleinvoicingprocessor.processnci(self.nsi_header_widgets, self.nsi_footer_widgets, nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt )
+       
+        self.nsi_oth_val= [self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.rcvalue, self.more_opened ]
+        
+        self.invoicedata_temp=saleinvoicingprocessor.processnci(self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt )
         self.pdfsi_ins=pdfsaleinvoice.PdfSI()
         self.pdfsi_ins.printable_saleinvoice('2020-10-11', '1', self.invoicedata_temp)
         self.resetncifields('buttonmimic')
@@ -510,7 +513,7 @@ class GtkNewSale():
         else:    
             self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.compchange_detector =self.moredialogins.more_things(self.mainwindow, self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.invcompany.get_text(), self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.more_opened, self.compchange_detector)
             self.more_opened='yes'
-        
+            
  
     def print_sinvoice(self, buttonevent):
         #printsi_handlerins=printsihandler.PrintSaleInvoiceHander()

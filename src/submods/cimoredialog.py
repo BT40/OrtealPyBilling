@@ -62,6 +62,7 @@ class CImore():
         self.furthertermsline1_entry = Gtk.Entry() 
         self.furthertermsline1_entry.set_width_chars(47)
         self.furthertermsline1_entry.set_max_length(47)
+        self.furthertermsline1_entry.set_text(furtherterms)
         
         shippingname_label = Gtk.Label() 
         shippingname_label.set_markup("Shipped to:")                    

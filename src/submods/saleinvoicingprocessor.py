@@ -72,6 +72,7 @@ def estimate_taxontax(taxontaxslab_combo, taxamount_float):
     
 def grand_saleamounting(basicamt_float, discountentry, freightentry, mischentry, estd_tax, estd_taxontax, roundoff_enabled, roundoff_amt_float):
     grandamt=0      
+    
     if discountentry.get_text()=='':
         discountamount_float=0
     else:
@@ -86,23 +87,29 @@ def grand_saleamounting(basicamt_float, discountentry, freightentry, mischentry,
         mischamount_float=0
     else:
         mischamount_float= float(mischentry.get_text())  
-          
-    if roundoff_enabled =='n':
+ 
+  
+    if roundoff_enabled =='no':
         grandamt_raw=basicamt_float-discountamount_float+freightamount_float+mischamount_float+estd_tax+estd_taxontax
+ 
+
         grandamt=round(grandamt_raw, 2) #2 decimal places
         roundoff_amt_float=0.00
         
-    elif roundoff_enabled =='y':    
+    elif roundoff_enabled =='yes':    
         grandamt_raw=basicamt_float-discountamount_float+freightamount_float+mischamount_float+estd_tax+estd_taxontax
+
+
         grandamt=round(grandamt_raw) #integer rounding
         roundoff_amt_float=round( (grandamt_raw-grandamt) , 2)
     else:
-        pass    
-    #print(grandamt)
-    return grandamt  
+        print('something went wrong in roundoff if-else')    
+
+    #print('grand calculation complete')
+    return grandamt, roundoff_amt_float 
 
     
-def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_itemswidgets, nsi_oth_widgets, nsi_taxable_amount, roundoff_enabled, roundoff_amt_float ):
+def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_oth_val, nsi_itemswidgets, nsi_taxable_amount, roundoff_enabled, roundoff_amt_float ):
 
     inv_nmbr=nsi_header_widgets[0].get_text()
     inv_date=nsi_header_widgets[1].get_text()
@@ -119,19 +126,27 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_itemswidgets, nsi_oth
     inv_taxamount=nsi_footer_widgets[5].get_text()
     inv_taxontaxamount=nsi_footer_widgets[6].get_text()
     inv_grandamount=nsi_footer_widgets[7].get_text()
+    transport_mode=nsi_footer_widgets[8].get_text()
     
-    inv_comments=nsi_oth_widgets[0]
-    transport_mode=nsi_oth_widgets[1]
-    ewaybill_nmbr=nsi_oth_widgets[2]
-    furtherterms=nsi_oth_widgets[3]
-    reverse_charge=nsi_oth_widgets[9]
+    inv_comments=nsi_oth_val[0]
     
-    if nsi_oth_widgets[10]=='yes': #more opened is yes
-        handovername=nsi_oth_widgets[4]
-        shippingaddress=nsi_oth_widgets[4]
-        shippingpin=nsi_oth_widgets[4]
-        shippingphone=nsi_oth_widgets[4]
-        shippingstate=nsi_oth_widgets[4]
+    ewaybill_nmbr=nsi_oth_val[2]
+    furtherterms=nsi_oth_val[3]
+    print(ewaybill_nmbr)
+    print(furtherterms)
+    print('above eway, further term')
+    reverse_charge=nsi_oth_val[9]
+    
+    sourcecompany=guicommon.miscdbins.get('mycompanyname')
+    
+    sourceaddress, sourcepin, sourcephone, sourceemail, sourcetaxid, originstate, originstatecode, partyaddress, partypin, partyphone, partytaxid, partystate, partystatecode = get_company_details(sourcecompany, inv_toparty)  
+    
+    if nsi_oth_val[10]=='yes': #more opened is yes
+        handovername=nsi_oth_val[4]
+        shippingaddress=nsi_oth_val[5]
+        shippingpin=nsi_oth_val[8]
+        shippingphone=nsi_oth_val[7]
+        shippingstate=nsi_oth_val[6]
         shippingstatecode='na'
         
     else: #more not opened, use default  
@@ -147,7 +162,7 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_itemswidgets, nsi_oth
     tl3=guicommon.miscdbins.get('termsline3')
     tl4=guicommon.miscdbins.get('termsline4')
     terms=[tl1, tl2, tl3, tl4, furtherterms]
-    amount_words='One lac sixty six thousand five hundred sixty nine only'
+    amount_words='Implement One lac sixty six thousand five hundred sixty nine only'
     
     inv_firsttax_enabled, inv_secondtax_enabled, inv_thirdtax_enabled,inv_firsttax_colname, inv_secondtax_colname, inv_thirdtax_colname, inv_firsttax_rate, inv_secondtax_rate, inv_thirdtax_rate, inv_totaltax_rate=fetch_taxslab_details(inv_taxslab)
     
@@ -162,8 +177,7 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_itemswidgets, nsi_oth
     inv_isp_widgets=nsi_itemswidgets[2]
     inv_idiscount_widgets=nsi_itemswidgets[3]
     inv_ic_widgets=nsi_itemswidgets[4]
-    inv_iamount_widgets=nsi_itemswidgets[5]
-    
+    inv_iamount_widgets=nsi_itemswidgets[5]    
     
     nci_inameholder=[]
     nci_iqtyholder=[]
@@ -225,13 +239,7 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_itemswidgets, nsi_oth
         #ifirsttax_holder.append(ifirsttax_value) #If each item tax value needed
         #isecondtax_holder.append(isecondtax_value)  #If each item tax value needed
         #ithirdtax_holder.append(ithirdtax_value)  #If each item tax value needed
-        i=i+1
-    #print (inv_nmbr)    
-    #print (nci_inameholder)
-    #print (nci_iqtyholder)
-    #print (nci_iamtholder)
-    #print ('below is hsn')
-    #print (nci_ihsnholder)
+        i=i+1  
     
     invid=inv_date+inv_nmbr
     softwareversion=1
@@ -240,17 +248,14 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_itemswidgets, nsi_oth
     invoicetype='salesinvoice'
     
     roundoff_amt=roundoff_amt_float
-    roundoff_enable=roundoff_enabled
-    
-    sourcecompany=guicommon.miscdbins.get('mycompanyname')
-    
-    sourceaddress, sourcepin, sourcephone, sourceemail, sourcetaxid, originstate, originstatecode, partyaddress, partypin, partyphone, partytaxid, partystate, partystatecode = get_company_details(sourcecompany, inv_toparty)  
+    roundoff_enable=roundoff_enabled        
     
     invoice_data=[invid, softwareversion, inv_nmbr, inv_date, inv_time, fy, invoicetype, sourcecompany, sourceaddress, sourcepin, sourcephone, sourceemail, sourcetaxid, originstate, originstatecode, reverse_charge, ewaybill_nmbr, inv_po, inv_toparty, partyaddress, partypin, partyphone,  partytaxid, partystate, partystatecode, handovername, shippingaddress, shippingpin, shippingphone, shippingstate, shippingstatecode, transport_mode, payment_mode, terms, inv_taxslab, inv_firsttax_enabled, inv_secondtax_enabled, inv_thirdtax_enabled, inv_firsttax_colname, inv_secondtax_colname, inv_thirdtax_colname, inv_firsttax_rate, inv_secondtax_rate, inv_thirdtax_rate, inv_totaltax_rate,  inv_taxontaxslab, inv_firsttot_enabled, inv_secondtot_enabled, inv_thirdtot_enabled,inv_firsttot_name, inv_secondtot_name, inv_thirdtot_name, inv_firsttot_rate, inv_secondtot_rate, inv_thirdtot_rate, inv_totaltot_rate, inv_comments,  inv_basicamt, inv_discount, inv_freight, inv_othercharges, inv_taxamount, inv_firsttaxamount, inv_secondtaxamount, inv_thirdtaxamount, inv_taxontaxamount, inv_firsttotamount, inv_secondtotamount, inv_thirdtotamount, roundoff_enable, roundoff_amt, inv_grandamount,  numberofitems, nci_inameholder, nci_iqtyholder, nci_ispholder, nci_idischolder,nci_iamtholder, nci_icholder, nci_ihsnholder]
     
     guicommon.invoicetableins.createrow(invid, invoice_data)
     print('invoice successfully created')
     #reset fields
+    print(invoice_data)
     return invoice_data
 
 def applytax(taxslab):
@@ -306,12 +311,12 @@ def get_company_details (sourcecompany, inv_toparty):
     
     customer_details=guicommon.companytableins.readrow(inv_toparty)
     customer_name=customer_details[0]
-    customer_address=customer_details[2]+customer_details[3]
+    customer_address=customer_details[8]+customer_details[9]
     customer_gst=customer_details[1]
-    customer_pin=customer_details[5]
-    customer_state=customer_details[4]
+    customer_pin=customer_details[12]
+    customer_state=customer_details[10]
     customer_statecode='1220'
-    customer_phone=customer_details[6]
+    customer_phone=customer_details[13]
     
     return supplier_address, supplier_pin, supplier_phone, supplier_email, supplier_gst, supplier_state, supplier_statecode, customer_address, customer_pin, customer_phone, customer_gst, customer_state, customer_statecode 
     

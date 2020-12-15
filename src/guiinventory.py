@@ -602,7 +602,7 @@ class GtkInventory():
         for eachchild in children:
             invoicingbox.remove(eachchild)
             eachchild.destroy()
-        bph=guiinvoicingins.billingpage(self.mainwindow)
+        bph=guiinvoicingins.generatepage(self.mainwindow)
         invoicingbox.add(bph)
         invoicingbox.show_all()        
         

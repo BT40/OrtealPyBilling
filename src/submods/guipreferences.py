@@ -113,7 +113,7 @@ class GtkPreferences():
         
         prefgrid.add(yourcompany_label)
         prefgrid.attach(self.yourcompany_button, 1, 0, 1, 1)
-        prefgrid.attach(autoinvoice_label, 1, 1, 1, 1)
+        prefgrid.attach(autoinvoice_label, 0, 1, 1, 1)
         prefgrid.attach(self.autoinv_button, 1, 1, 1, 1)
         #prefgrid.attach(hidepurchase_label, 0, 1, 1, 1)
         #prefgrid.attach(self.hp_button, 1, 1, 1, 1)

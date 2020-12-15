@@ -13,8 +13,6 @@ itemtableins=tealordb.Tealor()
 companytableins=tealordb.Tealor()
 invoicetableins=tealordb.Tealor()
 taxtableins=tealordb.Tealor()
-
-
     
 
 def loadidbase():     
@@ -22,7 +20,7 @@ def loadidbase():
     tmp_itemtable_colheadingslength=len(itemtableins.getcollist())
     if tmp_itemtable_colheadingslength==0:           
         items_colheadingslist=['name', 'phasedout', 'emerg', 'creationdate', 'creationstock', 'softwareversion', 'hsn', 'group', 'subgroup', 'unit', 'tax', 'taxinclusive', 'lastmodified', 'openingstock', 'unitssold', 'currentstock', 'criticallevel', 'listprice', 'stddiscount', 'sellingprice', 'purchaseprice', 'comments', 'flag'] 
-        
+       
         itemtableins.setcolumnheadings(items_colheadingslist)
         #print('item table column headings not found, created')  
         
@@ -37,11 +35,11 @@ def loadidbase():
     companytableins.loaddata('companies')
     tmp_companytable_colheadingslength=len(companytableins.getcollist())
     if tmp_companytable_colheadingslength==0:           
-        companies_colheadingslist=['name', 'hsn', 'creationdate', 'creationstock', 'group', 'subgroup', 'unit', 'tax', 'phasedout', 'openingstock', 'currentstock', 'criticallevel', 'listprice', 'stddiscount', 'sellingprice', 'purchaseprice', 'comments'] 
+        companies_colheadingslist=['name', 'gst', 'cemer', 'csbac', 'csbifsc', 'csbname', 'csbaddi', 'creationdate', 'address',  'city', 'state', 'country', 'pin', 'companyphone', 'person', 'personmobile', 'email', 'website', 'bankaccount', 'bankifsc', 'bankname', 'bankupi', 'distance', 'focusbusiness', 'comments', 'flag', 'discount', 'creditlimit', 'paymentindays',  'instapay', 'blacklisted'] 
         companytableins.setcolumnheadings(companies_colheadingslist)
         #print('companies table column headings not found, created')  
         
-    elif tmp_companytable_colheadingslength==17:               
+    elif tmp_companytable_colheadingslength==31:               
         #print ('Already set column headings for companies table')
         pass
         
@@ -72,14 +70,15 @@ def loadidbase():
     tmp_invoicetable_colheadingslength=len(invoicetableins.getcollist())
     #print (tmp_invoicetable_colheadingslength)
     if tmp_invoicetable_colheadingslength==0:           
-        invoice_colheadingslist=[ 'invoicename','softwareversion', 'invoicenumber', 'invoicedate', 'invoicetime', 'fy', 'invoicetype', 'sourcecompany', 'toparty', 'ponumber', 'taxcategory', 'taxontax', 'invoicecomments', 'basicamount', 'amountdiscount', 'freight', 'othercharges', 'taxamount', 'taxontaxamount', 'roundoff', 'grandtotal', 'numberofitems', 'itemlist', 'qtylist', 'splist', 'itemdiscountlist', 'amountlist', 'itemcommentslist', 'itemhsnlist'] 
+        invoice_colheadingslist=[ 'invoicename','softwareversion', 'invoicenumber', 'invoicedate', 'invoicetime', 'fy', 'invoicetype', 'sourcecompany', 'sourceaddress', 'sourcepin', 'sourcephone', 'sourceemail', 'sourcetaxid', 'originstate', 'originstatecode', 'reversecharge', 'ewaybill', 'ponumber', 'toparty', 'partyaddress', 'partypin', 'partyphone',  'partytaxid', 'partystate', 'partystatecode', 'shippingname', 'shippingaddress', 'shippingpin', 'shippingphone', 'shippingstate', 'shippingstatecode', 'transportmode', 'paymentmode', 'terms', 'taxslab', 'firsttaxenabled', 'secondtaxenabled', 'thirdtaxenabled', 'firsttaxname', 'secondtaxname', 'thirdtaxname', 'firsttaxrate', 'secondtaxrate', 'thirdtaxrate', 'totaltaxrate',  'taxontaxslab', 'firsttotenabled', 'secondtotenabled', 'thirdtotenabled','firsttotname', 'secondtotname', 'thirdtotname', 'firsttotrate', 'secondtotrate', 'thirdtotrate', 'totaltotrate', 'invoicecomments', 'basicamount', 'amountdiscount', 'freight', 'othercharges', 'taxamount', 'firsttaxamount', 'secondtaxamount', 'thirdtaxamount', 'taxontaxamount', 'firsttotamount', 'secondtotamount', 'thirdtotamount', 'roundoffenabled', 'roundoffamount', 'grandamount',  'numberofitems', 'inamelist', 'iqtylist', 'isplist', 'idiscountlist','iamountlist', 'iclist', 'ihsnlist']
+        
             #sversion (storageversion) necessary in case format-tax changes in future, this can provide compatibility
             #invoice type is selling or purchase
             #invoice name is key value which is combination of inv number plus invoice date plus sourcecompany
         invoicetableins.setcolumnheadings(invoice_colheadingslist)
         #print('invoice table column headings not found, created')  
         
-    elif tmp_invoicetable_colheadingslength==29:               
+    elif tmp_invoicetable_colheadingslength==80:               
         #print ('Already set column headings for invoice table')
         pass
         
@@ -128,6 +127,6 @@ def loadidbase():
         itemgroups=miscdb.get('itemgroups')
     elif miscdb_checkpresence=='present':    
             itemgroups=miscdb.get('itemgroups')         
-            print ('loaded miscdb from disk')
+            print ('Loaded miscdb from disk')
         
       
