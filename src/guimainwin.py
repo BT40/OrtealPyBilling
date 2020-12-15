@@ -60,7 +60,7 @@ class MainWindow(Gtk.ApplicationWindow):
         #print("Inventory box loaded, now trying loading Create box")        
         
         companybox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)        
-        cph=guicompanyins.generatepage(guiinvoicingins) # company page holder
+        cph=guicompanyins.generatepage(invoicingbox, bph, guiinvoicingins, self) # company page holder
         companybox.add(cph)
         stack.add_titled(companybox, "companyboxmain", "Company")        
         

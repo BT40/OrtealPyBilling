@@ -34,7 +34,7 @@ class GtkInventory():
         self.inventorystack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
         self.inventorystack.set_transition_duration(1000)
 
-#================================================= current stock box ==========================================
+#================================================= Item list box ==========================================
 
         inventoryview_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
                 
@@ -47,53 +47,17 @@ class GtkInventory():
         gridib.set_vexpand(False)
         ivheaderbox.pack_start(gridib, False, False, 0)   
         
-        #ihb_filterbutton = Gtk.Button.new_with_label("Filter")
-        #ihb_filterbutton.connect("clicked", self.blankfunc)           
         #ihb_sortbynamebutton = Gtk.Button.new_with_label("Sort by name")
-        #ihb_sortbynamebutton.connect("clicked", self.blankfunc)         
+        #ihb_sortbynamebutton.connect("clicked", self.blankfunc)                 
+        #ihb_filterbutton = Gtk.Button.new_with_label("Filter")
+        #ihb_filterbutton.connect("clicked", self.blankfunc)                   
         #ihb_sortbyqtybutton = Gtk.Button.new_with_label("Sort by name")
         #ihb_sortbyqtybutton.connect("clicked", self.blankfunc)         
-        ihb_loadbutton = Gtk.Button.new_with_label("Refresh")
-        ihb_loadbutton.set_name('loaditemsbutton')
+        #ihb_loadbutton = Gtk.Button.new_with_label("Refresh")
+        #ihb_loadbutton.set_name('loaditemsbutton')
+        #ihb_loadbutton.connect("clicked", self.refreshil)
         #ihb_loadbutton.get_style_context().add_class("dangerbutton")        
-        
-        def loaditems(event):
-            iblistbox = Gtk.ListBox() #ib=inventory box
-            iblistbox.set_selection_mode(Gtk.SelectionMode.NONE)
-            #inventorystore=Gtk.ListStore(str)
-            #print (len(self.itemtableins.rowlist))
-            for eachitem in guicommon.items_alphabetic:
-                #pointitem=inventorystore.append(eachitem)               
-                iblb_temprow = Gtk.ListBoxRow()
-                iblbvr_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
-                iblbvr_box.set_hexpand(True)
-                #iblbvr_box.get_style_context().add_class("testarea")
-                iblbvr_box.get_style_context().add_class("inventoryviewrb")
-                isrn_templabel = Gtk.Label(label=guicommon.items_alphabetic.index(eachitem)+1, xalign=0)
-                isrn_templabel.set_width_chars(8)
-                iname_templabel = Gtk.Label(label=eachitem[0], xalign=0)
-                iname_templabel.set_width_chars(47)
-                iqty_templabel = Gtk.Label(label=eachitem[15])
-                iqty_templabel.set_width_chars(16)
-                #iqty_templabel.get_style_context().add_class("testarea")
-                iblbvr_box.pack_start(isrn_templabel, False, False, 0)
-                iblbvr_box.pack_start(iname_templabel, False, False, 0)
-                iblbvr_box.pack_start(iqty_templabel, False, False, 0)
-                iblb_temprow.add(iblbvr_box) 
-                iblistbox.add(iblb_temprow)
-                iblistbox.show_all()
-                #print('listrow calld')
-            return iblistbox
-            
-        def refreshil(event):
-            ipsw.remove(ipsw.get_child())
-            print('removed previous')
-            ipsw.add(loaditems("blankevent"))
-            print('added new')               
-            
-        ihb_loadbutton.connect("clicked", refreshil)
-        
-        gridib.add(ihb_loadbutton)
+        #gridib.add(ihb_loadbutton)
         #gridib.attach(ihb_sortbynamebutton, 1, 0, 1, 1) 
         #gridib.attach(ihb_sortbyqtybutton, 2, 0, 1, 1) 
         #gridib.attach(ihb_filterbutton, 3, 0, 1, 1) 
@@ -104,28 +68,28 @@ class GtkInventory():
         inventoryitems_headerbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)    
         iihb_srlabel = Gtk.Label(label="Sr. No.", xalign=0)
         iihb_srlabel.set_width_chars(8)
-        iihb_inamelabel = Gtk.Label(label="Item name           ")
+        iihb_inamelabel = Gtk.Label(label="Item name ")
         iihb_inamelabel.set_width_chars(47)
-        iihb_iqtylabel = Gtk.Label(label="Available Quantity")
+        #iihb_iqtylabel = Gtk.Label(label="Available Quantity")
         #iihb_iqtylabel.set_width_chars(16)        
         
        # item1label.set_markup("Item 1 to be billed")
         inventoryitems_headerbox.pack_start(iihb_srlabel, False, False, 0)
         inventoryitems_headerbox.pack_start(iihb_inamelabel, False, False, 0)
-        inventoryitems_headerbox.pack_end(iihb_iqtylabel, False, False, 0)
+        #inventoryitems_headerbox.pack_end(iihb_iqtylabel, False, False, 0)
         
         inventoryview_box.pack_start(inventoryitems_headerbox, False, False, 0)
       
-        ipsw = Gtk.ScrolledWindow(hexpand=False) #inventory page scroll window
-        #ipsw.set_min_content_width(560)      
-        #ipsw.set_max_content_width(800)
-        ipsw.set_min_content_height(360)
-        #ipsw.set_max_content_height(720)
-        ipsw.get_style_context().add_class("lightgreymedborder")
-        ipsw.set_policy(Gtk.PolicyType.NEVER,
+        self.ipsw = Gtk.ScrolledWindow(hexpand=False) #inventory page scroll window
+        #self.ipsw.set_min_content_width(560)      
+        #self.ipsw.set_max_content_width(800)
+        self.ipsw.set_min_content_height(360)
+        #self.ipsw.set_max_content_height(720)
+        self.ipsw.get_style_context().add_class("lightgreymedborder")
+        self.ipsw.set_policy(Gtk.PolicyType.NEVER,
                                Gtk.PolicyType.AUTOMATIC)        
-        ipsw.add(loaditems("blankevent"))
-        inventoryview_box.pack_start(ipsw, False, False, True)        
+        self.ipsw.add(self.loaditems("blankevent"))
+        inventoryview_box.pack_start(self.ipsw, False, False, True)        
 
 #==================================== Create Item pane  ========================================================        
       
@@ -243,19 +207,19 @@ class GtkInventory():
         gridcib.attach(self.cinameentry, 1, 0, 1, 1)
         gridcib.attach(cihsnlabel, 0, 1, 1, 1)
         gridcib.attach(self.cihsnentry, 1, 1, 1, 1)
-        gridcib.attach(cigrouplabel, 0, 2, 1, 1)
-        gridcib.attach(self.cigroupcombo, 1, 2, 1, 1)
-        gridcib.attach(cisubgroupseparator, 2, 2, 1, 1)
-        gridcib.attach(cisubgrouplabel, 3, 2, 1, 1)
-        gridcib.attach(self.cisubgroupentry, 4, 2, 1, 1)
+        #gridcib.attach(cigrouplabel, 0, 2, 1, 1)
+        #gridcib.attach(self.cigroupcombo, 1, 2, 1, 1)
+        gridcib.attach(cisubgroupseparator, 2, 3, 1, 1)
+        #gridcib.attach(cisubgrouplabel, 3, 2, 1, 1)
+        #gridcib.attach(self.cisubgroupentry, 4, 2, 1, 1)
         gridcib.attach(ciunitlabel, 0, 3, 1, 1)
         gridcib.attach(self.ciunitcombo, 1, 3, 1, 1)
         gridcib.attach(cigstlabel, 0, 4, 1, 1)
         gridcib.attach(self.citaxcombo, 1, 4, 1, 1)
         gridcib.attach(citaxinclusive_label, 3, 4, 1, 1)
         gridcib.attach(self.citaxinclusive_button, 4, 4, 1, 1)
-        gridcib.attach(ciopenstlabel, 0, 5, 1, 1)
-        gridcib.attach(self.ciopenstentry, 1, 5, 1, 1)
+        #gridcib.attach(ciopenstlabel, 0, 5, 1, 1)
+        #gridcib.attach(self.ciopenstentry, 1, 5, 1, 1)
         gridcib.attach(cicritlabel, 0, 6, 1, 1)
         gridcib.attach(self.cicritentry, 1, 6, 1, 1)
         gridcib.attach(cilplabel, 0, 7, 1, 1)
@@ -268,8 +232,8 @@ class GtkInventory():
         gridcib.attach(self.cippentry, 4, 9, 1, 1)
         gridcib.attach(cicommlabel, 0, 10, 1, 1)
         gridcib.attach(self.cicommentry, 1, 10, 1, 1)
-        gridcib.attach(ciflaglabel, 3, 10, 1, 1)
-        gridcib.attach(self.ciflagentry, 4, 10, 1, 1)
+        #gridcib.attach(ciflaglabel, 3, 10, 1, 1)
+        #gridcib.attach(self.ciflagentry, 4, 10, 1, 1)
         gridcib.attach(ciblanklabel, 1, 12, 1, 1)        
         gridcib.attach(cicreatebutton, 1, 13, 1, 1)
         gridcib.attach(ciresetbutton, 0, 13, 1, 1)               
@@ -282,7 +246,7 @@ class GtkInventory():
         ei_headerbox=Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         ei_headerbox.set_halign(Gtk.Align.START) 
         #ei_headerbox.set_margin_bottom(10)
-        ei_headerbox.set_margin_left(38)
+        ei_headerbox.set_margin_left(33)
         ei_namelabel = Gtk.Label()
         ei_namelabel.set_markup("Select item ")
         
@@ -436,19 +400,19 @@ class GtkInventory():
         grideib.attach(self.einameentry, 1, 0, 1, 1)
         grideib.attach(eihsnlabel, 0, 1, 1, 1)
         grideib.attach(self.eihsnentry, 1, 1, 1, 1)
-        grideib.attach(eigrouplabel, 0, 2, 1, 1)
-        grideib.attach(self.eigroupcombo, 1, 2, 1, 1)
-        grideib.attach(eisubgroupseparator, 2, 2, 1, 1)
-        grideib.attach(eisubgrouplabel, 3, 2, 1, 1)
-        grideib.attach(self.eisubgroupentry, 4, 2, 1, 1)
+        #grideib.attach(eigrouplabel, 0, 2, 1, 1)
+        #grideib.attach(self.eigroupcombo, 1, 2, 1, 1)
+        grideib.attach(eisubgroupseparator, 2, 4, 1, 1)
+        #grideib.attach(eisubgrouplabel, 3, 2, 1, 1)
+        #grideib.attach(self.eisubgroupentry, 4, 2, 1, 1)
         grideib.attach(eiunitlabel, 0, 3, 1, 1)
         grideib.attach(self.eiunitcombo, 1, 3, 1, 1)
         grideib.attach(eigstlabel, 0, 4, 1, 1)
         grideib.attach(self.eitaxcombo, 1, 4, 1, 1)
         grideib.attach(eitaxinclusive_label, 3, 4, 1, 1)
         grideib.attach(self.eitaxinclusive_button, 4, 4, 1, 1)
-        grideib.attach(eiopenstlabel, 0, 5, 1, 1)
-        grideib.attach(self.eiopenstentry, 1, 5, 1, 1)
+        #grideib.attach(eiopenstlabel, 0, 5, 1, 1)
+        #grideib.attach(self.eiopenstentry, 1, 5, 1, 1)
         grideib.attach(eicritlabel, 0, 6, 1, 1)
         grideib.attach(self.eicritentry, 1, 6, 1, 1)
         grideib.attach(eilplabel, 0, 7, 1, 1)
@@ -461,8 +425,8 @@ class GtkInventory():
         grideib.attach(self.eippentry, 4, 9, 1, 1)
         grideib.attach(eicommlabel, 0, 11, 1, 1)
         grideib.attach(self.eicommentry, 1, 11, 1, 1)
-        grideib.attach(eiflaglabel, 3, 11, 1, 1)
-        grideib.attach(self.eiflagentry, 4, 11, 1, 1)
+        #grideib.attach(eiflaglabel, 3, 11, 1, 1)
+        #grideib.attach(self.eiflagentry, 4, 11, 1, 1)
         grideib.attach(eiblanklabel, 1, 12, 1, 1)        
         grideib.attach(eisavebutton, 1, 13, 1, 1)
         grideib.attach(eiresetbutton, 0, 13, 1, 1)  
@@ -528,11 +492,13 @@ class GtkInventory():
         migbox.pack_start(ciglistlabel, False, False, 0) 
         migbox.pack_start(self.ciglcombo, False, False, 0)  
         migbox.pack_start(cigdeletebutton, False, False, 0)          
+        
+        #================================================================
                 
-        self.inventorystack.add_titled(inventoryview_box, "viewinventorymain", "Current stock")
+        self.inventorystack.add_titled(inventoryview_box, "viewinventorymain", "Item list")
         self.inventorystack.add_titled(createitembox, "createitemmain", "Create item")
         self.inventorystack.add_titled(edititem_box, "edititemmain", "Edit or view Item")
-        self.inventorystack.add_titled(migbox, "createitemgroupmain", "Manage item groups")        
+        #self.inventorystack.add_titled(migbox, "createitemgroupmain", "Manage item groups")        
         
         #print("Packing of stack switcher in Create pane started")  
         self.inventorystack_switcher = Gtk.StackSwitcher()
@@ -597,6 +563,7 @@ class GtkInventory():
         
         self.einame_completion.set_model(guicommon.itemname_store)
         self.ei_nameentry.set_completion(self.einame_completion) 
+        self.refreshil('mimicevent')
         
         children=invoicingbox.get_children()
         for eachchild in children:
@@ -671,12 +638,13 @@ class GtkInventory():
         guicommon.loadguicommon()
         self.einame_completion.set_model(guicommon.itemname_store)
         self.ei_nameentry.set_completion(self.einame_completion) 
+        self.refreshil('mimicevent')
         
         children=invoicingbox.get_children()
         for eachchild in children:
             invoicingbox.remove(eachchild)
             eachchild.destroy()
-        bph=guiinvoicingins.billingpage()
+        bph=guiinvoicingins.generatepage(self.mainwindow)
         invoicingbox.add(bph)
         invoicingbox.show_all()
         
@@ -737,15 +705,16 @@ class GtkInventory():
     def deleteitem (self, delbutton, invoicingbox, bph, guiinvoicingins):  
         self.noite=self.ei_nameentry.get_text() #name of item to be edited 
         self.itemtableins.deleterow(self.noite) 
-        #self.reset_eientries('nobuttonpress', self.eientries)
+        self.reset_eientries('nobuttonpress', self.eientries)
         guicommon.loadguicommon()
         self.einame_completion.set_model(guicommon.itemname_store)
         self.ei_nameentry.set_completion(self.einame_completion) 
+        self.refreshil('mimicevent')
         children=invoicingbox.get_children()
         for eachchild in children:
             invoicingbox.remove(eachchild)
             eachchild.destroy()
-        bph=guiinvoicingins.billingpage()
+        bph=guiinvoicingins.generatepage(self.mainwindow)
         invoicingbox.add(bph)
         invoicingbox.show_all()
         return 1                  
@@ -782,3 +751,41 @@ class GtkInventory():
             self.ciglcombo.append_text(eg)
         self.ciglcombo.set_active(0)
         print ('deleted item group')    
+        
+        
+    def refreshil(self, event):
+        self.ipsw.remove(self.ipsw.get_child())
+        print('removed previous, reporting from gui item list reload')
+        self.ipsw.add(self.loaditems("blankevent"))
+        print('added new')   
+        
+        
+    def loaditems(self, event):
+        iblistbox = Gtk.ListBox() #ib=inventory box
+        iblistbox.set_selection_mode(Gtk.SelectionMode.NONE)
+        #inventorystore=Gtk.ListStore(str)
+        #print (len(self.itemtableins.rowlist))
+        for eachitem in guicommon.items_alphabetic:
+            #pointitem=inventorystore.append(eachitem)               
+            iblb_temprow = Gtk.ListBoxRow()
+            iblbvr_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+            iblbvr_box.set_hexpand(True)
+            #iblbvr_box.get_style_context().add_class("testarea")
+            iblbvr_box.get_style_context().add_class("inventoryviewrb")
+            isrn_templabel = Gtk.Label(label=guicommon.items_alphabetic.index(eachitem)+1, xalign=0)
+            isrn_templabel.set_width_chars(6)
+            iname_templabel = Gtk.Label(label=eachitem[0], xalign=0)
+            iname_templabel.set_width_chars(47)
+            #iqty_templabel = Gtk.Label(label=eachitem[15])
+            #iqty_templabel.set_width_chars(16)
+            #iqty_templabel.get_style_context().add_class("testarea")
+            iblbvr_box.pack_start(isrn_templabel, False, False, 0)
+            iblbvr_box.pack_start(iname_templabel, False, False, 0)
+            #iblbvr_box.pack_start(iqty_templabel, False, False, 0)
+            iblb_temprow.add(iblbvr_box) 
+            iblistbox.add(iblb_temprow)
+            iblistbox.show_all()
+            #print('listrow calld')
+        return iblistbox    
+                        
+        

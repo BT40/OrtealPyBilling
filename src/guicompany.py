@@ -17,11 +17,12 @@ from gi.repository import Gdk
 
 class GtkCompany():
             
-    def generatepage(self, guiinvoicingins):
+    def generatepage(self, invoicingbox, bph, guiinvoicingins, mainwindow):
            
         self.companytableins=dbmani.companytableins     
         self.miscdb=dbmani.miscdb                 
         self.guiprocessor_ins=guiprocessor.GtkProcessor()        
+        self.mainwindow=mainwindow
         
         #gui starts here      
         self.companymasterbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -257,7 +258,7 @@ class GtkCompany():
         cccreatebutton = Gtk.Button.new_with_label("Create")
         cccreatebutton.set_name('cccb')
         cccreatebutton.get_style_context().add_class("suggested-action")
-        cccreatebutton.connect("clicked", self.processccompany, self.ccvarg, guiinvoicingins)
+        cccreatebutton.connect("clicked", self.processccompany, self.ccvarg, invoicingbox, bph, guiinvoicingins)
                     
         ccresetbutton = Gtk.Button.new_with_label("Reset")
         ccresetbutton.connect("clicked", self.ccresetfields, self.ccentries)
@@ -319,8 +320,8 @@ class GtkCompany():
         gridccbox.attach(self.ccbusinessareaentry, 4, 6, 1, 1) 
         gridccbox.attach(cccommentslabel, 3, 7, 1, 1)
         gridccbox.attach(self.cccommentsentry, 4, 7, 1, 1) 
-        gridccbox.attach(ccflaglabel, 3, 8, 1, 1)
-        gridccbox.attach(self.ccflagentry, 4, 8, 1, 1)                 
+        #gridccbox.attach(ccflaglabel, 3, 8, 1, 1)
+        #gridccbox.attach(self.ccflagentry, 4, 8, 1, 1)                 
         gridccbox.attach(ccdosplabel, 3, 9, 1, 1)
         gridccbox.attach(self.ccdospentry, 4, 9, 1, 1)
         gridccbox.attach(cccreditlimitlabel, 3, 10, 1, 1)
@@ -328,12 +329,12 @@ class GtkCompany():
         gridccbox.attach(ccpaydayslabel, 3, 11, 1, 1)
         gridccbox.attach(self.ccpaydaysentry, 4, 11, 1, 1)        
         gridccbox.attach(ccminiseplabel, 3, 12, 1, 1) 
-        gridccbox.attach(ccinstapaylabel, 3, 13, 1, 1)
-        gridccbox.attach(self.ccinstapaybutton, 4, 13, 1, 1)
-        gridccbox.attach(ccblacklistlabel, 3, 14, 1, 1)
-        gridccbox.attach(self.ccblacklistbutton, 4, 14, 1, 1)  
-        gridccbox.attach(ccshippingaddress_label, 3, 15, 1, 1)
-        gridccbox.attach(self.ccshippingaddress_button, 4, 15, 1, 1)        
+        #gridccbox.attach(ccinstapaylabel, 3, 13, 1, 1)
+        #gridccbox.attach(self.ccinstapaybutton, 4, 13, 1, 1)
+        #gridccbox.attach(ccblacklistlabel, 3, 14, 1, 1)
+        #gridccbox.attach(self.ccblacklistbutton, 4, 14, 1, 1)  
+        #gridccbox.attach(ccshippingaddress_label, 3, 15, 1, 1)
+        #gridccbox.attach(self.ccshippingaddress_button, 4, 15, 1, 1)        
         gridccbox.attach(cccreatebutton, 4, 17, 1, 1)
         gridccbox.attach(ccresetbutton, 3, 17, 1, 1)
         
@@ -573,14 +574,14 @@ class GtkCompany():
         ecsavebutton = Gtk.Button.new_with_label("Save")
         ecsavebutton.set_name('ecsb')
         ecsavebutton.get_style_context().add_class("suggested-action")
-        ecsavebutton.connect("clicked", self.processecompany, self.ecvarg, guiinvoicingins)
+        ecsavebutton.connect("clicked", self.processecompany, self.ecvarg, invoicingbox, bph, guiinvoicingins)
                     
         ecresetbutton = Gtk.Button.new_with_label("Reset")
         ecresetbutton.connect("clicked", self.ecresetfields, self.ecentries)
         #ecresetbutton.get_style_context().add_class("dangerbutton")       
         
         ecdeletebutton = Gtk.Button.new_with_label("Delete company")
-        ecdeletebutton.connect("clicked", self.ecdelete_func, guiinvoicingins)
+        ecdeletebutton.connect("clicked", self.ecdelete_func, invoicingbox, bph, guiinvoicingins)
         ecdeletebutton.get_style_context().add_class("dangerbutton")      
             
         gridecbox.add(ecnamelabel)
@@ -640,8 +641,8 @@ class GtkCompany():
         gridecbox.attach(self.ecbusinessareaentry, 4, 6, 1, 1) 
         gridecbox.attach(eccommentslabel, 3, 7, 1, 1)
         gridecbox.attach(self.eccommentsentry, 4, 7, 1, 1) 
-        gridecbox.attach(ecflaglabel, 3, 8, 1, 1)
-        gridecbox.attach(self.ecflagentry, 4, 8, 1, 1)         
+        #gridecbox.attach(ecflaglabel, 3, 8, 1, 1)
+        #gridecbox.attach(self.ecflagentry, 4, 8, 1, 1)         
         gridecbox.attach(ecdosplabel, 3, 9, 1, 1)
         gridecbox.attach(self.ecdospentry, 4, 9, 1, 1)
         gridecbox.attach(eccreditlimitlabel, 3, 10, 1, 1)
@@ -649,12 +650,12 @@ class GtkCompany():
         gridecbox.attach(ecpaydayslabel, 3, 11, 1, 1)
         gridecbox.attach(self.ecpaydaysentry, 4, 11, 1, 1)        
         gridecbox.attach(ecminiseplabel, 3, 12, 1, 1) 
-        gridecbox.attach(ecinstapaylabel, 3, 13, 1, 1)
-        gridecbox.attach(self.ecinstapaybutton, 4, 13, 1, 1)
-        gridecbox.attach(ecblacklistlabel, 3, 14, 1, 1)
-        gridecbox.attach(self.ecblacklistbutton, 4, 14, 1, 1)  
-        gridecbox.attach(ecshippingaddress_label, 3, 15, 1, 1)
-        gridecbox.attach(self.ecshippingaddress_button, 4, 15, 1, 1)           
+        #gridecbox.attach(ecinstapaylabel, 3, 13, 1, 1)
+        #gridecbox.attach(self.ecinstapaybutton, 4, 13, 1, 1)
+        #gridecbox.attach(ecblacklistlabel, 3, 14, 1, 1)
+        #gridecbox.attach(self.ecblacklistbutton, 4, 14, 1, 1)  
+        #gridecbox.attach(ecshippingaddress_label, 3, 15, 1, 1)
+        #gridecbox.attach(self.ecshippingaddress_button, 4, 15, 1, 1)           
         gridecbox.attach(ecsavebutton, 4, 17, 1, 1)
         gridecbox.attach(ecresetbutton, 3, 17, 1, 1)
         gridecbox.attach(ecdeletebutton, 5, 17, 1, 1)
@@ -711,7 +712,7 @@ class GtkCompany():
           
     #-------- Functions used in Create pane  ----------------------------------------------------------------------
        
-    def processccompany(self, widget, ccvarg, guiinvoicingins):
+    def processccompany(self, widget, ccvarg, invoicingbox, bph, guiinvoicingins):
         cdata=companyprocessor.extractccdata(ccvarg)
         #print(cdata)
         self.companytableins.createrow(cdata[0], cdata)
@@ -720,8 +721,17 @@ class GtkCompany():
         guicommon.loadguicommon()    
         self.ecname_completion.set_model(guicommon.companyname_store)
         self.ecnameentry.set_completion(self.ecname_completion)   
-        guiinvoicingins.nciname_completion.set_model(guicommon.companyname_store)             
-        guiinvoicingins.invcompany.set_completion(guiinvoicingins.nciname_completion)  
+        
+        children=invoicingbox.get_children()
+        for eachchild in children:
+            invoicingbox.remove(eachchild)
+            eachchild.destroy()
+        bph=guiinvoicingins.generatepage(self.mainwindow)
+        invoicingbox.add(bph)
+        invoicingbox.show_all()        
+        
+        #guiinvoicingins.nciname_completion.set_model(guicommon.companyname_store)             
+        #guiinvoicingins.invcompany.set_completion(guiinvoicingins.nciname_completion)  
         print("Successfully created company")
         return 1    
 
@@ -780,29 +790,43 @@ class GtkCompany():
         return 1
         
         
-    def processecompany(self, widget, ecvarg, guiinvoicingins):
+    def processecompany(self, widget, ecvarg, invoicingbox, bph, guiinvoicingins):
         cdata=companyprocessor.extractecdata(ecvarg)
         self.companytableins.editrow(self.nocte, cdata)
         self.ecresetfields('mimicevent', self.ecentries)    # set form fields to blank fields
         guicommon.loadguicommon()    
         self.ecname_completion.set_model(guicommon.companyname_store)
-        self.ecnameentry.set_completion(self.ecname_completion)   
-        guiinvoicingins.nciname_completion.set_model(guicommon.companyname_store)             
-        guiinvoicingins.invcompany.set_completion(guiinvoicingins.nciname_completion)  
+        self.ecnameentry.set_completion(self.ecname_completion)  
+        
+        children=invoicingbox.get_children()
+        for eachchild in children:
+            invoicingbox.remove(eachchild)
+            eachchild.destroy()
+        bph=guiinvoicingins.generatepage(self.mainwindow)
+        invoicingbox.add(bph)
+        invoicingbox.show_all()        
+        
         self.nocte=''
         print("Successfully modified company")
         return 1        
 
     
-    def ecdelete_func(self, deletebutton, guiinvoicingins):       
+    def ecdelete_func(self, deletebutton, invoicingbox, bph, guiinvoicingins):       
         self.nocte=self.ecnameentry.get_text() #name of company to be edited 
         self.companytableins.deleterow(self.nocte) 
         self.ecresetfields('delbuttonpress', self.ecentries)
         guicommon.loadguicommon()
         self.ecname_completion.set_model(guicommon.companyname_store)
-        self.ecnameentry.set_completion(self.ecname_completion)         
-        guiinvoicingins.nciname_completion.set_model(guicommon.companyname_store)             
-        guiinvoicingins.invcompany.set_completion(guiinvoicingins.nciname_completion)         
+        self.ecnameentry.set_completion(self.ecname_completion)   
+              
+        children=invoicingbox.get_children()
+        for eachchild in children:
+            invoicingbox.remove(eachchild)
+            eachchild.destroy()
+        bph=guiinvoicingins.generatepage(self.mainwindow)
+        invoicingbox.add(bph)
+        invoicingbox.show_all()        
+        
         print('deleted company successfully')
         return 2 
 

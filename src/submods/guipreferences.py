@@ -29,6 +29,7 @@ class GtkPreferences():
         self.yourcompany_button = Gtk.Button.new_with_label("Edit")
         #self.yourcompany_button.get_style_context().add_class("dangerbutton")
         self.yourcompany_button.set_margin_top(10)
+        self.yourcompany_button.set_halign(Gtk.Align.START)
         self.yourcompany_button.connect("clicked", self.edit_companydetails, mainwindow, md)     
        
         autoinvoice_label = Gtk.Label()
@@ -145,7 +146,7 @@ class GtkPreferences():
         pref_mainbox.pack_start(ph_box, False, False, 10)
          
         preflabel = Gtk.Label()
-        preflabel.set_markup("Hide purchase, auto invoice no. features will be enabled in future.")
+        preflabel.set_markup("Some features will be enabled in future.")
         pref_mainbox.pack_start(preflabel, False, False, 10)
         
         self.load_preferences('mimicbutton')
