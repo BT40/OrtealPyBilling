@@ -74,7 +74,7 @@ class MainWindow(Gtk.ApplicationWindow):
         #stack.add_titled(reportsbox, "reportsboxmain", "Reports")              
         
         morebox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
-        mph=guimoreins.generatepage(applic, self) #mph=more page holder
+        mph=guimoreins.generatepage(applic, invoicingbox, bph, guiinvoicingins, self) #mph=more page holder
         morebox.add(mph)
         stack.add_titled(morebox, "moremain", "More")
         

@@ -22,7 +22,7 @@ class GtkMore():
       
     #----------------------------------More box contents start         
         
-    def generatepage(self, applic, mainwindow):
+    def generatepage(self, applic, invoicingbox, bph, guiinvoicingins, mainwindow):
            
         moremasterbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
                 
@@ -47,12 +47,12 @@ class GtkMore():
         
         ctaxbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         guitaxslabsins=guitaxslabs.GtkTaxSlabs()
-        cth=guitaxslabsins.generatepage() #customtax holder
+        cth=guitaxslabsins.generatepage(invoicingbox, bph, guiinvoicingins, mainwindow) #customtax holder
         ctaxbox.pack_start(cth, False, False, 0)
         
         ctaxontax_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         guitaxontaxslabs_ins=guitaxontaxslabs.GtkTaxonTaxSlabs()
-        ctoth=guitaxontaxslabs_ins.generatepage() #custom tax on tax holder
+        ctoth=guitaxontaxslabs_ins.generatepage(invoicingbox, bph, guiinvoicingins, mainwindow) #custom tax on tax holder
         ctaxontax_box.pack_start(ctoth, False, False, 0)
         
         helpbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)

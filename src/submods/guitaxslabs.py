@@ -12,7 +12,12 @@ from gi.repository import Gdk
 class GtkTaxSlabs():
 
 
-    def generatepage(self):
+    def generatepage(self, invoicingbox, bph, guiinvoicingins, mainwindow):
+        self.invoicingbox=invoicingbox
+        self.bph=bph
+        self.guiinvoicingins=guiinvoicingins
+        self.mainwindow=mainwindow
+        
         tmbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20) #taxmain box
         
         tcreate_label = Gtk.Label()
@@ -97,7 +102,7 @@ class GtkTaxSlabs():
         tcreatebutton = Gtk.Button.new_with_label("Create slab")
         tcreatebutton.get_style_context().add_class("suggested-action")
         tcreatebutton.set_margin_top(20)
-        #tcreatebutton.connect("clicked", self.processtslab, self.ctwidgets, guiinvoicingins)       
+        tcreatebutton.connect("clicked", self.process_taxnewslab)       
         
         
         #####################
@@ -123,7 +128,7 @@ class GtkTaxSlabs():
         tsdeletebutton = Gtk.Button.new_with_label("Delete")
         tsdeletebutton.get_style_context().add_class("dangerbutton")
         tsdeletebutton.set_margin_top(20)
-        #tsdeletebutton.connect("clicked", self.deletets)
+        tsdeletebutton.connect("clicked", self.delete_slab)
         tsdeletebutton.set_halign(Gtk.Align.CENTER) # to avoid expansion horizontally
         
         #######################
@@ -165,6 +170,71 @@ class GtkTaxSlabs():
         return tmbox
 
 
+    def process_taxnewslab(self, event):
+        
+        if self.firsttax_button.get_active():
+            ftenabled='y'
+        else:
+            ftenabled='n' 
+           
+        if self.secondtax_button.get_active():
+            stenabled='y'
+        else:
+            stenabled='n'     
+         
+        if self.thirdtax_button.get_active():
+            ttenabled='y'
+        else:
+            ttenabled='n'        
+        
+        ft_rate=float(self.ftrentry.get_text())
+        st_rate=float(self.strentry.get_text())
+        tt_rate=float(self.ttrentry.get_text())
+        total_t_rate=ft_rate+st_rate+tt_rate
+        
+        newslab_data=[self.tnameentry.get_text(), ftenabled, stenabled , ttenabled, self.ftname_entry.get_text(), self.stname_entry.get_text(), self.ttname_entry.get_text(), ft_rate, st_rate, tt_rate, total_t_rate]       
+        
+        guicommon.taxtableins.createrow(self.tnameentry.get_text(), newslab_data)
+        guicommon.loadguicommon()
+        
+        self.tscombo.append_text(self.tnameentry.get_text())
+        print('Added new tax slab')
+        self.tnameentry.set_text('')
+        self.ftname_entry.set_text('')
+        self.stname_entry.set_text('')
+        self.ttname_entry.set_text('')
+        self.ftrentry.set_text('0')
+        self.strentry.set_text('0')
+        self.ttrentry.set_text('0')
+        self.secondtax_button.set_active(False)
+        self.thirdtax_button.set_active(False)
+        
+        children=self.invoicingbox.get_children()
+        for eachchild in children:
+            self.invoicingbox.remove(eachchild)
+            eachchild.destroy()
+        self.bph=self.guiinvoicingins.generatepage(self.mainwindow)
+        self.invoicingbox.add(self.bph)
+        self.invoicingbox.show_all()        
+
+
+    def delete_slab(self, button):
+        td=self.tscombo.get_active_text()
+        guicommon.taxtableins.deleterow(td)
+        guicommon.loadguicommon()
+        
+        self.tscombo.remove_all()       
+        for ets in guicommon.taxtableins.rowlist:
+            self.tscombo.append_text(ets)
+        self.tscombo.get_child().set_text('Select')
+        
+        children=self.invoicingbox.get_children()
+        for eachchild in children:
+            self.invoicingbox.remove(eachchild)
+            eachchild.destroy()
+        self.bph=self.guiinvoicingins.generatepage(self.mainwindow)
+        self.invoicingbox.add(self.bph)
+        self.invoicingbox.show_all()        
 
 
 

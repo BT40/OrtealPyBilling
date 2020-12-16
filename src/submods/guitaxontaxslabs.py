@@ -12,7 +12,13 @@ from gi.repository import Gdk
 class GtkTaxonTaxSlabs():
 
 
-    def generatepage(self):
+    def generatepage(self, invoicingbox, bph, guiinvoicingins, mainwindow):
+        
+        self.invoicingbox=invoicingbox
+        self.bph=bph
+        self.guiinvoicingins=guiinvoicingins
+        self.mainwindow=mainwindow
+        
         tot_mainbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20) #taxontax_main box
         
         totcreate_label = Gtk.Label()
@@ -97,7 +103,7 @@ class GtkTaxonTaxSlabs():
         tcreatebutton = Gtk.Button.new_with_label("Create slab")
         tcreatebutton.get_style_context().add_class("suggested-action")
         tcreatebutton.set_margin_top(20)
-        #tcreatebutton.connect("clicked", self.processtslab, self.ctwidgets, guiinvoicingins)       
+        tcreatebutton.connect("clicked", self.process_taxnewslab)       
         
         
         #####################
@@ -123,7 +129,7 @@ class GtkTaxonTaxSlabs():
         totsdeletebutton = Gtk.Button.new_with_label("Delete") #taxontax slab
         totsdeletebutton.get_style_context().add_class("dangerbutton")
         totsdeletebutton.set_margin_top(20)
-        #totsdeletebutton.connect("clicked", self.deletets)
+        totsdeletebutton.connect("clicked", self.delete_slab)
         totsdeletebutton.set_halign(Gtk.Align.CENTER) # to avoid expansion horizontally
         
         #######################
@@ -165,7 +171,75 @@ class GtkTaxonTaxSlabs():
         return tot_mainbox
 
 
+    def process_taxnewslab(self, event):
+        
+        if self.firsttax_button.get_active():
+            ftenabled='y'
+        else:
+            ftenabled='n' 
+           
+        if self.secondtax_button.get_active():
+            stenabled='y'
+        else:
+            stenabled='n'     
+         
+        if self.thirdtax_button.get_active():
+            ttenabled='y'
+        else:
+            ttenabled='n'        
+        
+        f_tot_rate=float(self.ftrentry.get_text())
+        s_tot_rate=float(self.strentry.get_text())
+        t_tot_rate=float(self.ttrentry.get_text())
+        total_tot_rate=f_tot_rate+s_tot_rate+t_tot_rate
+        
+        newslab_data=[self.snameentry.get_text(), ftenabled, stenabled , ttenabled, self.ftname_entry.get_text(), self.stname_entry.get_text(), self.ttname_entry.get_text(), f_tot_rate, s_tot_rate, t_tot_rate, total_tot_rate]
+        
+        slabslist=guicommon.miscdbins.get('taxontaxslabsdata') #this one is previous
+        slabslist.append(newslab_data) #do not use another variable for updated list, it will delete all data & return none
+        guicommon.taxontax_list.append(self.snameentry.get_text())
+        guicommon.miscdbins.set('taxontaxslabsdata', slabslist) 
+        guicommon.miscdbins.dump()
+        self.totl_combo.append_text(self.snameentry.get_text())
+
+        print('Added new tax on tax slab')
+        self.snameentry.set_text('')
+        self.ftname_entry.set_text('')
+        self.stname_entry.set_text('')
+        self.ttname_entry.set_text('')
+        self.ftrentry.set_text('0')
+        self.strentry.set_text('0')
+        self.ttrentry.set_text('0')
+        self.secondtax_button.set_active(False)
+        self.thirdtax_button.set_active(False)
+        
+        children=self.invoicingbox.get_children()
+        for eachchild in children:
+            self.invoicingbox.remove(eachchild)
+            eachchild.destroy()
+        self.bph=self.guiinvoicingins.generatepage(self.mainwindow)
+        self.invoicingbox.add(self.bph)
+        self.invoicingbox.show_all()        
 
 
-
+    def delete_slab(self, button):
+        td=self.totl_combo.get_active_text()
+        td_index=guicommon.taxontax_list.index(td)
+        del guicommon.taxontax_list[td_index]
+        del guicommon.taxontax_data[td_index]
+        guicommon.miscdbins.dump()
+        guicommon.loadguicommon()
+        
+        self.totl_combo.remove_all()
+        for etots in guicommon.taxontax_list:
+            self.totl_combo.append_text(etots)
+        self.totl_combo.get_child().set_text('Select')
+        
+        children=self.invoicingbox.get_children()
+        for eachchild in children:
+            self.invoicingbox.remove(eachchild)
+            eachchild.destroy()
+        self.bph=self.guiinvoicingins.generatepage(self.mainwindow)
+        self.invoicingbox.add(self.bph)
+        self.invoicingbox.show_all()        
 
