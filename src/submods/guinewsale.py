@@ -457,7 +457,7 @@ class GtkNewSale():
         self.autoinvoice_numbering=guicommon.miscdbins.get('autoinvoice_numbering')
         self.inv_prefix=guicommon.miscdbins.get('invoiceprefix')       
         self.temp_basicamt, self.taxable_amount, self.roundoff_amt = 0, 0, 0 #for tax combo compatibility
-        self.billcomments, self.transmode, self.ewaybill, self.furtherterms = '', '', '', ''
+        self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.invoicedata_temp = '', '', '', '', ''
         self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin ='', '', '', '', ''
         self.compchange_detector='' #mechanism to detect company change after more pressed and change shipping accordingly
         self.rcvalue='No' # reverse charge
@@ -481,10 +481,9 @@ class GtkNewSale():
         self.estimate_tax('mimicevent')
         self.estd_taxontax=saleinvoicingprocessor.estimate_taxontax(self.taxontaxcombo, self.estd_tax) 
         self.taxontaxamount.set_markup(str(self.estd_taxontax))
-        print('grandcaller b4 grand')
         geetotal, self.roundoff_amt=saleinvoicingprocessor.grand_saleamounting(self.temp_basicamt, self.discountentry, self.freightentry, self.mischentry, self.estd_tax, self.estd_taxontax, self.roundoff_enabled, self.roundoff_amt)
         self.gtotaldisp.set_markup(str(geetotal))  
-        print('grandcaller complete')
+        #print('grandcaller complete')
         
            
     def processnci(self, nextbutton):
@@ -493,7 +492,7 @@ class GtkNewSale():
         
         self.invoicedata_temp=saleinvoicingprocessor.processnci(self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt )
         self.pdfsi_ins=pdfsaleinvoice.PdfSI()
-        self.pdfsi_ins.printable_saleinvoice('2020-10-11', '1', self.invoicedata_temp)
+        self.pdfsi_ins.printable_saleinvoice(self.invoicedata_temp[0], self.invoicedata_temp)
         self.resetncifields('buttonmimic')
         
     def resetncifields(self, button):
@@ -504,6 +503,13 @@ class GtkNewSale():
         else:    
             self.roundoff_button.set_active(False)
         self.initialise_oth_variables()
+        self.paymentmode_entry.set_text('')
+        self.transportmode_entry.set_text('')
+        self.discountentry.set_text('')
+        self.freightentry.set_text('')
+        self.mischentry.set_text('')
+        self.paymentmode_entry.set_text('')
+        
         
     def more_pressed (self, button):    
         comp_name_checkpresence=guicommon.companytableins.readrow(self.invcompany.get_text())

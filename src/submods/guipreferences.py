@@ -65,11 +65,11 @@ class GtkPreferences():
         #hidepurchase_label.set_margin_top(10)
         #hidepurchase_label.set_sensitive(False)
         
-        #self.hp_button = Gtk.CheckButton()
+        self.hp_button = Gtk.CheckButton()
         #self.hp_button.set_margin_top(10)
-        #self.hp_button.set_active(False) # By default true
+        self.hp_button.set_active(False) # By default true
         #self.hp_button.set_margin_bottom(10)
-        #self.hp_button.set_sensitive(False)        
+        self.hp_button.set_sensitive(False)        
         #add reading from miscdb here, password for purchase hiding
                 
         inv_prefixlabel = Gtk.Label() 

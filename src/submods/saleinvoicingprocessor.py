@@ -132,9 +132,9 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_oth_val, nsi_itemswid
     
     ewaybill_nmbr=nsi_oth_val[2]
     furtherterms=nsi_oth_val[3]
-    print(ewaybill_nmbr)
-    print(furtherterms)
-    print('above eway, further term')
+    #print(ewaybill_nmbr)
+    #print(furtherterms)
+    #print('above eway, further term')
     reverse_charge=nsi_oth_val[9]
     
     sourcecompany=guicommon.miscdbins.get('mycompanyname')
@@ -186,6 +186,7 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_oth_val, nsi_itemswid
     nci_iamtholder=[]
     nci_icholder=[]
     nci_ihsnholder=[]
+    nci_iunitholder=[]
     ifirsttax_holder=[]
     isecondtax_holder=[]
     ithirdtax_holder=[]
@@ -223,6 +224,7 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_oth_val, nsi_itemswid
             #print('running if block hsn')
         else:    
             hsn_temp=guicommon.itemtableins.getval(iname, "hsn")
+            unit_temp=guicommon.itemtableins.getval(iname, "unit")
             #ifirsttax_value=float(iamt)*float_inv_firsttax_rate/100  #If each item tax value needed
             #isecondtax_value=float(iamt)*float_inv_secondtax_rate/100  #If each item tax value needed
             #ithirdtax_value=float(iamt)*float_inv_thirdtax_rate/100  #If each item tax value needed
@@ -236,32 +238,37 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_oth_val, nsi_itemswid
         nci_iamtholder.append(iamt)
         nci_icholder.append(ic)
         nci_ihsnholder.append(hsn_temp)
+        nci_iunitholder.append(unit_temp)
         #ifirsttax_holder.append(ifirsttax_value) #If each item tax value needed
         #isecondtax_holder.append(isecondtax_value)  #If each item tax value needed
         #ithirdtax_holder.append(ithirdtax_value)  #If each item tax value needed
         i=i+1  
-    
-    invid=inv_date+inv_nmbr
+   
+    invid=str(inv_date)+ ',' + str(inv_nmbr)
     softwareversion=1
     inv_time=functions.currenttime_string
     fy=guicommon.miscdbins.get('currentfinancialyear')
     invoicetype='salesinvoice'
+    misc=['', '', '', '', '']
+    futureslot=''      #for future expansion
+    rsim, emer= '', '' #do not temper with these two variables at any cost
     
     roundoff_amt=roundoff_amt_float
-    roundoff_enable=roundoff_enabled        
+    roundoff_enable=roundoff_enabled    
+        
     
-    invoice_data=[invid, softwareversion, inv_nmbr, inv_date, inv_time, fy, invoicetype, sourcecompany, sourceaddress, sourcepin, sourcephone, sourceemail, sourcetaxid, originstate, originstatecode, reverse_charge, ewaybill_nmbr, inv_po, inv_toparty, partyaddress, partypin, partyphone,  partytaxid, partystate, partystatecode, handovername, shippingaddress, shippingpin, shippingphone, shippingstate, shippingstatecode, transport_mode, payment_mode, terms, inv_taxslab, inv_firsttax_enabled, inv_secondtax_enabled, inv_thirdtax_enabled, inv_firsttax_colname, inv_secondtax_colname, inv_thirdtax_colname, inv_firsttax_rate, inv_secondtax_rate, inv_thirdtax_rate, inv_totaltax_rate,  inv_taxontaxslab, inv_firsttot_enabled, inv_secondtot_enabled, inv_thirdtot_enabled,inv_firsttot_name, inv_secondtot_name, inv_thirdtot_name, inv_firsttot_rate, inv_secondtot_rate, inv_thirdtot_rate, inv_totaltot_rate, inv_comments,  inv_basicamt, inv_discount, inv_freight, inv_othercharges, inv_taxamount, inv_firsttaxamount, inv_secondtaxamount, inv_thirdtaxamount, inv_taxontaxamount, inv_firsttotamount, inv_secondtotamount, inv_thirdtotamount, roundoff_enable, roundoff_amt, inv_grandamount,  numberofitems, nci_inameholder, nci_iqtyholder, nci_ispholder, nci_idischolder,nci_iamtholder, nci_icholder, nci_ihsnholder]
+    invoice_data=[invid, softwareversion, inv_nmbr, inv_date, inv_time, fy, invoicetype, sourcecompany, sourceaddress, sourcepin, sourcephone, sourceemail, sourcetaxid, originstate, originstatecode, reverse_charge, ewaybill_nmbr, inv_po, inv_toparty, partyaddress, partypin, partyphone,  partytaxid, partystate, partystatecode, handovername, shippingaddress, shippingpin, shippingphone, shippingstate, shippingstatecode, transport_mode, payment_mode, terms, inv_taxslab, inv_firsttax_enabled, inv_secondtax_enabled, inv_thirdtax_enabled, inv_firsttax_colname, inv_secondtax_colname, inv_thirdtax_colname, inv_firsttax_rate, inv_secondtax_rate, inv_thirdtax_rate, inv_totaltax_rate,  inv_taxontaxslab, inv_firsttot_enabled, inv_secondtot_enabled, inv_thirdtot_enabled,inv_firsttot_name, inv_secondtot_name, inv_thirdtot_name, inv_firsttot_rate, inv_secondtot_rate, inv_thirdtot_rate, inv_totaltot_rate, inv_comments,  inv_basicamt, inv_discount, inv_freight, inv_othercharges, inv_taxamount, inv_firsttaxamount, inv_secondtaxamount, inv_thirdtaxamount, inv_taxontaxamount, inv_firsttotamount, inv_secondtotamount, inv_thirdtotamount, roundoff_enable, roundoff_amt, inv_grandamount,  numberofitems, nci_inameholder, nci_iqtyholder, nci_ispholder, nci_idischolder,nci_iamtholder, nci_icholder, nci_ihsnholder, nci_iunitholder, nsi_taxable_amount, misc, futureslot, rsim, emer]
     
     guicommon.invoicetableins.createrow(invid, invoice_data)
     print('invoice successfully created')
     #reset fields
-    print(invoice_data)
+    #print(invoice_data)
     return invoice_data
 
 def applytax(taxslab):
     tax__index_temp=guicommon.taxtableins.rowlist.index(taxslab)
     taxdata_temp=guicommon.taxtableins.rowcollection[tax_index_temp]
-    print (taxdata_temp)
+    #print (taxdata_temp)
     return taxdata_temp
     
 
@@ -303,7 +310,7 @@ def get_company_details (sourcecompany, inv_toparty):
     supplier_name=guicommon.miscdbins.get('mycompanyname')
     supplier_address=guicommon.miscdbins.get('mycompanyaddress')
     supplier_gst=guicommon.miscdbins.get('mycompanygstin')
-    supplier_pin=guicommon.miscdbins.get('mycompanypin')
+    supplier_pin=guicommon.miscdbins.get('mycompanycity') + ', ' + guicommon.miscdbins.get('mycompanypin') 
     supplier_state=guicommon.miscdbins.get('mycompanystate')
     supplier_statecode=guicommon.miscdbins.get('mycompanystatecode')
     supplier_phone=guicommon.miscdbins.get('mycompanyphone')
@@ -311,9 +318,9 @@ def get_company_details (sourcecompany, inv_toparty):
     
     customer_details=guicommon.companytableins.readrow(inv_toparty)
     customer_name=customer_details[0]
-    customer_address=customer_details[8]+customer_details[9]
+    customer_address=customer_details[8]
     customer_gst=customer_details[1]
-    customer_pin=customer_details[12]
+    customer_pin=customer_details[9] + ', ' + customer_details[12]
     customer_state=customer_details[10]
     customer_statecode='1220'
     customer_phone=customer_details[13]

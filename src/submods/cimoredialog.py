@@ -86,7 +86,7 @@ class CImore():
         self.shippingstate_entry.set_halign(Gtk.Align.START)        
         
         shippingpin_label = Gtk.Label() 
-        shippingpin_label.set_markup("Shipping area PIN")                    
+        shippingpin_label.set_markup("Shipping city, PIN")                    
         self.shippingpin_entry = Gtk.Entry() 
         self.shippingpin_entry.set_width_chars(16)
         self.shippingpin_entry.set_max_length(16)  
@@ -110,10 +110,10 @@ class CImore():
         contentgrid.attach(self.shippingname_entry, 1, 5, 1, 1)
         contentgrid.attach(shippingadd_label, 0, 6, 1, 1)
         contentgrid.attach(self.shippingadd_entry, 1, 6, 1, 1)
-        contentgrid.attach(shippingstate_label, 0, 7, 1, 1)
-        contentgrid.attach(self.shippingstate_entry, 1, 7, 1, 1)
-        contentgrid.attach(shippingpin_label, 0, 8, 1, 1)
-        contentgrid.attach(self.shippingpin_entry, 1, 8, 1, 1)
+        contentgrid.attach(shippingstate_label, 0, 8, 1, 1)
+        contentgrid.attach(self.shippingstate_entry, 1, 8, 1, 1)
+        contentgrid.attach(shippingpin_label, 0, 7, 1, 1)
+        contentgrid.attach(self.shippingpin_entry, 1, 7, 1, 1)
         contentgrid.attach(sphone_label, 0, 9, 1, 1)
         contentgrid.attach(self.sphone_entry, 1, 9, 1, 1)
         contentgrid.attach(rc_label, 0, 10, 1, 1)
@@ -162,9 +162,9 @@ class CImore():
     def load_default_shipping(self, companyname):  #values same as original database
             customer_details=guicommon.companytableins.readrow(companyname)
             self.shippingname_entry.set_text(companyname)
-            self.shippingadd_entry.set_text(customer_details[8]+customer_details[9])
-            self.shippingpin_entry.set_text(customer_details[10])
-            self.shippingstate_entry.set_text(customer_details[12])
+            self.shippingadd_entry.set_text(customer_details[8])
+            self.shippingpin_entry.set_text(customer_details[9]+','+ customer_details[12])
+            self.shippingstate_entry.set_text(customer_details[10])
             self.sphone_entry.set_text(customer_details[13])
     
     

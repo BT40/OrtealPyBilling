@@ -193,7 +193,7 @@ class GtkTaxSlabs():
         total_t_rate=ft_rate+st_rate+tt_rate
         
         newslab_data=[self.tnameentry.get_text(), ftenabled, stenabled , ttenabled, self.ftname_entry.get_text(), self.stname_entry.get_text(), self.ttname_entry.get_text(), ft_rate, st_rate, tt_rate, total_t_rate]       
-        
+        print(newslab_data)
         guicommon.taxtableins.createrow(self.tnameentry.get_text(), newslab_data)
         guicommon.loadguicommon()
         

@@ -70,7 +70,7 @@ def loadidbase():
     tmp_invoicetable_colheadingslength=len(invoicetableins.getcollist())
     #print (tmp_invoicetable_colheadingslength)
     if tmp_invoicetable_colheadingslength==0:           
-        invoice_colheadingslist=[ 'invoicename','softwareversion', 'invoicenumber', 'invoicedate', 'invoicetime', 'fy', 'invoicetype', 'sourcecompany', 'sourceaddress', 'sourcepin', 'sourcephone', 'sourceemail', 'sourcetaxid', 'originstate', 'originstatecode', 'reversecharge', 'ewaybill', 'ponumber', 'toparty', 'partyaddress', 'partypin', 'partyphone',  'partytaxid', 'partystate', 'partystatecode', 'shippingname', 'shippingaddress', 'shippingpin', 'shippingphone', 'shippingstate', 'shippingstatecode', 'transportmode', 'paymentmode', 'terms', 'taxslab', 'firsttaxenabled', 'secondtaxenabled', 'thirdtaxenabled', 'firsttaxname', 'secondtaxname', 'thirdtaxname', 'firsttaxrate', 'secondtaxrate', 'thirdtaxrate', 'totaltaxrate',  'taxontaxslab', 'firsttotenabled', 'secondtotenabled', 'thirdtotenabled','firsttotname', 'secondtotname', 'thirdtotname', 'firsttotrate', 'secondtotrate', 'thirdtotrate', 'totaltotrate', 'invoicecomments', 'basicamount', 'amountdiscount', 'freight', 'othercharges', 'taxamount', 'firsttaxamount', 'secondtaxamount', 'thirdtaxamount', 'taxontaxamount', 'firsttotamount', 'secondtotamount', 'thirdtotamount', 'roundoffenabled', 'roundoffamount', 'grandamount',  'numberofitems', 'inamelist', 'iqtylist', 'isplist', 'idiscountlist','iamountlist', 'iclist', 'ihsnlist']
+        invoice_colheadingslist=[ 'invoicename','softwareversion', 'invoicenumber', 'invoicedate', 'invoicetime', 'fy', 'invoicetype', 'sourcecompany', 'sourceaddress', 'sourcepin', 'sourcephone', 'sourceemail', 'sourcetaxid', 'originstate', 'originstatecode', 'reversecharge', 'ewaybill', 'ponumber', 'toparty', 'partyaddress', 'partypin', 'partyphone',  'partytaxid', 'partystate', 'partystatecode', 'shippingname', 'shippingaddress', 'shippingpin', 'shippingphone', 'shippingstate', 'shippingstatecode', 'transportmode', 'paymentmode', 'terms', 'taxslab', 'firsttaxenabled', 'secondtaxenabled', 'thirdtaxenabled', 'firsttaxname', 'secondtaxname', 'thirdtaxname', 'firsttaxrate', 'secondtaxrate', 'thirdtaxrate', 'totaltaxrate',  'taxontaxslab', 'firsttotenabled', 'secondtotenabled', 'thirdtotenabled','firsttotname', 'secondtotname', 'thirdtotname', 'firsttotrate', 'secondtotrate', 'thirdtotrate', 'totaltotrate', 'invoicecomments', 'basicamount', 'amountdiscount', 'freight', 'othercharges', 'taxamount', 'firsttaxamount', 'secondtaxamount', 'thirdtaxamount', 'taxontaxamount', 'firsttotamount', 'secondtotamount', 'thirdtotamount', 'roundoffenabled', 'roundoffamount', 'grandamount',  'numberofitems', 'inamelist', 'iqtylist', 'isplist', 'idiscountlist','iamountlist', 'iclist', 'ihsnlist', 'iunitlist', 'taxableamount', 'misc', 'futureslot', 'rsim', 'emer']
         
             #sversion (storageversion) necessary in case format-tax changes in future, this can provide compatibility
             #invoice type is selling or purchase
@@ -78,7 +78,7 @@ def loadidbase():
         invoicetableins.setcolumnheadings(invoice_colheadingslist)
         #print('invoice table column headings not found, created')  
         
-    elif tmp_invoicetable_colheadingslength==80:               
+    elif tmp_invoicetable_colheadingslength==86:               
         #print ('Already set column headings for invoice table')
         pass
         
