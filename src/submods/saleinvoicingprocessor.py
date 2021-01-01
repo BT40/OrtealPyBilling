@@ -25,28 +25,24 @@ def saleamounting(iamtlist):
     return basicamt_final   
         
     
-def taxable_value (basicamt_float, discountentry, freightentry, mischentry):
+def taxable_value (basicamt_float, discountentry, mischentry):
     taxableamt=0      
     if discountentry.get_text()=='':
         discountamount_float=0
     else:
         discountamount_float= float(discountentry.get_text())  
             
-    if freightentry.get_text()=='':
-        freightamount_float=0
-    else:
-        freightamount_float= float(freightentry.get_text())   
             
     if mischentry.get_text()=='':
         mischamount_float=0
     else:
         mischamount_float= float(mischentry.get_text())    
         
-    taxableamt=basicamt_float-discountamount_float+freightamount_float+mischamount_float 
+    taxableamt=basicamt_float-discountamount_float+mischamount_float 
     return taxableamt          
      
 
-def estimatetax(taxslab_combo, basicamt_float, discountentry, freightentry, mischentry):
+def estimatetax(taxslab_combo, basicamt_float, discountentry, mischentry):
 
     taxslab_name=taxslab_combo.get_active_text()
 
@@ -54,7 +50,7 @@ def estimatetax(taxslab_combo, basicamt_float, discountentry, freightentry, misc
     overalltax_float=float(guicommon.taxtableins.rowcollection[tax_index_temp][10])
     #print (overalltax_float)
     
-    taxable_val=taxable_value(basicamt_float, discountentry, freightentry, mischentry)
+    taxable_val=taxable_value(basicamt_float, discountentry, mischentry)
     taxamount_estd=taxable_val*overalltax_float/100
     return taxamount_estd, taxable_val
     
@@ -70,7 +66,7 @@ def estimate_taxontax(taxontaxslab_combo, taxamount_float):
     return taxontaxamount_estd    
     
     
-def grand_saleamounting(basicamt_float, discountentry, freightentry, mischentry, estd_tax, estd_taxontax, roundoff_enabled, roundoff_amt_float):
+def grand_saleamounting(basicamt_float, discountentry, mischentry, estd_tax, estd_taxontax, roundoff_enabled, roundoff_amt_float):
     grandamt=0      
     
     if discountentry.get_text()=='':
@@ -78,11 +74,7 @@ def grand_saleamounting(basicamt_float, discountentry, freightentry, mischentry,
     else:
         discountamount_float= float(discountentry.get_text())  
             
-    if freightentry.get_text()=='':
-        freightamount_float=0
-    else:
-        freightamount_float= float(freightentry.get_text())   
-            
+    
     if mischentry.get_text()=='':
         mischamount_float=0
     else:
@@ -90,14 +82,14 @@ def grand_saleamounting(basicamt_float, discountentry, freightentry, mischentry,
  
   
     if roundoff_enabled =='no':
-        grandamt_raw=basicamt_float-discountamount_float+freightamount_float+mischamount_float+estd_tax+estd_taxontax
+        grandamt_raw=basicamt_float-discountamount_float+mischamount_float+estd_tax+estd_taxontax
  
 
         grandamt=round(grandamt_raw, 2) #2 decimal places
         roundoff_amt_float=0.00
         
     elif roundoff_enabled =='yes':    
-        grandamt_raw=basicamt_float-discountamount_float+freightamount_float+mischamount_float+estd_tax+estd_taxontax
+        grandamt_raw=basicamt_float-discountamount_float+mischamount_float+estd_tax+estd_taxontax
 
 
         grandamt=round(grandamt_raw) #integer rounding
@@ -109,7 +101,7 @@ def grand_saleamounting(basicamt_float, discountentry, freightentry, mischentry,
     return grandamt, roundoff_amt_float 
 
     
-def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_oth_val, nsi_itemswidgets, nsi_taxable_amount, roundoff_enabled, roundoff_amt_float ):
+def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val, nsi_itemswidgets, nsi_taxable_amount, roundoff_enabled, roundoff_amt_float ): #signal type whether to edit to create new
 
     inv_nmbr=nsi_header_widgets[0].get_text()
     inv_date=nsi_header_widgets[1].get_text()
@@ -120,7 +112,7 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_oth_val, nsi_itemswid
     
     inv_basicamt=nsi_footer_widgets[0].get_text()
     inv_discount=nsi_footer_widgets[1].get_text()
-    inv_freight=nsi_footer_widgets[2].get_text()
+    placeofsupply=nsi_footer_widgets[2].get_text()
     inv_othercharges=nsi_footer_widgets[3].get_text()
     payment_mode=nsi_footer_widgets[4].get_text()
     inv_taxamount=nsi_footer_widgets[5].get_text()
@@ -161,7 +153,8 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_oth_val, nsi_itemswid
     tl2=guicommon.miscdbins.get('termsline2')
     tl3=guicommon.miscdbins.get('termsline3')
     tl4=guicommon.miscdbins.get('termsline4')
-    terms=[tl1, tl2, tl3, tl4, furtherterms]
+    tl5=guicommon.miscdbins.get('termsline5')
+    terms=[tl1, tl2, tl3, tl4, tl5, furtherterms]
     amount_words='Implement One lac sixty six thousand five hundred sixty nine only'
     
     inv_firsttax_enabled, inv_secondtax_enabled, inv_thirdtax_enabled,inv_firsttax_colname, inv_secondtax_colname, inv_thirdtax_colname, inv_firsttax_rate, inv_secondtax_rate, inv_thirdtax_rate, inv_totaltax_rate=fetch_taxslab_details(inv_taxslab)
@@ -243,24 +236,34 @@ def processnci(nsi_header_widgets, nsi_footer_widgets, nsi_oth_val, nsi_itemswid
         #isecondtax_holder.append(isecondtax_value)  #If each item tax value needed
         #ithirdtax_holder.append(ithirdtax_value)  #If each item tax value needed
         i=i+1  
-   
+    
+    
+    pos_code='98'
+    inv_something=''
+    gst_compliances_expansion=[ '', '', '', '', '']
     invid=str(inv_date)+ ',' + str(inv_nmbr)
     softwareversion=1
     inv_time=functions.currenttime_string
     fy=guicommon.miscdbins.get('currentfinancialyear')
     invoicetype='salesinvoice'
-    misc=['', '', '', '', '']
+    misc=['', '', '', '', '']    
     futureslot=''      #for future expansion
+    g_fobli=['', '', '', '', ''] #distant future obligations for tax compatibily, locked currently, do not use
     rsim, emer= '', '' #do not temper with these two variables at any cost
     
     roundoff_amt=roundoff_amt_float
     roundoff_enable=roundoff_enabled    
         
     
-    invoice_data=[invid, softwareversion, inv_nmbr, inv_date, inv_time, fy, invoicetype, sourcecompany, sourceaddress, sourcepin, sourcephone, sourceemail, sourcetaxid, originstate, originstatecode, reverse_charge, ewaybill_nmbr, inv_po, inv_toparty, partyaddress, partypin, partyphone,  partytaxid, partystate, partystatecode, handovername, shippingaddress, shippingpin, shippingphone, shippingstate, shippingstatecode, transport_mode, payment_mode, terms, inv_taxslab, inv_firsttax_enabled, inv_secondtax_enabled, inv_thirdtax_enabled, inv_firsttax_colname, inv_secondtax_colname, inv_thirdtax_colname, inv_firsttax_rate, inv_secondtax_rate, inv_thirdtax_rate, inv_totaltax_rate,  inv_taxontaxslab, inv_firsttot_enabled, inv_secondtot_enabled, inv_thirdtot_enabled,inv_firsttot_name, inv_secondtot_name, inv_thirdtot_name, inv_firsttot_rate, inv_secondtot_rate, inv_thirdtot_rate, inv_totaltot_rate, inv_comments,  inv_basicamt, inv_discount, inv_freight, inv_othercharges, inv_taxamount, inv_firsttaxamount, inv_secondtaxamount, inv_thirdtaxamount, inv_taxontaxamount, inv_firsttotamount, inv_secondtotamount, inv_thirdtotamount, roundoff_enable, roundoff_amt, inv_grandamount,  numberofitems, nci_inameholder, nci_iqtyholder, nci_ispholder, nci_idischolder,nci_iamtholder, nci_icholder, nci_ihsnholder, nci_iunitholder, nsi_taxable_amount, misc, futureslot, rsim, emer]
+    invoice_data=[invid, softwareversion, inv_nmbr, inv_date, inv_time, fy, invoicetype, sourcecompany, sourceaddress, sourcepin, sourcephone, sourceemail, sourcetaxid, originstate, originstatecode, reverse_charge, ewaybill_nmbr, inv_po, inv_toparty, partyaddress, partypin, partyphone,  partytaxid, partystate, partystatecode, handovername, shippingaddress, shippingpin, shippingphone, shippingstate, shippingstatecode, transport_mode, payment_mode, terms, inv_taxslab, inv_firsttax_enabled, inv_secondtax_enabled, inv_thirdtax_enabled, inv_firsttax_colname, inv_secondtax_colname, inv_thirdtax_colname, inv_firsttax_rate, inv_secondtax_rate, inv_thirdtax_rate, inv_totaltax_rate,  inv_taxontaxslab, inv_firsttot_enabled, inv_secondtot_enabled, inv_thirdtot_enabled,inv_firsttot_name, inv_secondtot_name, inv_thirdtot_name, inv_firsttot_rate, inv_secondtot_rate, inv_thirdtot_rate, inv_totaltot_rate, inv_comments,  inv_basicamt, inv_discount, inv_something, inv_othercharges, inv_taxamount, inv_firsttaxamount, inv_secondtaxamount, inv_thirdtaxamount, inv_taxontaxamount, inv_firsttotamount, inv_secondtotamount, inv_thirdtotamount, roundoff_enable, roundoff_amt, inv_grandamount,  numberofitems, nci_inameholder, nci_iqtyholder, nci_ispholder, nci_idischolder,nci_iamtholder, nci_icholder, nci_ihsnholder, nci_iunitholder, nsi_taxable_amount, placeofsupply, pos_code, misc, gst_compliances_expansion, futureslot, g_fobli, rsim, emer]
     
-    guicommon.invoicetableins.createrow(invid, invoice_data)
-    print('invoice successfully created')
+    if ssignaltype=='edit':
+        guicommon.invoicetableins.editrow(invid, invoice_data)
+        print('invoice successfully modified')
+    else:
+        guicommon.invoicetableins.createrow(invid, invoice_data)
+        print('invoice successfully created')
+            
     #reset fields
     #print(invoice_data)
     return invoice_data

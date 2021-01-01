@@ -16,18 +16,25 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 
 
-class GtkNewSale():   
+class GtkEditSale():   
      
-    def billingpage(self, mainwindow):      
+    def billedit(self, mainwindow):      
     
         self.mainwindow=mainwindow       
         self.guiprocessor_ins=guiprocessor.GtkProcessor()   
         self.moredialogins=cimoredialog.CImore()      
-        self.initialise_oth_variables()
           
-        invoicingmasterbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)    
-        billbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-            
+        self.invoicingmasterbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)                    
+        self.sb=self.generate_selector_box('begincommand')        
+        self.invoicingmasterbox.pack_start(self.sb, False, False, 0)
+        #self.invoicingmasterbox.show_all() This will grab focus as default start screen
+        return self.invoicingmasterbox
+        
+        
+    def generate_editableinvoice(self, fetched_details)   : 
+        self.initialise_oth_variables(fetched_details)
+        billbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)   
+        
         gridheader = Gtk.Grid()
         gridheader.set_column_homogeneous(False)
         billbox.pack_start(gridheader, True, True, 0)
@@ -44,9 +51,8 @@ class GtkNewSale():
         invnolabel.set_markup("Invoice No.")
              
         self.invoicenmbr = Gtk.Entry()
-        self.invoicenmbr.set_max_length(16)
-        #if auto invoice on, 
-        #self.invoicenmbr.set_text()       
+        self.invoicenmbr.set_max_length(16)      
+        self.invoicenmbr.set_text(fetched_details[2])              
                     
         invdatelabel = Gtk.Label()
         invdatelabel.set_markup("Invoice date")
@@ -55,14 +61,15 @@ class GtkNewSale():
         self.invoicedate.set_text(functions.todaysdate_string)
         self.invoicedate.set_width_chars(10)
         self.invoicedate.set_max_length(10)
-               
+        self.invoicedate.set_text(fetched_details[3])
+        
         invcompanylabel = Gtk.Label()
         invcompanylabel.set_markup("Company")
                    
         self.invcompany = Gtk.Entry()
         self.invcompany.set_width_chars(32)
         self.invcompany.set_max_length(47)
-        self.invcompany.set_text('')
+        self.invcompany.set_text(fetched_details[18])                       
         self.nciname_completion = Gtk.EntryCompletion()
         self.nciname_completion.set_model(guicommon.companyname_store)
         self.nciname_completion.set_text_column(0)
@@ -74,25 +81,26 @@ class GtkNewSale():
         self.ponmbr = Gtk.Entry()
         self.ponmbr.set_width_chars(16)
         self.ponmbr.set_max_length(16)
-                    
+        self.ponmbr.set_text(fetched_details[17])  
+                     
         taxlabel = Gtk.Label()
         taxlabel.set_markup("Tax slab")       
                   
         self.taxcombo = Gtk.ComboBoxText.new_with_entry()
         for ets in guicommon.taxtableins.rowlist:
             self.taxcombo.append_text(ets)        
-        self.taxcombo.set_active(3)
         self.taxcombo.get_child().set_width_chars(18)   
-        self.taxcombo.connect("changed", self.grandcaller)     
-            
+        self.taxcombo.get_child().set_text(fetched_details[34])   
+        self.taxcombo.connect("changed", self.grandcaller)         
+                 
         taxontaxlabel = Gtk.Label() # comments
         taxontaxlabel.set_markup("Tax on Tax slab")
         
         self.taxontaxcombo = Gtk.ComboBoxText.new_with_entry()
         for etots in guicommon.taxontax_list:
             self.taxontaxcombo.append_text(etots)
-        self.taxontaxcombo.set_active(0)
         self.taxontaxcombo.get_child().set_width_chars(16)  
+        self.taxontaxcombo.get_child().set_text(fetched_details[45])
         self.taxontaxcombo.connect("changed", self.grandcaller)                
             
         self.comentry = Gtk.Entry()
@@ -111,8 +119,7 @@ class GtkNewSale():
         gridheader.attach(self.taxcombo, 5, 1, 1, 1)
         gridheader.attach(taxontaxlabel, 6, 0, 1, 1)
         gridheader.attach(self.taxontaxcombo, 6, 1, 1, 1)
-        #grid.attach_next_to(invnolabel, invnolabel, Gtk.PositionType.RIGHT, 1, 1)
-          
+        #grid.attach_next_to(invnolabel, invnolabel, Gtk.PositionType.RIGHT, 1, 1) 
             # Items to be billed below
         billitems_headerbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)  
         billitems_headerbox.set_margin_top(8)  
@@ -141,7 +148,7 @@ class GtkNewSale():
         billitems_headerbox.pack_start(bihb_idisclabel, False, False, 0)
         billitems_headerbox.pack_start(bihb_iclabel, False, False, 0)
         billitems_headerbox.pack_start(bihb_iamtlabel, False, False, 0)       
-        billboxmat.pack_start(billitems_headerbox, True, True, 0)
+        billboxmat.pack_start(billitems_headerbox, True, True, 0)       
        
         def createinvoicerows(howmany):
             ncii_listbox = Gtk.ListBox() #ncii=new customer invoice items
@@ -156,8 +163,7 @@ class GtkNewSale():
             self.nciilb_ic=[]
             self.nciilb_iamtlist=[]
             
-            while ncii_tempcount<howmany:
-                           
+            while ncii_tempcount<howmany:         
                 nciilb_temprow = Gtk.ListBoxRow()
                 #nciilb_temprow.set_hexpand(False)
                 #nciilb_temprow.get_style_context().add_class("testareaanother")
@@ -174,25 +180,33 @@ class GtkNewSale():
                 invitemname_completion = Gtk.EntryCompletion()
                 invitemname_completion.set_model(guicommon.itemname_store)
                 invitemname_completion.set_text_column(0)
-                nciiname_tempentry.set_completion(invitemname_completion)               
-                nciic_tempentry = Gtk.Entry() # for more item description/change
+                nciiname_tempentry.set_completion(invitemname_completion)  
+                nciiname_tempentry.set_text(fetched_details[73][ncii_tempcount])  
+                           
+                nciic_tempentry = Gtk.Entry() # future feature
                 nciic_tempentry.set_width_chars(16)
                 nciic_tempentry.set_max_length(47)   
                 nciic_tempentry.set_sensitive(False)
+                nciic_tempentry.set_visible(False)
                 #nciic_tempentry.set_editable(False)
+                
                 nciiqty_tempentry = Gtk.Entry()
                 nciiqty_tempentry.set_width_chars(10)
                 nciiqty_tempentry.set_max_length(11)   
+                nciiqty_tempentry.set_text(fetched_details[74][ncii_tempcount])  
                 nciisp_tempentry = Gtk.Entry() # item selling price
                 nciisp_tempentry.set_width_chars(12)
-                nciisp_tempentry.set_max_length(11)   
+                nciisp_tempentry.set_max_length(11)  
+                nciisp_tempentry.set_text(fetched_details[75][ncii_tempcount])   
                 nciidiscount_tempentry = Gtk.Entry() # item selling price
                 nciidiscount_tempentry.set_width_chars(6)  
-                nciidiscount_tempentry.set_max_length(5)                         
+                nciidiscount_tempentry.set_max_length(5)  
+                nciidiscount_tempentry.set_text(fetched_details[76][ncii_tempcount])                         
                 nciiamt_templabel = Gtk.Label(label='0.00')
                 nciiamt_templabel.set_width_chars(21)
                 nciiamt_templabel.set_margin_left(8)
                 nciiamt_templabel.set_margin_right(8)
+                nciiamt_templabel.set_text(fetched_details[77][ncii_tempcount])  
                 
                 nciilbvr_box.pack_start(nciiserial_templabel, False, False, 0)
                 nciilbvr_box.pack_start(nciiname_tempentry, False, False, 0)
@@ -205,7 +219,6 @@ class GtkNewSale():
                 nciilb_temprow.add(nciilbvr_box) 
                 ncii_listbox.add(nciilb_temprow)
                 ncii_listbox.show_all()
-                #print('listrow calld')
                 
                 # for accessing - fetching data
                 self.nciilb_inamelist.append(nciiname_tempentry) 
@@ -220,7 +233,7 @@ class GtkNewSale():
                         #print('qty or rate not present')
                         pass                   
                     else:
-                        #print('conditions met, now calculating') 
+                     
                         tempqty_int=int(tempqty_str)
                         temprate_int=float(temprate_str)                       
                         if tempdisc_str=='':
@@ -233,7 +246,8 @@ class GtkNewSale():
                         
                         self.nciilb_iamtlist[tempindex].set_markup(str(tempamt)) 
                         self.temp_basicamt=saleinvoicingprocessor.saleamounting(self.nciilb_iamtlist)
-                        self.basicamtdisp.set_markup(str(self.temp_basicamt))                        
+                        self.basicamtdisp.set_markup(str(self.temp_basicamt))
+                        
                         self.grandcaller('mimicevent')
               
                 def ncii_setterini(ncii_valuesig):
@@ -273,12 +287,10 @@ class GtkNewSale():
                
                 ncii_tempcount=ncii_tempcount+1
             return ncii_listbox
-            
+
         def addmoreitems(event):
             invoicesw.remove(invoicesw.get_child())
-            print('removed previous')
-            invoicesw.add(createinvoicerows("blankevent"))
-            print('added new')                
+            invoicesw.add(createinvoicerows("blankevent"))              
         
         itemstobebilled=createinvoicerows(25) #25 invoice items support
             
@@ -290,12 +302,11 @@ class GtkNewSale():
         iisw = Gtk.ScrolledWindow() #invoice items scroll window
         #iisw.set_min_content_width(720)      
         #iisw.set_max_content_width(768)
-        iisw.set_min_content_height(380)
-        iisw.set_max_content_height(381)
+        iisw.set_min_content_height(390)
+        iisw.set_max_content_height(391)
         iisw.get_style_context().add_class("lightgreymedborder")
         iisw.set_policy(Gtk.PolicyType.NEVER,
                                Gtk.PolicyType.AUTOMATIC)
-        #print(iisw.get_propagate_natural_width())
         iisw.set_halign(Gtk.Align.START) # to avoid expansion horizontally
         
         iisw.add(itemstobebilled)
@@ -307,26 +318,26 @@ class GtkNewSale():
         discountlabel.set_markup("Discount")
            
         self.discountentry = Gtk.Entry()
-        #self.discountentry.set_text("10")
         self.discountentry.set_width_chars(10)
-        self.discountentry.set_max_length(11)
+        self.discountentry.set_max_length(11)        
+        self.discountentry.set_text(fetched_details[58])  
         self.discountentry.connect("changed", self.grandcaller) 
         
         poslabel = Gtk.Label() 
         poslabel.set_markup("Place of supply")
            
         self.placeofsupply_entry = Gtk.Entry()
-        #self.placeofsupply_entry.set_text("")
         self.placeofsupply_entry.set_width_chars(16)
         self.placeofsupply_entry.set_max_length(16)
+        self.placeofsupply_entry.set_text(fetched_details[82])         
            
         mischlabel = Gtk.Label() # miscellaneous charges
         mischlabel.set_markup("Other charges")        
             
         self.mischentry = Gtk.Entry()
-        #self.mischentry.set_text("200")
         self.mischentry.set_width_chars(10)
-        self.mischentry.set_max_length(11)
+        self.mischentry.set_max_length(11)    
+        self.mischentry.set_text(fetched_details[60])     
         self.mischentry.connect("changed", self.grandcaller) 
         
         paymentmode_label = Gtk.Label() 
@@ -334,6 +345,7 @@ class GtkNewSale():
         self.paymentmode_entry = Gtk.Entry() 
         self.paymentmode_entry.set_width_chars(16)
         self.paymentmode_entry.set_max_length(20)
+        self.paymentmode_entry.set_text(fetched_details[32]) 
         
         transportmode_label = Gtk.Label() 
         transportmode_label.set_markup("Transport mode")                    
@@ -341,6 +353,7 @@ class GtkNewSale():
         self.transportmode_entry.set_width_chars(18)
         self.transportmode_entry.set_max_length(16)    
         self.transportmode_entry.set_halign(Gtk.Align.START)                      
+        self.transportmode_entry.set_text(fetched_details[31])   
         
         roundofflabel = Gtk.Label() # tax on tax
         roundofflabel.set_margin_left(10)
@@ -349,10 +362,12 @@ class GtkNewSale():
         self.roundoff_button = Gtk.CheckButton()
         self.roundoff_button.set_margin_left(33)
         self.roundoff_button.set_margin_right(20)
-        if self.roundoff_enabled=='yes':
-            self.roundoff_button.set_active(True) 
-        else:    
+        if fetched_details[69]=='yes':
+            self.roundoff_button.set_active(True)
+            self.roundoff_enabled='yes'
+        else:
             self.roundoff_button.set_active(False)
+            self.roundoff_enabled='no'
         self.roundoff_button.connect("toggled", self.roundoff_toggled)
         
         invoicemorebutton = Gtk.Button.new_with_label("More")
@@ -360,16 +375,15 @@ class GtkNewSale():
         invoicemorebutton.connect("clicked", self.more_pressed)
         invoicemorebutton.set_margin_left(110)
         
-        invoiceresetbutton = Gtk.Button.new_with_label("Reset")
+        invoiceresetbutton = Gtk.Button.new_with_label("Cancel")
         invoiceresetbutton.get_child().set_width_chars(5)
         invoiceresetbutton.get_style_context().add_class("dangerbutton")
-        invoiceresetbutton.connect("clicked", self.resetncifields)
+        invoiceresetbutton.connect("clicked", self.resetncifields, fetched_details)
         
         nextbutton = Gtk.Button.new_with_label("Save")
         nextbutton.get_child().set_width_chars(5)
         nextbutton.get_style_context().add_class("suggested-action")
-        nextbutton.connect("clicked", self.processnci)          
-        
+        nextbutton.connect("clicked", self.processnci)                 
         
         gridfooter.add(mischlabel)
         gridfooter.attach(self.mischentry, 0, 1, 1, 1)
@@ -388,14 +402,14 @@ class GtkNewSale():
         gridfooter.attach(invoicemorebutton, 9, 1, 1, 1)     
         gridfooter.attach(invoiceresetbutton, 10, 1, 1, 1)
         gridfooter.attach(nextbutton, 11, 1, 1, 1)
-            
+        
         basicamtlabel = Gtk.Label()
         basicamtlabel.set_markup("Basic amt")
            
         self.basicamtdisp = Gtk.Label()
         self.basicamtdisp.set_halign(Gtk.Align.START)
         #self.basicamtdisp.set_margin_left(10)
-        self.basicamtdisp.set_markup("0.00")  
+        #self.basicamtdisp.set_markup("0.00")  
               
         taxlabel = Gtk.Label() # tax
         taxlabel.set_margin_left(20)
@@ -410,7 +424,7 @@ class GtkNewSale():
         taxontaxlabel.set_markup("Tax on Tax amt")
         
         self.taxontaxamount = Gtk.Label() # tax
-        self.taxontaxamount.set_markup("0.00")
+        #self.taxontaxamount.set_markup("0.00")
         #self.taxontaxamount.set_margin_left(5)
         #self.taxontaxamount.set_margin_right(10)
            
@@ -421,7 +435,7 @@ class GtkNewSale():
         self.gtotaldisp = Gtk.Label()
         self.gtotaldisp.get_style_context().add_class("boldgreenlabel")
         #self.gtotaldisp.set_margin_left(5)
-        self.gtotaldisp.set_markup("0.00")        
+        #self.gtotaldisp.set_markup("0.00")        
       
         amt_footerbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)  
         amt_footerbox.set_margin_top(0) 
@@ -442,24 +456,44 @@ class GtkNewSale():
          
         self.nsi_itemswidgets=[self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist,self.nciilb_ic, self.nciilb_iamtlist]   
        
-       
-        invoicingmasterbox.pack_start(billbox, False, False, 0)      
-        
-        #self.invoicenmbr.grab_focus() trying to auto activate
-        return invoicingmasterbox
+        for anyentry in self.nsi_header_widgets:
+            anyentry.set_sensitive(False)      
+        for anyentry in self.nsi_footer_widgets:
+            anyentry.set_sensitive(False)     
+        print('stage 4 started')     
+        self.temp_basicamt=saleinvoicingprocessor.saleamounting(self.nciilb_iamtlist)
+        self.basicamtdisp.set_markup(str(self.temp_basicamt))
+        self.grandcaller('mimicevent') 
+        print('stage 4 completed') 
+        return billbox    
             
         #---------------------------Billbox contents end  
-    def initialise_oth_variables(self):     
-        self.roundoff_enabled=guicommon.miscdbins.get('roundoffenabled')
-        self.autoinvoice_numbering=guicommon.miscdbins.get('autoinvoice_numbering')
-        self.inv_prefix=guicommon.miscdbins.get('invoiceprefix')       
-        self.temp_basicamt, self.taxable_amount, self.roundoff_amt = 0, 0, 0 #for tax combo compatibility
-        self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.invoicedata_temp = '', '', '', '', ''
-        self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin ='', '', '', '', ''
-        self.compchange_detector='' #mechanism to detect company change after more pressed and change shipping accordingly
-        self.rcvalue='No' # reverse charge
-        self.more_opened='no'    #mechanism to detect address change
+    def initialise_oth_variables(self, fetched_details): 
+            
+        self.autoinvoice_numbering='no'
+        self.inv_prefix=''         
+        self.ewaybill=str(fetched_details[16])     
+        self.billcomments=str(fetched_details[56])  
+        self.furtherterms=str(fetched_details[33][5])                  
+        self.ship_name=fetched_details[25]  
+        self.ship_addline=(fetched_details[26])  
+        self.ship_state=(fetched_details[29])  
+        self.ship_phone=(fetched_details[28])  
+        self.ship_pin=(fetched_details[27])  
+        self.rcvalue=str(fetched_details[15])  
+        self.more_opened='yes'        
+             
+        self.temp_basicamt=float(fetched_details[57])
+        self.taxable_amount=float(fetched_details[57])+float(fetched_details[60])-float(fetched_details[58])
+        self.roundoff_amt =float(fetched_details[70])
+        self.transmode=fetched_details[31]
+        self.invoicedata_temp = fetched_details
+
+        self.compchange_detector=fetched_details[18] #mechanism to detect company change after more pressed and change shipping accordingly
+        
          
+    def populate_fields():
+        guicommon.invoicetableins.readrow('whichitem')
         
     def roundoff_toggled(self, togglebutton):  
         if togglebutton.get_active():
@@ -487,19 +521,19 @@ class GtkNewSale():
        
         self.nsi_oth_val= [self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.rcvalue, self.more_opened ]
         
-        self.invoicedata_temp=saleinvoicingprocessor.processnci('new', self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt ) #new denotes creating fresh row in database
+        self.invoicedata_temp=saleinvoicingprocessor.processnci('edit', self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt )
         self.pdfsi_ins=pdfsaleinvoice.PdfSI()
         self.pdfsi_ins.printable_saleinvoice(self.invoicedata_temp[0], self.invoicedata_temp)
-        self.resetncifields('buttonmimic')
+        #self.resetncifields('buttonmimic', fetched_details)
         
-    def resetncifields(self, button):
+    def resetncifields(self, button, fetched_details):
         self.nciname_completion.set_model(guicommon.companyname_store) 
         self.roundoff_enabled=guicommon.miscdbins.get('roundoffenabled') 
         if self.roundoff_enabled=='yes':
             self.roundoff_button.set_active(True) 
         else:    
             self.roundoff_button.set_active(False)
-        self.initialise_oth_variables()
+        self.initialise_oth_variables(fetched_details)
         self.paymentmode_entry.set_text('')
         self.transportmode_entry.set_text('')
         self.discountentry.set_text('')
@@ -522,3 +556,74 @@ class GtkNewSale():
         #printsi_handlerins=printsihandler.PrintSaleInvoiceHander()
         #printsi_handlerins.print_dialog(self.mainwindow, 'invno')
         pass
+        
+        
+    def mofify_pressed(self, button):
+    
+        self.whichin=self.sel_entry.get_text() #name of invoice to be edited
+        fetchedin=guicommon.invoicetableins.readrow(self.whichin)   
+        self.ein_temprowindex=guicommon.invoicetableins.rowlist.index(self.whichin)
+        
+        children=self.invoicingmasterbox.get_children()
+        for eachchild in children:
+            self.invoicingmasterbox.remove(eachchild)
+            eachchild.destroy()        
+        
+        billbox=self.generate_editableinvoice(fetchedin)
+        self.invoicingmasterbox.pack_start(billbox, False, False, 0)  
+        self.invoicingmasterbox.show_all()            
+               
+      
+    def delete_pressed(self, button):
+        print('deleted started')
+        self.whichin=self.sel_entry.get_text() #name of invoice to be deleted
+        fetchedin=guicommon.invoicetableins.readrow(self.whichin)   
+        self.ein_temprowindex=guicommon.invoicetableins.rowlist.index(self.whichin)
+        guicommon.invoicetableins.deleterow(self.whichin) 
+        guicommon.loadguicommon()
+        
+        children=self.invoicingmasterbox.get_children()
+        for eachchild in children:
+            self.invoicingmasterbox.remove(eachchild)
+            eachchild.destroy()        
+
+        self.sb=self.generate_selector_box('begincommand')
+        
+        self.invoicingmasterbox.pack_start(self.sb, False, False, 0)
+        self.invoicingmasterbox.show_all()
+        print('deleted invoice successfully')
+        
+    def generate_selector_box(self, somesignal) :  
+        selectorbox=Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)  
+        #selectorbox.get_style_context().add_class("selectorboxgreyfil")
+        selectorbox.set_halign(Gtk.Align.START)
+        
+        sel_label= Gtk.Label()
+        sel_label.set_markup("Type and select invoice id from drop down")
+        
+        self.sel_entry = Gtk.Entry()
+        self.sel_entry.set_width_chars(32)
+        self.sel_entry.set_max_length(47)
+        self.sel_entry.set_margin_left(25)
+        self.sel_entry.set_margin_right(25)
+        
+        self.selinvoice_completion = Gtk.EntryCompletion()
+        self.selinvoice_completion.set_model(guicommon.invoicename_store)
+        self.selinvoice_completion.set_text_column(0)
+        self.sel_entry.set_completion(self.selinvoice_completion)   
+        
+        inv_editbutton = Gtk.Button.new_with_label("Modify or View")        
+        inv_editbutton.connect("clicked", self.mofify_pressed)
+        
+        inv_deletebutton = Gtk.Button.new_with_label("Delete invoice")
+        inv_deletebutton.get_style_context().add_class("dangerbutton")
+        inv_deletebutton.set_margin_right(245)
+        inv_deletebutton.connect("clicked", self.delete_pressed)        
+        
+        selectorbox.pack_start(sel_label, False, False, 0)
+        selectorbox.pack_start(self.sel_entry, False, False, 0)         
+        selectorbox.pack_start(inv_editbutton, False, False, 0) 
+        selectorbox.pack_start(inv_deletebutton, False, False, 0)    
+        return selectorbox
+          
+       

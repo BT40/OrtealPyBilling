@@ -6,6 +6,7 @@ from submods import functions
 from submods import guicommon
 from submods import guiprocessor
 from submods import guinewsale
+from submods import guieditsale
 from submods import saleinvoicingprocessor
 from submods import cimoredialog
 from submods import pdfsaleinvoice
@@ -26,6 +27,7 @@ class GtkInvoicing():
        
         self.mainwindow=mainwindow
         self.newsaleins=guinewsale.GtkNewSale()
+        self.editsaleins=guieditsale.GtkEditSale()
         
         self.invopage_main=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         
@@ -35,6 +37,9 @@ class GtkInvoicing():
         
         newsibox=self.newsaleins.billingpage(self.mainwindow)        
         self.invostack.add_titled(newsibox, "newsaleinvoice", "New Sale invoice")
+        
+        editsibox=self.editsaleins.billedit(self.mainwindow)        
+        self.invostack.add_titled(editsibox, "editsaleinvoice", "Edit Sale invoice")
         
         self.invostack_switcher = Gtk.StackSwitcher()
         self.invostack_switcher.set_stack(self.invostack)

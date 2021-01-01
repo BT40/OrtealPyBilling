@@ -100,6 +100,11 @@ class GtkPreferences():
         tl4_label.set_markup("Terms line 4 ")        
         self.tl4_entry = Gtk.Entry()
         self.tl4_entry.set_max_length(47)
+        
+        tl5_label = Gtk.Label() #Terms line 5
+        tl5_label.set_markup("Terms line 5 ")        
+        self.tl5_entry = Gtk.Entry()
+        self.tl5_entry.set_max_length(47)
       
 
         pcancelbutton = Gtk.Button.new_with_label("Cancel")
@@ -133,6 +138,8 @@ class GtkPreferences():
         prefgrid.attach(self.tl3_entry, 1, 8, 1, 1)
         prefgrid.attach(tl4_label, 0, 9, 1, 1)
         prefgrid.attach(self.tl4_entry, 1, 9, 1, 1)
+        prefgrid.attach(tl5_label, 0, 10, 1, 1)
+        prefgrid.attach(self.tl5_entry, 1, 10, 1, 1)
         #prefgrid.attach(pcancelbutton, 0, 10, 1, 1)
         #prefgrid.attach(presetbutton, 1, 10, 1, 1)
         #prefgrid.attach(psavebutton, 2, 10, 1, 1)       
@@ -163,6 +170,7 @@ class GtkPreferences():
         guicommon.miscdbins.set('termsline2', self.tl2_entry.get_text())
         guicommon.miscdbins.set('termsline3', self.tl3_entry.get_text())
         guicommon.miscdbins.set('termsline4', self.tl4_entry.get_text())
+        guicommon.miscdbins.set('termsline5', self.tl5_entry.get_text())
         
         if self.round_button.get_active():
             guicommon.miscdbins.set('roundoffenabled', 'yes')
@@ -196,6 +204,7 @@ class GtkPreferences():
         self.tl2_entry.set_text(guicommon.miscdbins.get('termsline2'))
         self.tl3_entry.set_text(guicommon.miscdbins.get('termsline3'))
         self.tl4_entry.set_text(guicommon.miscdbins.get('termsline4'))
+        self.tl5_entry.set_text(guicommon.miscdbins.get('termsline5'))
         
         
         if guicommon.miscdbins.get('roundoffenabled')=='yes':                

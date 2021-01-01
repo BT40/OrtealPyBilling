@@ -65,6 +65,12 @@ def loadguicommon():
         taxslabs_store.append([eachtslab_tmp])
         #print (eachtslab_tmp)   
     
+    global invoicename_store    
+    invoicename_store = Gtk.ListStore(str)
+    for eachinv_tmp in invoicetableins.rowlist:
+        invoicename_store.append([eachinv_tmp])
+        #print (eachinv_tmp)  
+    
     #print('above was guicommon initialisation')    
    
     

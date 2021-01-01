@@ -43,7 +43,22 @@
 .adinfotext {
             /*font-weight: bold;*/
             color: grey;           
-            }                                       
+            }   
+            
+.selectorboxgreyfil {
+            background-color: #d4d1d0;  
+            padding: 11px;  
+            margin-bottom: 20px; 
+            border-radius: 5px;       
+            }    
+            
+ .selectorboxbordered {
+            /*background-color: #d4d1d0;*/ 
+            border: 2px solid lightgray; 
+            padding: 11px;  
+            margin-bottom: 20px; 
+            /*border-radius: 5px;*/       
+            }                                                                   
   	  	
 .testarea {
             background-color: yellow;            
