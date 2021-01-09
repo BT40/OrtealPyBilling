@@ -30,7 +30,6 @@ class PdfSI():
         # cell fill colour, visible if cell property fill set to true
         document.set_draw_color(175, 175, 175)
         # border color, used for all drawing operations (lines, rectangles and cell borders)
-        #print('Initialized pdf printing')
         return document
         
 
@@ -59,7 +58,6 @@ class PdfSI():
             rows_consumed =hfi.create_irow(document, isome, invoicedata_temp, checker)            
             activerows=activerows+rows_consumed   
             rowcapability_current=rowcapability_current-rows_consumed
-            print(rowcapability_current)
             items_remaining=items_remaining-1
             isome=isome+1
             aloop_limit_p1=min(rowcapability_current, items_remaining) #aloop is activeloop for page 1

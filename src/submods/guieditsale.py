@@ -5,6 +5,7 @@ from submods import functions
 from submods import guicommon
 from submods import guiprocessor
 from submods import saleinvoicingprocessor
+from submods import editsalesub
 from submods import cimoredialog
 from submods import pdfsaleinvoice
 from submods import printsihandler
@@ -133,12 +134,12 @@ class GtkEditSale():
         bihb_isplabel.set_margin_left(35)
         bihb_idisclabel = Gtk.Label(label="Discount %")
         bihb_idisclabel.set_margin_left(22)
-        bihb_iclabel = Gtk.Label(label="IC")
+        bihb_iclabel = Gtk.Label(label="") #change to ic text when enabled
         bihb_iclabel.set_sensitive(False)
-        bihb_iclabel.set_margin_left(70)
+        bihb_iclabel.set_margin_left(75) #Original 70 whec IC written 
         bihb_iclabel.set_margin_right(70)
         bihb_iamtlabel = Gtk.Label(label="Amount")
-        bihb_iamtlabel.set_margin_left(75)
+        bihb_iamtlabel.set_margin_left(15) #original 75 when Ic exist
         
        # item1label.set_markup("Item 1 to be billed")
         billitems_headerbox.pack_start(bihb_srlabel, False, False, 0)
@@ -183,11 +184,11 @@ class GtkEditSale():
                 nciiname_tempentry.set_completion(invitemname_completion)  
                 nciiname_tempentry.set_text(fetched_details[73][ncii_tempcount])  
                            
-                nciic_tempentry = Gtk.Entry() # future feature
-                nciic_tempentry.set_width_chars(16)
-                nciic_tempentry.set_max_length(47)   
-                nciic_tempentry.set_sensitive(False)
-                nciic_tempentry.set_visible(False)
+                #nciic_tempentry = Gtk.Entry() # future feature
+                #nciic_tempentry.set_width_chars(16)
+                #nciic_tempentry.set_max_length(47)   
+                #nciic_tempentry.set_sensitive(False)
+                #nciic_tempentry.set_visible(False)
                 #nciic_tempentry.set_editable(False)
                 
                 nciiqty_tempentry = Gtk.Entry()
@@ -203,9 +204,10 @@ class GtkEditSale():
                 nciidiscount_tempentry.set_max_length(5)  
                 nciidiscount_tempentry.set_text(fetched_details[76][ncii_tempcount])                         
                 nciiamt_templabel = Gtk.Label(label='0.00')
+                #nciiamt_templabel.set_xalign(0) # align label left
                 nciiamt_templabel.set_width_chars(21)
-                nciiamt_templabel.set_margin_left(8)
-                nciiamt_templabel.set_margin_right(8)
+                nciiamt_templabel.set_margin_left(98) #ic enabled margin 8, disabled 168
+                nciiamt_templabel.set_margin_right(78)  #ic enabled or disabled 8
                 nciiamt_templabel.set_text(fetched_details[77][ncii_tempcount])  
                 
                 nciilbvr_box.pack_start(nciiserial_templabel, False, False, 0)
@@ -213,7 +215,7 @@ class GtkEditSale():
                 nciilbvr_box.pack_start(nciiqty_tempentry, False, False, 0)
                 nciilbvr_box.pack_start(nciisp_tempentry, False, False, 0)
                 nciilbvr_box.pack_start(nciidiscount_tempentry, False, False, 0)
-                nciilbvr_box.pack_start(nciic_tempentry, False, False, 0) # for more item description/change
+                #nciilbvr_box.pack_start(nciic_tempentry, False, False, 0) # future feature, do not temper with this line/area
                 nciilbvr_box.pack_start(nciiamt_templabel, False, False, 0)
                 
                 nciilb_temprow.add(nciilbvr_box) 
@@ -225,7 +227,7 @@ class GtkEditSale():
                 self.nciilb_isplist.append(nciisp_tempentry)
                 self.nciilb_iqtylist.append(nciiqty_tempentry)
                 self.nciilb_idiscountlist.append(nciidiscount_tempentry)
-                self.nciilb_ic.append(nciic_tempentry)
+                #self.nciilb_ic.append(nciic_tempentry)
                 self.nciilb_iamtlist.append(nciiamt_templabel)
                                
                 def ncii_calcu(tempindex, temprate_str, tempqty_str, tempdisc_str):
@@ -455,42 +457,16 @@ class GtkEditSale():
         self.nsi_footer_widgets=[self.basicamtdisp, self.discountentry, self.placeofsupply_entry, self.mischentry, self.paymentmode_entry,  self.taxamount, self.taxontaxamount, self.gtotaldisp, self.transportmode_entry]
          
         self.nsi_itemswidgets=[self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist,self.nciilb_ic, self.nciilb_iamtlist]   
-       
-        for anyentry in self.nsi_header_widgets:
-            anyentry.set_sensitive(False)      
-        for anyentry in self.nsi_footer_widgets:
-            anyentry.set_sensitive(False)     
-        print('stage 4 started')     
+           
         self.temp_basicamt=saleinvoicingprocessor.saleamounting(self.nciilb_iamtlist)
         self.basicamtdisp.set_markup(str(self.temp_basicamt))
         self.grandcaller('mimicevent') 
-        print('stage 4 completed') 
         return billbox    
             
         #---------------------------Billbox contents end  
     def initialise_oth_variables(self, fetched_details): 
-            
-        self.autoinvoice_numbering='no'
-        self.inv_prefix=''         
-        self.ewaybill=str(fetched_details[16])     
-        self.billcomments=str(fetched_details[56])  
-        self.furtherterms=str(fetched_details[33][5])                  
-        self.ship_name=fetched_details[25]  
-        self.ship_addline=(fetched_details[26])  
-        self.ship_state=(fetched_details[29])  
-        self.ship_phone=(fetched_details[28])  
-        self.ship_pin=(fetched_details[27])  
-        self.rcvalue=str(fetched_details[15])  
-        self.more_opened='yes'        
-             
-        self.temp_basicamt=float(fetched_details[57])
-        self.taxable_amount=float(fetched_details[57])+float(fetched_details[60])-float(fetched_details[58])
-        self.roundoff_amt =float(fetched_details[70])
-        self.transmode=fetched_details[31]
-        self.invoicedata_temp = fetched_details
-
-        self.compchange_detector=fetched_details[18] #mechanism to detect company change after more pressed and change shipping accordingly
-        
+        editsalesub.ini_other_variables(self, fetched_details)  
+       
          
     def populate_fields():
         guicommon.invoicetableins.readrow('whichitem')
@@ -524,7 +500,8 @@ class GtkEditSale():
         self.invoicedata_temp=saleinvoicingprocessor.processnci('edit', self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt )
         self.pdfsi_ins=pdfsaleinvoice.PdfSI()
         self.pdfsi_ins.printable_saleinvoice(self.invoicedata_temp[0], self.invoicedata_temp)
-        #self.resetncifields('buttonmimic', fetched_details)
+        self.reload_screen('mimicsignal')         
+        print('modified invoice successfully')
         
     def resetncifields(self, button, fetched_details):
         self.nciname_completion.set_model(guicommon.companyname_store) 
@@ -581,17 +558,9 @@ class GtkEditSale():
         self.ein_temprowindex=guicommon.invoicetableins.rowlist.index(self.whichin)
         guicommon.invoicetableins.deleterow(self.whichin) 
         guicommon.loadguicommon()
-        
-        children=self.invoicingmasterbox.get_children()
-        for eachchild in children:
-            self.invoicingmasterbox.remove(eachchild)
-            eachchild.destroy()        
-
-        self.sb=self.generate_selector_box('begincommand')
-        
-        self.invoicingmasterbox.pack_start(self.sb, False, False, 0)
-        self.invoicingmasterbox.show_all()
+        self.reload_screen('mimicsignal')         
         print('deleted invoice successfully')
+        
         
     def generate_selector_box(self, somesignal) :  
         selectorbox=Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)  
@@ -625,5 +594,16 @@ class GtkEditSale():
         selectorbox.pack_start(inv_editbutton, False, False, 0) 
         selectorbox.pack_start(inv_deletebutton, False, False, 0)    
         return selectorbox
-          
+     
+     
+    def reload_screen(self, somesignal) :     
+        children=self.invoicingmasterbox.get_children()
+        for eachchild in children:
+            self.invoicingmasterbox.remove(eachchild)
+            eachchild.destroy()        
+
+        self.sb=self.generate_selector_box('begincommand')
+        
+        self.invoicingmasterbox.pack_start(self.sb, False, False, 0)
+        self.invoicingmasterbox.show_all()   
        

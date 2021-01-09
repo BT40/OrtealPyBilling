@@ -12,6 +12,7 @@ from gi.repository import Gdk
 
 def loadtips():
     tbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20) 
+    
     switchtext_label = Gtk.Label(label='Press tab to switch between input fields.')
     enableinv_label = Gtk.Label(label='Future option: Enable xyz from preferences if needed')
     cnamelimit_label = Gtk.Label(label='Company name, item name, comments, email, address line limit: 47 characters')
@@ -38,7 +39,11 @@ def loadtips():
 
 def helptips():
     htb=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20) #help tips box
-
+    
+    aboutlabel = Gtk.Label()
+    aboutlabel.set_markup("Version Jan 2021. Try at your own risk. Software is open source.")
+    htb.pack_start(aboutlabel, False, False, 0)    
+    
     htsw = Gtk.ScrolledWindow(hexpand=False) #help tips scroll window
     htsw.set_min_content_width(560)      
     #htsw.set_max_content_width(800)

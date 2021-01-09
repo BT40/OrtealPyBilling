@@ -177,7 +177,7 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
     nci_ispholder=[]
     nci_idischolder=[]
     nci_iamtholder=[]
-    nci_icholder=[]
+    nci_icholder=[''] #remove blank quotes when this feature is enabled
     nci_ihsnholder=[]
     nci_iunitholder=[]
     ifirsttax_holder=[]
@@ -201,7 +201,7 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
         isp=inv_isp_widgets[i].get_text()
         idisc=inv_idiscount_widgets[i].get_text()
         iamt=inv_iamount_widgets[i].get_text()
-        ic=inv_ic_widgets[i].get_text()  
+        #ic=inv_ic_widgets[i].get_text()  
                       
         
         if iname=='':
@@ -229,7 +229,7 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
         nci_ispholder.append(isp)
         nci_idischolder.append(idisc)
         nci_iamtholder.append(iamt)
-        nci_icholder.append(ic)
+        #nci_icholder.append(ic)
         nci_ihsnholder.append(hsn_temp)
         nci_iunitholder.append(unit_temp)
         #ifirsttax_holder.append(ifirsttax_value) #If each item tax value needed
@@ -259,10 +259,10 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
     
     if ssignaltype=='edit':
         guicommon.invoicetableins.editrow(invid, invoice_data)
-        print('invoice successfully modified')
+        #print('invoice successfully modified')
     else:
         guicommon.invoicetableins.createrow(invid, invoice_data)
-        print('invoice successfully created')
+        #print('invoice successfully created')
             
     #reset fields
     #print(invoice_data)

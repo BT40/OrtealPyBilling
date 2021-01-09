@@ -493,11 +493,11 @@ class GtkInventory():
         migbox.pack_start(self.ciglcombo, False, False, 0)  
         migbox.pack_start(cigdeletebutton, False, False, 0)          
         
-        #================================================================
-                
-        self.inventorystack.add_titled(inventoryview_box, "viewinventorymain", "Item list")
+        #================================================================               
+        
         self.inventorystack.add_titled(createitembox, "createitemmain", "Create item")
         self.inventorystack.add_titled(edititem_box, "edititemmain", "Edit or view Item")
+        self.inventorystack.add_titled(inventoryview_box, "viewinventorymain", "Item list")
         #self.inventorystack.add_titled(migbox, "createitemgroupmain", "Manage item groups")        
         
         #print("Packing of stack switcher in Create pane started")  

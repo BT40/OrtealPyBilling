@@ -56,7 +56,7 @@ class MainWindow(Gtk.ApplicationWindow):
         inventorybox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
         iph=guiinventoryins.generatepage(invoicingbox, bph, guiinvoicingins, self) #iph=inventory page holder
         inventorybox.add(iph)
-        stack.add_titled(inventorybox, "inventorymain", "Inventory")
+        stack.add_titled(inventorybox, "inventorymain", "Items")
         #print("Inventory box loaded, now trying loading Create box")        
         
         companybox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)        

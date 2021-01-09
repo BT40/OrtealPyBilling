@@ -59,47 +59,38 @@ class GtkMore():
         hth=guihelp.helptips() #help tips holder
         helpbox.pack_start(hth, False, False, 0)
         
-        aboutbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        aboutlabel = Gtk.Label()
-        aboutlabel.set_markup("Development Version October 2020, Try at your own risk. Software is open source.")
-        aboutbox.pack_start(aboutlabel, True, True, 0)
-        #print("Loaded about pane")  
+        #aboutbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        #aboutlabel = Gtk.Label()
+        #aboutlabel.set_markup("Version Jan 2021. Try at your own risk. Software is open source.")
+        #aboutbox.pack_start(aboutlabel, True, True, 0)
         
-        exitbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        exitlabel = Gtk.Label()
-        exitlabel.set_markup("Press this button to exit")
-        exitbox.pack_start(exitlabel, False, False, 0)
-        mbexitbutton = Gtk.Button.new_with_label("Exit the app")
-        mbexitbutton.set_halign(Gtk.Align.CENTER) # to avoid expansion horizontally
-        mbexitbutton.connect("clicked", self.exittheapp, applic)
-        mbexitbutton.get_style_context().add_class("dangerbutton") 
-        exitbox.pack_start(mbexitbutton, False, False, 0)      
-        #print("Loaded exit pane")  
+        #exitbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        #mbexitbutton = Gtk.Button.new_with_label("Click here to close the app")
+        #mbexitbutton.set_halign(Gtk.Align.CENTER) # to avoid expansion horizontally
+        #mbexitbutton.connect("clicked", self.exittheapp, applic)
+        #mbexitbutton.get_style_context().add_class("dangerbutton") 
+        #exitbox.pack_start(mbexitbutton, False, False, 0)      
         
         #morestack.add_titled(fybox, "fysettingsbox", "FY Settings")
         morestack.add_titled(prefbox, "preferencesbox", "Preferences")
         morestack.add_titled(ctaxbox, "customtaxslabsbox", "Tax slabs")
         morestack.add_titled(ctaxontax_box, "ctaxontaxslabsmbox", "Tax on Tax slabs")        
         morestack.add_titled(helpbox, "helpguidebox", "Help")
-        morestack.add_titled(aboutbox, "aboutinfobox", "About")
-        morestack.add_titled(exitbox, "exitappbox", "Exit")
+        #morestack.add_titled(aboutbox, "aboutinfobox", "About")
+        #morestack.add_titled(exitbox, "exitappbox", "Exit")
 
         #print("Packing of stack switcher in More pane started")  
         morestack_switcher = Gtk.StackSwitcher()
         morestack_switcher.set_stack(morestack)
-        
-        #print("Packing of more stack started")  
+         
         moremasterbox.pack_start(morestack_switcher, False, False, 10)
         moremasterbox.pack_start(morestack, True, True, 10)
-        #print("Just above return statement in more pane")  
             
         return moremasterbox
             
 
     def exittheapp(self, exitbutton, applic):
-        #global applica
         applic.quit() # automatically reference to global one. If not uncomment the line above.
-    #----------------------------------More box contents end         
-        
+    
 
 

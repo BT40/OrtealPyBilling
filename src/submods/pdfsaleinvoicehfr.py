@@ -62,7 +62,7 @@ class Pdfsihfr():
         document.cell(w=85, h= 5.4, txt=mygst, border='LRB', fill=False, ln=0, align="L")        
 
         pos = 'Place of supply: ' + str(invoicedata_temp[82])
-        document.cell(w=60, h= 5.5, txt=pos, border='LRB', fill=False, ln=0, align="L")
+        document.cell(w=60, h= 5.5, txt=pos, border='LB', fill=False, ln=0, align="L")
         poscode='State code: '+ str(invoicedata_temp[83])
         document.cell(w=0, h= 5.4, txt=poscode, border='R', fill=False, ln=1, align="R")
                 

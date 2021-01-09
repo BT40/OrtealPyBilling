@@ -126,12 +126,12 @@ class GtkNewSale():
         bihb_isplabel.set_margin_left(35)
         bihb_idisclabel = Gtk.Label(label="Discount %")
         bihb_idisclabel.set_margin_left(22)
-        bihb_iclabel = Gtk.Label(label="IC")
+        bihb_iclabel = Gtk.Label(label="") #change to ic text when enabled
         bihb_iclabel.set_sensitive(False)
-        bihb_iclabel.set_margin_left(70)
+        bihb_iclabel.set_margin_left(75) #Original 70 whec IC written 
         bihb_iclabel.set_margin_right(70)
         bihb_iamtlabel = Gtk.Label(label="Amount")
-        bihb_iamtlabel.set_margin_left(75)
+        bihb_iamtlabel.set_margin_left(15) #original 75 when Ic exist
         
        # item1label.set_markup("Item 1 to be billed")
         billitems_headerbox.pack_start(bihb_srlabel, False, False, 0)
@@ -175,10 +175,10 @@ class GtkNewSale():
                 invitemname_completion.set_model(guicommon.itemname_store)
                 invitemname_completion.set_text_column(0)
                 nciiname_tempentry.set_completion(invitemname_completion)               
-                nciic_tempentry = Gtk.Entry() # for more item description/change
-                nciic_tempentry.set_width_chars(16)
-                nciic_tempentry.set_max_length(47)   
-                nciic_tempentry.set_sensitive(False)
+                #nciic_tempentry = Gtk.Entry() # future feature, do not temper 
+                #nciic_tempentry.set_width_chars(16)
+                #nciic_tempentry.set_max_length(47)   
+                #nciic_tempentry.set_sensitive(False)
                 #nciic_tempentry.set_editable(False)
                 nciiqty_tempentry = Gtk.Entry()
                 nciiqty_tempentry.set_width_chars(10)
@@ -190,16 +190,17 @@ class GtkNewSale():
                 nciidiscount_tempentry.set_width_chars(6)  
                 nciidiscount_tempentry.set_max_length(5)                         
                 nciiamt_templabel = Gtk.Label(label='0.00')
+                #nciiamt_templabel.set_xalign(0) # align label left
                 nciiamt_templabel.set_width_chars(21)
-                nciiamt_templabel.set_margin_left(8)
-                nciiamt_templabel.set_margin_right(8)
+                nciiamt_templabel.set_margin_left(98) #ic enabled margin 8, disabled 168
+                nciiamt_templabel.set_margin_right(78)  #ic enabled or disabled 8
                 
                 nciilbvr_box.pack_start(nciiserial_templabel, False, False, 0)
                 nciilbvr_box.pack_start(nciiname_tempentry, False, False, 0)
                 nciilbvr_box.pack_start(nciiqty_tempentry, False, False, 0)
                 nciilbvr_box.pack_start(nciisp_tempentry, False, False, 0)
                 nciilbvr_box.pack_start(nciidiscount_tempentry, False, False, 0)
-                nciilbvr_box.pack_start(nciic_tempentry, False, False, 0) # for more item description/change
+                #nciilbvr_box.pack_start(nciic_tempentry, False, False, 0) # future feature, do not temper with this line/area
                 nciilbvr_box.pack_start(nciiamt_templabel, False, False, 0)
                 
                 nciilb_temprow.add(nciilbvr_box) 
@@ -212,7 +213,7 @@ class GtkNewSale():
                 self.nciilb_isplist.append(nciisp_tempentry)
                 self.nciilb_iqtylist.append(nciiqty_tempentry)
                 self.nciilb_idiscountlist.append(nciidiscount_tempentry)
-                self.nciilb_ic.append(nciic_tempentry)
+                #self.nciilb_ic.append(nciic_tempentry)
                 self.nciilb_iamtlist.append(nciiamt_templabel)
                                
                 def ncii_calcu(tempindex, temprate_str, tempqty_str, tempdisc_str):

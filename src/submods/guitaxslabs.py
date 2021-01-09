@@ -97,7 +97,7 @@ class GtkTaxSlabs():
         tresetbutton = Gtk.Button.new_with_label("Reset")
         #tresetbutton.get_style_context().add_class("suggested-action")
         tresetbutton.set_margin_top(20)
-        #tresetbutton.connect("clicked", self.processtslab, self.ctwidgets, guiinvoicingins)     
+        tresetbutton.connect("clicked", self.reset_fields)     
         
         tcreatebutton = Gtk.Button.new_with_label("Create slab")
         tcreatebutton.get_style_context().add_class("suggested-action")
@@ -237,5 +237,20 @@ class GtkTaxSlabs():
         self.invoicingbox.show_all()        
 
 
-
+    def reset_fields(self, button):
+        
+        self.firsttax_button.set_active(True)
+        self.secondtax_button.set_active(False)
+        self.thirdtax_button.set_active(False)
+        
+        self.tnameentry.set_text('')
+        self.ftname_entry.set_text('')
+        self.stname_entry.set_text('')
+        self.ttname_entry.set_text('')        
+        self.ftrentry.set_text('')
+        self.strentry.set_text('')
+        self.ttrentry.set_text('')
+       
+        
+        
 
