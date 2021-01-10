@@ -176,7 +176,7 @@ class Tealor():
             return rowdata
         
         except:
-            print("Not found, reporting from tealordb readrow")    
+            #print("Not found, reporting from tealordb readrow")    
             val='not_found_row'
             return val
 	

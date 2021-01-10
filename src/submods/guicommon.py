@@ -28,6 +28,7 @@ def loadguicommon():
     
     global taxontax_list
     taxontax_list=miscdbins.get('taxontaxslabslist')   
+    
     global taxontax_data
     taxontax_data=miscdbins.get('taxontaxslabsdata')    
     
@@ -71,7 +72,11 @@ def loadguicommon():
         invoicename_store.append([eachinv_tmp])
         #print (eachinv_tmp)  
     
-    #print('above was guicommon initialisation')    
-   
+    global state_list
+    state_list=miscdbins.get('statelisthome')     
+    
+    global statecodes_list
+    statecodes_list=miscdbins.get('statecodesgsthome')   
+    
     
       

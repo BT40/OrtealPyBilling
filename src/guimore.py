@@ -8,6 +8,7 @@ from submods import guicommon
 from submods import guihelp
 from submods import guitaxslabs
 from submods import guitaxontaxslabs
+from submods import guimanage
 from submods import guipreferences
 from submods import guiprocessor
 from datetime import datetime
@@ -22,7 +23,7 @@ class GtkMore():
       
     #----------------------------------More box contents start         
         
-    def generatepage(self, applic, invoicingbox, bph, guiinvoicingins, mainwindow):
+    def generatepage(self, applic, invoicingbox, bph, guiinvoicingins, companybox, cph, guicompanyins, mainwindow):
            
         moremasterbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
                 
@@ -59,10 +60,10 @@ class GtkMore():
         hth=guihelp.helptips() #help tips holder
         helpbox.pack_start(hth, False, False, 0)
         
-        #aboutbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        #aboutlabel = Gtk.Label()
-        #aboutlabel.set_markup("Version Jan 2021. Try at your own risk. Software is open source.")
-        #aboutbox.pack_start(aboutlabel, True, True, 0)
+        managebox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        guimanageins=guimanage.GtkManage()
+        mbh=guimanageins.generatepage(invoicingbox, bph, guiinvoicingins,  companybox, cph, guicompanyins, mainwindow)
+        managebox.pack_start(mbh, False, False, 0)
         
         #exitbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         #mbexitbutton = Gtk.Button.new_with_label("Click here to close the app")
@@ -74,9 +75,9 @@ class GtkMore():
         #morestack.add_titled(fybox, "fysettingsbox", "FY Settings")
         morestack.add_titled(prefbox, "preferencesbox", "Preferences")
         morestack.add_titled(ctaxbox, "customtaxslabsbox", "Tax slabs")
-        morestack.add_titled(ctaxontax_box, "ctaxontaxslabsmbox", "Tax on Tax slabs")        
+        morestack.add_titled(ctaxontax_box, "ctaxontaxslabsmbox", "Tax on Tax slabs")                
+        morestack.add_titled(managebox, "managebox", "Manage")
         morestack.add_titled(helpbox, "helpguidebox", "Help")
-        #morestack.add_titled(aboutbox, "aboutinfobox", "About")
         #morestack.add_titled(exitbox, "exitappbox", "Exit")
 
         #print("Packing of stack switcher in More pane started")  

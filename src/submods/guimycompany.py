@@ -13,7 +13,7 @@ from submods import functions
 
 
 
-class GtkMoreDialogs():
+class GtkMyComp():
      
 
     def editcompany_dialog (self, parentwindow):
@@ -67,10 +67,13 @@ class GtkMoreDialogs():
 
         cstate_label = Gtk.Label() 
         cstate_label.set_markup("State ")                    
-        self.cstate_entry = Gtk.Entry() 
-        self.cstate_entry.set_width_chars(32)
-        self.cstate_entry.set_max_length(32)  
-        self.cstate_entry.set_halign(Gtk.Align.START)        
+        self.cstate_combo = Gtk.ComboBoxText.new_with_entry() 
+        for es in guicommon.state_list:
+            self.cstate_combo.append_text(es)
+        self.cstate_combo.set_hexpand(False)
+        self.cstate_combo.set_halign(Gtk.Align.CENTER)
+        self.cstate_combo.get_child().set_width_chars(24)     
+        self.cstate_combo.set_halign(Gtk.Align.START)        
         
         ccountry_label = Gtk.Label() 
         ccountry_label.set_markup("Country ")                    
@@ -102,10 +105,10 @@ class GtkMoreDialogs():
         
         
         cstatecode_label = Gtk.Label() 
-        cstatecode_label.set_markup("State code ")                    
+        cstatecode_label.set_markup("State code GST ")                    
         self.cstatecode_entry = Gtk.Entry() 
         self.cstatecode_entry.set_width_chars(8)
-        self.cstatecode_entry.set_max_length(8)    
+        self.cstatecode_entry.set_max_length(2)    
         self.cstatecode_entry.set_halign(Gtk.Align.START)                                        
         
         contentgrid.add(mode_label)
@@ -120,7 +123,7 @@ class GtkMoreDialogs():
         contentgrid.attach(cpin_label, 0, 6, 1, 1)
         contentgrid.attach(self.cpin_entry, 1, 6, 1, 1)
         contentgrid.attach(cstate_label, 0, 7, 1, 1)
-        contentgrid.attach(self.cstate_entry, 1, 7, 1, 1)
+        contentgrid.attach(self.cstate_combo, 1, 7, 1, 1)
         contentgrid.attach(ccountry_label , 0, 8, 1, 1)
         contentgrid.attach(self.cccombo, 1, 8, 1, 1)
         contentgrid.attach(cphone_label, 0, 9, 1, 1)
@@ -147,7 +150,7 @@ class GtkMoreDialogs():
             guicommon.miscdbins.set('mycompanygstin', self.gst_entry.get_text())
             guicommon.miscdbins.set('mycompanycity', self.ccity_entry.get_text())
             guicommon.miscdbins.set('mycompanypin', self.cpin_entry.get_text())
-            guicommon.miscdbins.set('mycompanystate', self.cstate_entry.get_text())
+            guicommon.miscdbins.set('mycompanystate', self.cstate_combo.get_active_text())
             guicommon.miscdbins.set('mycompanycountry', self.cccombo.get_active_text())
             guicommon.miscdbins.set('mycompanystatecode', self.cstatecode_entry.get_text())
             guicommon.miscdbins.set('mycompanyphone', self.cphone_entry.get_text())
@@ -169,7 +172,7 @@ class GtkMoreDialogs():
         self.ca_entry.set_text(guicommon.miscdbins.get('mycompanyaddress'))
         self.ccity_entry.set_text(guicommon.miscdbins.get('mycompanycity'))
         self.cpin_entry.set_text(guicommon.miscdbins.get('mycompanypin'))
-        self.cstate_entry.set_text(guicommon.miscdbins.get('mycompanystate'))
+        self.cstate_combo.get_child().set_text(guicommon.miscdbins.get('mycompanystate'))
         self.cccombo.get_child().set_text(guicommon.miscdbins.get('mycompanycountry'))
         self.cphone_entry.set_text(guicommon.miscdbins.get('mycompanyphone'))
         self.cmail_entry.set_text(guicommon.miscdbins.get('mycompanyemail'))

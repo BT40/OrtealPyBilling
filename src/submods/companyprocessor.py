@@ -14,14 +14,14 @@ def extractccdata(ccvarg):
         cgst=ccvarg[1].get_text()
         caddress=ccvarg[2].get_text()
         ccity=ccvarg[3].get_text()
-        cstate=ccvarg[4].get_text()
+        cstate=ccvarg[4].get_active_text()
         ccountry=ccvarg[5].get_active_text()
         cpin=ccvarg[6].get_text()
         cphone=ccvarg[7].get_text()
         cperson=ccvarg[8].get_text()
         cmobile=ccvarg[9].get_text()
         cemail=ccvarg[10].get_text()
-        cwebsite=ccvarg[11].get_text()
+        cstatecode=ccvarg[11].get_text()
         cbankaccount=ccvarg[12].get_text()
         cbankifsc=ccvarg[13].get_text()
         cbankname=ccvarg[14].get_text()
@@ -60,7 +60,7 @@ def extractccdata(ccvarg):
         cemer='' 
         # compatibily safe code ends, now can be changed        
         
-        cdata=[cname, cgst, cemer, csbac, csbifsc, csbname, csbaddi, ccreatedate, caddress, ccity, cstate, ccountry, cpin, cphone, cperson, cmobile, cemail, cwebsite, cbankaccount, cbankifsc, cbankname, cbankupi, cdistance, cfocus, ccomments, cflag, cdiscount, ccreditlimit, ccpaymentindays,  cinstapay, cblacklisted ]
+        cdata=[cname, cgst, cemer, csbac, csbifsc, csbname, csbaddi, ccreatedate, caddress, ccity, cstate, ccountry, cpin, cphone, cperson, cmobile, cemail, cstatecode, cbankaccount, cbankifsc, cbankname, cbankupi, cdistance, cfocus, ccomments, cflag, cdiscount, ccreditlimit, ccpaymentindays,  cinstapay, cblacklisted ]
         #print(cdata)
         return cdata        
 
@@ -73,14 +73,14 @@ def extractecdata(ecvarg):
         cgst=ecvarg[1].get_text()
         caddress=ecvarg[2].get_text()
         ccity=ecvarg[3].get_text()
-        cstate=ecvarg[4].get_text()
+        cstate=ecvarg[4].get_active_text()
         ccountry=ecvarg[5].get_active_text()
         cpin=ecvarg[6].get_text()
         cphone=ecvarg[7].get_text()
         cperson=ecvarg[8].get_text()
         cmobile=ecvarg[9].get_text()
         cemail=ecvarg[10].get_text()
-        cwebsite=ecvarg[11].get_text()
+        cstatecode=ecvarg[11].get_text()
         cbankaccount=ecvarg[12].get_text()
         cbankifsc=ecvarg[13].get_text()
         cbankname=ecvarg[14].get_text()
@@ -119,7 +119,7 @@ def extractecdata(ecvarg):
         cemer='' 
         # compatibily safe code ends, now can be changed        
         
-        cdata=[cname, cgst, cemer, csbac, csbifsc, csbname, csbaddi, ccreatedate, caddress, ccity, cstate, ccountry, cpin, cphone, cperson, cmobile, cemail, cwebsite, cbankaccount, cbankifsc, cbankname, cbankupi, cdistance, cfocus, ccomments, cflag, cdiscount, ccreditlimit, ccpaymentindays,  cinstapay, cblacklisted ]
+        cdata=[cname, cgst, cemer, csbac, csbifsc, csbname, csbaddi, ccreatedate, caddress, ccity, cstate, ccountry, cpin, cphone, cperson, cmobile, cemail, cstatecode, cbankaccount, cbankifsc, cbankname, cbankupi, cdistance, cfocus, ccomments, cflag, cdiscount, ccreditlimit, ccpaymentindays,  cinstapay, cblacklisted ]
         #print(cdata)
         return cdata        
 

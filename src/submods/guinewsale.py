@@ -320,7 +320,7 @@ class GtkNewSale():
         #self.placeofsupply_entry.set_text("")
         self.placeofsupply_entry.set_width_chars(16)
         self.placeofsupply_entry.set_max_length(16)
-           
+        
         mischlabel = Gtk.Label() # miscellaneous charges
         mischlabel.set_markup("Other charges")        
             
@@ -336,20 +336,20 @@ class GtkNewSale():
         self.paymentmode_entry.set_width_chars(16)
         self.paymentmode_entry.set_max_length(20)
         
-        transportmode_label = Gtk.Label() 
-        transportmode_label.set_markup("Transport mode")                    
-        self.transportmode_entry = Gtk.Entry() 
-        self.transportmode_entry.set_width_chars(18)
-        self.transportmode_entry.set_max_length(16)    
-        self.transportmode_entry.set_halign(Gtk.Align.START)                      
+        poscode_label = Gtk.Label() 
+        poscode_label.set_markup("State code place of sup.")                    
+        self.posstatecode_entry = Gtk.Entry() 
+        self.posstatecode_entry.set_width_chars(16)
+        self.posstatecode_entry.set_max_length(2)    
+        self.posstatecode_entry.set_halign(Gtk.Align.START)  
         
         roundofflabel = Gtk.Label() # tax on tax
-        roundofflabel.set_margin_left(10)
+        roundofflabel.set_margin_left(33)
         roundofflabel.set_margin_right(10)
         roundofflabel.set_markup("Roundoff")
         self.roundoff_button = Gtk.CheckButton()
-        self.roundoff_button.set_margin_left(33)
-        self.roundoff_button.set_margin_right(20)
+        self.roundoff_button.set_margin_left(55)
+        self.roundoff_button.set_margin_right(40)
         if self.roundoff_enabled=='yes':
             self.roundoff_button.set_active(True) 
         else:    
@@ -359,7 +359,7 @@ class GtkNewSale():
         invoicemorebutton = Gtk.Button.new_with_label("More")
         invoicemorebutton.get_child().set_width_chars(5)
         invoicemorebutton.connect("clicked", self.more_pressed)
-        invoicemorebutton.set_margin_left(110)
+        invoicemorebutton.set_margin_left(100)
         
         invoiceresetbutton = Gtk.Button.new_with_label("Reset")
         invoiceresetbutton.get_child().set_width_chars(5)
@@ -367,11 +367,10 @@ class GtkNewSale():
         invoiceresetbutton.connect("clicked", self.resetncifields)
         
         nextbutton = Gtk.Button.new_with_label("Save")
-        nextbutton.get_child().set_width_chars(5)
+        nextbutton.get_child().set_width_chars(6)
         nextbutton.get_style_context().add_class("suggested-action")
         nextbutton.connect("clicked", self.processnci)          
-        
-        
+               
         gridfooter.add(mischlabel)
         gridfooter.attach(self.mischentry, 0, 1, 1, 1)
         gridfooter.attach(discountlabel, 2, 0, 1, 1)
@@ -379,13 +378,13 @@ class GtkNewSale():
         
         gridfooter.attach(paymentmode_label, 3, 0, 1, 1)
         gridfooter.attach(self.paymentmode_entry, 3, 1, 1, 1) 
-        gridfooter.attach(poslabel, 5, 0, 1, 1)
-        gridfooter.attach(self.placeofsupply_entry, 5, 1, 1, 1)       
+        gridfooter.attach(poslabel, 4, 0, 1, 1)
+        gridfooter.attach(self.placeofsupply_entry, 4, 1, 1, 1)       
         
         gridfooter.attach(roundofflabel, 6, 0, 1, 1)
         gridfooter.attach(self.roundoff_button, 6, 1, 1, 1)
-        gridfooter.attach(transportmode_label, 4, 0, 1, 1)
-        gridfooter.attach(self.transportmode_entry, 4, 1, 1, 1)   
+        gridfooter.attach(poscode_label, 5, 0, 1, 1)
+        gridfooter.attach(self.posstatecode_entry, 5, 1, 1, 1)   
         gridfooter.attach(invoicemorebutton, 9, 1, 1, 1)     
         gridfooter.attach(invoiceresetbutton, 10, 1, 1, 1)
         gridfooter.attach(nextbutton, 11, 1, 1, 1)
@@ -439,10 +438,12 @@ class GtkNewSale():
         
         self.nsi_header_widgets=[self.invoicenmbr, self.invoicedate, self.invcompany, self.ponmbr, self.taxcombo, self.taxontaxcombo]
         
-        self.nsi_footer_widgets=[self.basicamtdisp, self.discountentry, self.placeofsupply_entry, self.mischentry, self.paymentmode_entry,  self.taxamount, self.taxontaxamount, self.gtotaldisp, self.transportmode_entry]
+        self.nsi_footer_widgets=[self.basicamtdisp, self.discountentry, self.placeofsupply_entry, self.mischentry, self.paymentmode_entry,  self.taxamount, self.taxontaxamount, self.gtotaldisp, self.posstatecode_entry]
          
         self.nsi_itemswidgets=[self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist,self.nciilb_ic, self.nciilb_iamtlist]   
        
+        
+        self.invcompany.connect("changed", saleinvoicingprocessor.changed_companyname, self.invcompany, self.placeofsupply_entry, self.posstatecode_entry ) 
        
         invoicingmasterbox.pack_start(billbox, False, False, 0)      
         
@@ -456,7 +457,7 @@ class GtkNewSale():
         self.inv_prefix=guicommon.miscdbins.get('invoiceprefix')       
         self.temp_basicamt, self.taxable_amount, self.roundoff_amt = 0, 0, 0 #for tax combo compatibility
         self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.invoicedata_temp = '', '', '', '', ''
-        self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin ='', '', '', '', ''
+        self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.ship_statecode ='', '', '', '', '', '75'
         self.compchange_detector='' #mechanism to detect company change after more pressed and change shipping accordingly
         self.rcvalue='No' # reverse charge
         self.more_opened='no'    #mechanism to detect address change
@@ -486,7 +487,7 @@ class GtkNewSale():
            
     def processnci(self, nextbutton):
        
-        self.nsi_oth_val= [self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.rcvalue, self.more_opened ]
+        self.nsi_oth_val= [self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.rcvalue, self.more_opened, self.ship_statecode ]
         
         self.invoicedata_temp=saleinvoicingprocessor.processnci('new', self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt ) #new denotes creating fresh row in database
         self.pdfsi_ins=pdfsaleinvoice.PdfSI()
@@ -502,9 +503,9 @@ class GtkNewSale():
             self.roundoff_button.set_active(False)
         self.initialise_oth_variables()
         self.paymentmode_entry.set_text('')
-        self.transportmode_entry.set_text('')
         self.discountentry.set_text('')
         self.placeofsupply_entry.set_text('')
+        self.posstatecode_entry.set_text('')
         self.mischentry.set_text('')
         self.paymentmode_entry.set_text('')
         
@@ -515,7 +516,7 @@ class GtkNewSale():
             print ('Create company first')    
             self.moredialogins.not_more_things(self.mainwindow)    
         else:    
-            self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.compchange_detector =self.moredialogins.more_things(self.mainwindow, self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.invcompany.get_text(), self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.more_opened, self.compchange_detector)
+            self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.transmode, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.compchange_detector =self.moredialogins.more_things(self.mainwindow, self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.transmode, self.invcompany.get_text(), self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.more_opened, self.compchange_detector)
             self.more_opened='yes'
             
  

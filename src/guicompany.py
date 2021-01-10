@@ -59,8 +59,14 @@ class GtkCompany():
         
         ccstatelabel = Gtk.Label()
         ccstatelabel.set_markup("State")     
-        self.ccstateentry = Gtk.Entry()
-        self.ccstateentry.set_max_length(32)
+        
+        self.ccstate_combo = Gtk.ComboBoxText.new_with_entry() 
+        for es in guicommon.state_list:
+            self.ccstate_combo.append_text(es)
+        #self.ccstate_combo.set_active(0)
+        self.ccstate_combo.set_hexpand(False)
+        self.ccstate_combo.set_halign(Gtk.Align.CENTER)
+        self.ccstate_combo.get_child().set_width_chars(32)     
         
         cccountrylabel = Gtk.Label()
         cccountrylabel.set_markup("Country")
@@ -95,10 +101,10 @@ class GtkCompany():
         self.ccemailentry = Gtk.Entry()
         self.ccemailentry.set_max_length(47)
         
-        ccwebsitelabel = Gtk.Label()
-        ccwebsitelabel.set_markup("Website ")
-        self.ccwebsiteentry = Gtk.Entry()
-        self.ccwebsiteentry.set_max_length(32)
+        ccstatecodelabel = Gtk.Label()
+        ccstatecodelabel.set_markup("State code GST  ")
+        self.ccstatecodeentry = Gtk.Entry()
+        self.ccstatecodeentry.set_max_length(2)
         
         cccpersonlabel = Gtk.Label()
         cccpersonlabel.set_markup("Contact Person ")       
@@ -251,9 +257,9 @@ class GtkCompany():
         self.ccshippingaddress_button.set_margin_top(10)  
         self.ccshippingaddress_button.set_active(False) # By default false
             
-        self.ccvarg=[self.ccnameentry, self.ccgstentry, self.ccaddressentry, self.cccityentry, self.ccstateentry, self.ccccombo, self.ccpinentry, self.ccphoneentry, self.cccpersonentry, self.ccmobileentry, self.ccemailentry, self.ccwebsiteentry,  self.ccbankaccountentry, self.ccbankifscentry, self.ccbanknameentry, self.ccbankaddientry,  self.ccdistanceentry, self.ccbusinessareaentry, self.cccommentsentry, self.ccflagentry,  self.ccdospentry, self.cccreditlimitentry, self.ccpaydaysentry,  self.ccinstapaybutton, self.ccblacklistbutton]
+        self.ccvarg=[self.ccnameentry, self.ccgstentry, self.ccaddressentry, self.cccityentry, self.ccstate_combo, self.ccccombo, self.ccpinentry, self.ccphoneentry, self.cccpersonentry, self.ccmobileentry, self.ccemailentry, self.ccstatecodeentry,  self.ccbankaccountentry, self.ccbankifscentry, self.ccbanknameentry, self.ccbankaddientry,  self.ccdistanceentry, self.ccbusinessareaentry, self.cccommentsentry, self.ccflagentry,  self.ccdospentry, self.cccreditlimitentry, self.ccpaydaysentry,  self.ccinstapaybutton, self.ccblacklistbutton]
         
-        self.ccentries=[self.ccnameentry, self.ccgstentry, self.ccaddressentry, self.cccityentry, self.ccstateentry, self.ccpinentry, self.ccphoneentry, self.cccpersonentry, self.ccmobileentry, self.ccemailentry, self.ccwebsiteentry,  self.ccbankaccountentry, self.ccbankifscentry, self.ccbanknameentry, self.ccbankaddientry,  self.ccdistanceentry, self.ccbusinessareaentry, self.cccommentsentry, self.ccflagentry, self.ccdospentry, self.cccreditlimitentry, self.ccpaydaysentry]
+        self.ccentries=[self.ccnameentry, self.ccgstentry, self.ccaddressentry, self.cccityentry, self.ccpinentry, self.ccphoneentry, self.cccpersonentry, self.ccmobileentry, self.ccemailentry, self.ccstatecodeentry,  self.ccbankaccountentry, self.ccbankifscentry, self.ccbanknameentry, self.ccbankaddientry,  self.ccdistanceentry, self.ccbusinessareaentry, self.cccommentsentry, self.ccflagentry, self.ccdospentry, self.cccreditlimitentry, self.ccpaydaysentry]
         
         cccreatebutton = Gtk.Button.new_with_label("Create")
         cccreatebutton.set_name('cccb')
@@ -273,7 +279,7 @@ class GtkCompany():
         gridccbox.attach(cccitylabel, 0, 3, 1, 1)
         gridccbox.attach(self.cccityentry, 1, 3, 1, 1)
         gridccbox.attach(ccstatelabel, 0, 4, 1, 1)
-        gridccbox.attach(self.ccstateentry, 1, 4, 1, 1)
+        gridccbox.attach(self.ccstate_combo, 1, 4, 1, 1)
         gridccbox.attach(cccountrylabel, 0, 5, 1, 1)
         gridccbox.attach(self.ccccombo, 1, 5, 1, 1)
         gridccbox.attach(ccpinlabel, 0, 6, 1, 1)
@@ -286,8 +292,8 @@ class GtkCompany():
         gridccbox.attach(self.ccmobileentry, 1, 9, 1, 1)
         gridccbox.attach(ccemaillabel, 0, 10, 1, 1)
         gridccbox.attach(self.ccemailentry, 1, 10, 1, 1)
-        gridccbox.attach(ccwebsitelabel, 0, 11, 1, 1)
-        gridccbox.attach(self.ccwebsiteentry, 1, 11, 1, 1) 
+        gridccbox.attach(ccstatecodelabel, 0, 11, 1, 1)
+        gridccbox.attach(self.ccstatecodeentry, 1, 11, 1, 1) 
         gridccbox.attach(ccbankaccountlabel, 0, 13, 1, 1)
         gridccbox.attach(self.ccbankaccountentry, 1, 13, 1, 1)
         gridccbox.attach(ccbankifsclabel, 0, 14, 1, 1)
@@ -376,8 +382,14 @@ class GtkCompany():
         
         ecstatelabel = Gtk.Label()
         ecstatelabel.set_markup("State")
-        self.ecstateentry = Gtk.Entry()
-        self.ecstateentry.set_max_length(32)
+        
+        self.ecstate_combo = Gtk.ComboBoxText.new_with_entry() 
+        for esn in guicommon.state_list:
+            self.ecstate_combo.append_text(esn)
+        self.ecstate_combo.set_hexpand(False)
+        self.ecstate_combo.set_halign(Gtk.Align.CENTER)
+        self.ecstate_combo.get_child().set_width_chars(32)     
+        
         
         eccountrylabel = Gtk.Label()
         eccountrylabel.set_markup("Country")       
@@ -411,10 +423,10 @@ class GtkCompany():
         self.ecemailentry = Gtk.Entry()
         self.ecemailentry.set_max_length(47)
         
-        ecwebsitelabel = Gtk.Label()
-        ecwebsitelabel.set_markup("Website ")
-        self.ecwebsiteentry = Gtk.Entry()
-        self.ecwebsiteentry.set_max_length(32)
+        ecstatecodelabel = Gtk.Label()
+        ecstatecodelabel.set_markup("State code GST ")
+        self.ecstatecodeentry = Gtk.Entry()
+        self.ecstatecodeentry.set_max_length(2)
         
         eccpersonlabel = Gtk.Label()
         eccpersonlabel.set_markup("Contact Person ")
@@ -567,9 +579,9 @@ class GtkCompany():
         self.ecshippingaddress_button.set_margin_top(10)  
         self.ecshippingaddress_button.set_active(False) # By default false  
             
-        self.ecvarg=[self.ecnameentry, self.ecgstentry, self.ecaddressentry, self.eccityentry, self.ecstateentry, self.ecccombo, self.ecpinentry, self.ecphoneentry, self.eccpersonentry, self.ecmobileentry, self.ecemailentry, self.ecwebsiteentry,  self.ecbankaccountentry, self.ecbankifscentry, self.ecbanknameentry, self.ecbankaddientry,  self.ecdistanceentry, self.ecbusinessareaentry, self.eccommentsentry, self.ecflagentry,  self.ecdospentry, self.eccreditlimitentry, self.ecpaydaysentry,  self.ecinstapaybutton, self.ecblacklistbutton]
+        self.ecvarg=[self.ecnameentry, self.ecgstentry, self.ecaddressentry, self.eccityentry, self.ecstate_combo, self.ecccombo, self.ecpinentry, self.ecphoneentry, self.eccpersonentry, self.ecmobileentry, self.ecemailentry, self.ecstatecodeentry,  self.ecbankaccountentry, self.ecbankifscentry, self.ecbanknameentry, self.ecbankaddientry,  self.ecdistanceentry, self.ecbusinessareaentry, self.eccommentsentry, self.ecflagentry,  self.ecdospentry, self.eccreditlimitentry, self.ecpaydaysentry,  self.ecinstapaybutton, self.ecblacklistbutton]
         
-        self.ecentries=[self.ecnameentry, self.ecgstentry, self.ecaddressentry, self.eccityentry, self.ecstateentry, self.ecpinentry, self.ecphoneentry, self.eccpersonentry, self.ecmobileentry, self.ecemailentry, self.ecwebsiteentry,  self.ecbankaccountentry, self.ecbankifscentry, self.ecbanknameentry, self.ecbankaddientry,  self.ecdistanceentry, self.ecbusinessareaentry, self.eccommentsentry, self.ecflagentry, self.ecdospentry, self.eccreditlimitentry, self.ecpaydaysentry]
+        self.ecentries=[self.ecnameentry, self.ecgstentry, self.ecaddressentry, self.eccityentry, self.ecpinentry, self.ecphoneentry, self.eccpersonentry, self.ecmobileentry, self.ecemailentry, self.ecstatecodeentry,  self.ecbankaccountentry, self.ecbankifscentry, self.ecbanknameentry, self.ecbankaddientry,  self.ecdistanceentry, self.ecbusinessareaentry, self.eccommentsentry, self.ecflagentry, self.ecdospentry, self.eccreditlimitentry, self.ecpaydaysentry]
         
         ecsavebutton = Gtk.Button.new_with_label("Save")
         ecsavebutton.set_name('ecsb')
@@ -594,7 +606,7 @@ class GtkCompany():
         gridecbox.attach(eccitylabel, 0, 3, 1, 1)
         gridecbox.attach(self.eccityentry, 1, 3, 1, 1)
         gridecbox.attach(ecstatelabel, 0, 4, 1, 1)
-        gridecbox.attach(self.ecstateentry, 1, 4, 1, 1)
+        gridecbox.attach(self.ecstate_combo, 1, 4, 1, 1)
         gridecbox.attach(eccountrylabel, 0, 5, 1, 1)
         gridecbox.attach(self.ecccombo, 1, 5, 1, 1)
         gridecbox.attach(ecpinlabel, 0, 6, 1, 1)
@@ -607,8 +619,8 @@ class GtkCompany():
         gridecbox.attach(self.ecmobileentry, 1, 9, 1, 1)
         gridecbox.attach(ecemaillabel, 0, 10, 1, 1)
         gridecbox.attach(self.ecemailentry, 1, 10, 1, 1)
-        gridecbox.attach(ecwebsitelabel, 0, 11, 1, 1)
-        gridecbox.attach(self.ecwebsiteentry, 1, 11, 1, 1) 
+        gridecbox.attach(ecstatecodelabel, 0, 11, 1, 1)
+        gridecbox.attach(self.ecstatecodeentry, 1, 11, 1, 1) 
         gridecbox.attach(ecbankaccountlabel, 0, 13, 1, 1)
         gridecbox.attach(self.ecbankaccountentry, 1, 13, 1, 1)
         gridecbox.attach(ecbankifsclabel, 0, 14, 1, 1)
@@ -708,7 +720,6 @@ class GtkCompany():
         return self.companymasterbox 
 
 #=========================================================================================================  
-
           
     #-------- Functions used in Create pane  ----------------------------------------------------------------------
        
@@ -716,7 +727,6 @@ class GtkCompany():
         cdata=companyprocessor.extractccdata(ccvarg)
         #print(cdata)
         self.companytableins.createrow(cdata[0], cdata)
-        #cteminstance.createitem(cdata)
         self.ccresetfields('mimicevent', self.ccentries)    # set form fields to blank fields
         guicommon.loadguicommon()    
         self.ecname_completion.set_model(guicommon.companyname_store)
@@ -729,9 +739,6 @@ class GtkCompany():
         bph=guiinvoicingins.generatepage(self.mainwindow)
         invoicingbox.add(bph)
         invoicingbox.show_all()        
-        
-        #guiinvoicingins.nciname_completion.set_model(guicommon.companyname_store)             
-        #guiinvoicingins.invcompany.set_completion(guiinvoicingins.nciname_completion)  
         print("Successfully created company")
         return 1    
 
@@ -748,8 +755,6 @@ class GtkCompany():
         self.nocte=self.ecnameentry.get_text() #name of company to be edited
         ecfetcheditem=self.companytableins.readrow(self.nocte)   
         self.ec_temprowindex=self.companytableins.rowlist.index(self.nocte)
-        #print('row ec index is')
-        #print(self.ec_temprowindex)
         
         for anyentry in self.ecvarg:
             anyentry.set_sensitive(True)     
@@ -758,14 +763,14 @@ class GtkCompany():
         self.ecgstentry.set_text(ecfetcheditem[1])
         self.ecaddressentry.set_text(ecfetcheditem[8])
         self.eccityentry.set_text(ecfetcheditem[9])
-        self.ecstateentry.set_text(ecfetcheditem[10])
+        self.ecstate_combo.get_child().set_text(ecfetcheditem[10])
         self.ecccombo.get_child().set_text(ecfetcheditem[11])
         self.ecpinentry.set_text(ecfetcheditem[12])
         self.ecphoneentry.set_text(ecfetcheditem[13])
         self.eccpersonentry.set_text(ecfetcheditem[14])
         self.ecmobileentry.set_text(ecfetcheditem[15])
         self.ecemailentry.set_text(ecfetcheditem[16])       
-        self.ecwebsiteentry.set_text(ecfetcheditem[17])
+        self.ecstatecodeentry.set_text(ecfetcheditem[17])
         self.ecbankaccountentry.set_text(ecfetcheditem[18])
         self.ecbankifscentry.set_text(ecfetcheditem[19])
         self.ecbanknameentry.set_text(ecfetcheditem[20])

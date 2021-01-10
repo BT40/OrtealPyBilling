@@ -1,6 +1,5 @@
 from submods import functions
 from submods import guicommon
-from submods import guimoredialogs
 import sys
 import gi
 
@@ -14,31 +13,23 @@ class GtkPreferences():
 
 
     def generatepage(self, mainwindow):
-    
-        md=guimoredialogs.GtkMoreDialogs() #instance
         
-        pref_mainbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20) 
+        pref_mainbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10) 
         
         prefgrid = Gtk.Grid() #tax on tax slab
         pref_mainbox.pack_start(prefgrid, True, True, 0)
         
-        yourcompany_label = Gtk.Label()
-        yourcompany_label.set_markup("Your company details ")
-        yourcompany_label.set_margin_top(10)
-        
-        self.yourcompany_button = Gtk.Button.new_with_label("Edit")
-        #self.yourcompany_button.get_style_context().add_class("dangerbutton")
-        self.yourcompany_button.set_margin_top(10)
-        self.yourcompany_button.set_halign(Gtk.Align.START)
-        self.yourcompany_button.connect("clicked", self.edit_companydetails, mainwindow, md)     
+        blank_label = Gtk.Label()
+        blank_label.set_markup(" ")
+        #blank_label.set_margin_top(10)
        
         autoinvoice_label = Gtk.Label()
         autoinvoice_label.set_markup("Automatic invoice numbering  ")
-        autoinvoice_label.set_margin_top(10)
+        autoinvoice_label.set_margin_top(2)
         autoinvoice_label.set_sensitive(False)
         
         self.autoinv_button = Gtk.CheckButton()
-        self.autoinv_button.set_margin_top(10)
+        self.autoinv_button.set_margin_top(2)
         self.autoinv_button.set_active(False) # By default true
         self.autoinv_button.set_sensitive(False)
         
@@ -117,8 +108,7 @@ class GtkPreferences():
         psavebutton.set_margin_top(20)
         psavebutton.connect("clicked", self.process_preferences)               
         
-        prefgrid.add(yourcompany_label)
-        prefgrid.attach(self.yourcompany_button, 1, 0, 1, 1)
+        prefgrid.add(blank_label)
         prefgrid.attach(autoinvoice_label, 0, 1, 1, 1)
         prefgrid.attach(self.autoinv_button, 1, 1, 1, 1)
         #prefgrid.attach(hidepurchase_label, 0, 1, 1, 1)
@@ -212,7 +202,4 @@ class GtkPreferences():
         else:
             self.round_button.set_active(False)
             
-    
-    def edit_companydetails(self, button, mainwindow, md):
-        md.editcompany_dialog(mainwindow)
-    
+

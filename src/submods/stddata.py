@@ -30,7 +30,9 @@ countrieslist=['afghanistan', 'albania', 'algeria', 'andorra', 'angola', 'antigu
 
 
 
+statelist_india_std=['Chandigarh', 'Delhi', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Karnataka', 'Punjab', 'Maharashtra', 'Tamil nadu']
 
+statecodesgst_india_std=['04', '07', '06', '2', '01', '29', '03', '27', '33']
 
 gstslabs_list_std=['GST 0% (SGST+CGST)', 'GST 5% (SGST+CGST)', 'GST 12% (SGST+CGST)', 'GST 18% (SGST+CGST)', 'GST 28% (SGST+CGST)', 'IGST 0%',  'IGST 5%', 'IGST 12%', 'IGST 18%', 'IGST 28%']
 

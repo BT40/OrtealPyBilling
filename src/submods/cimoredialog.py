@@ -15,7 +15,7 @@ from submods import guicommon
 class CImore():
      
 
-    def more_things (self, parentwindow, billcomments, ewaybill, furtherterms, rcvalue, companyname, ship_name, ship_addline, ship_state, ship_phone, ship_pin, more_opened, compchange_detector):
+    def more_things (self, parentwindow, billcomments, ewaybill, furtherterms, rcvalue, transport_mode, companyname, ship_name, ship_addline, ship_state, ship_phone, ship_pin, more_opened, compchange_detector):
         #this modifies the pre-initiated default values
 
         more_dialog = Gtk.Dialog('More options', parentwindow, Gtk.DialogFlags.MODAL)
@@ -30,7 +30,7 @@ class CImore():
         mode_label = Gtk.Label() 
         mode_label.set_markup("  ")          
         
-        rc_label = Gtk.Label("Reverse charge")       
+        rc_label = Gtk.Label("Reverse charge GST")       
         self.rccombo = Gtk.ComboBoxText()
         self.rccombo.set_halign(Gtk.Align.START)
         rclist=['No', 'Yes']
@@ -63,6 +63,14 @@ class CImore():
         self.furthertermsline1_entry.set_width_chars(47)
         self.furthertermsline1_entry.set_max_length(47)
         self.furthertermsline1_entry.set_text(furtherterms)
+        
+        transportmode_label = Gtk.Label() 
+        transportmode_label.set_markup("Transport mode")                    
+        self.transportmode_entry = Gtk.Entry() 
+        self.transportmode_entry.set_width_chars(18)
+        self.transportmode_entry.set_max_length(16)    
+        self.transportmode_entry.set_halign(Gtk.Align.START)    
+        self.transportmode_entry.set_text(transport_mode)           
         
         shippingname_label = Gtk.Label() 
         shippingname_label.set_markup("Shipped to:")                    
@@ -106,6 +114,8 @@ class CImore():
         contentgrid.attach(self.bcommentry, 1, 2, 1, 1)        
         contentgrid.attach(furthertermsline1_label, 0, 3, 1, 1)
         contentgrid.attach(self.furthertermsline1_entry, 1, 3, 1, 1)
+        contentgrid.attach(transportmode_label, 0, 4, 1, 1)
+        contentgrid.attach(self.transportmode_entry, 1, 4, 1, 1)
         contentgrid.attach(shippingname_label, 0, 5, 1, 1)
         contentgrid.attach(self.shippingname_entry, 1, 5, 1, 1)
         contentgrid.attach(shippingadd_label, 0, 6, 1, 1)
@@ -143,6 +153,7 @@ class CImore():
             ewaybill=self.ewayentry.get_text()
             billcomments=self.bcommentry.get_text()
             furtherterms=self.furthertermsline1_entry.get_text()
+            transport_mode=self.transportmode_entry.get_text()
             ship_name=self.shippingname_entry.get_text()
             ship_addline=self.shippingadd_entry.get_text()
             ship_pin=self.shippingpin_entry.get_text()
@@ -156,7 +167,7 @@ class CImore():
 
         more_dialog.destroy()
         #print('more dialog complete')
-        return billcomments, ewaybill, furtherterms, rcvalue, ship_name, ship_addline, ship_state, ship_phone, ship_pin, companyname
+        return billcomments, ewaybill, furtherterms, rcvalue, transport_mode, ship_name, ship_addline, ship_state, ship_phone, ship_pin, companyname
     
     
     def load_default_shipping(self, companyname):  #values same as original database

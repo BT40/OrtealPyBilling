@@ -118,15 +118,12 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
     inv_taxamount=nsi_footer_widgets[5].get_text()
     inv_taxontaxamount=nsi_footer_widgets[6].get_text()
     inv_grandamount=nsi_footer_widgets[7].get_text()
-    transport_mode=nsi_footer_widgets[8].get_text()
+    pos_code=nsi_footer_widgets[8].get_text()
     
     inv_comments=nsi_oth_val[0]
-    
+    transport_mode=nsi_oth_val[1]
     ewaybill_nmbr=nsi_oth_val[2]
     furtherterms=nsi_oth_val[3]
-    #print(ewaybill_nmbr)
-    #print(furtherterms)
-    #print('above eway, further term')
     reverse_charge=nsi_oth_val[9]
     
     sourcecompany=guicommon.miscdbins.get('mycompanyname')
@@ -139,7 +136,7 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
         shippingpin=nsi_oth_val[8]
         shippingphone=nsi_oth_val[7]
         shippingstate=nsi_oth_val[6]
-        shippingstatecode='na'
+        shippingstatecode=nsi_oth_val[11]
         
     else: #more not opened, use default  
         handovername=inv_toparty
@@ -237,8 +234,6 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
         #ithirdtax_holder.append(ithirdtax_value)  #If each item tax value needed
         i=i+1  
     
-    
-    pos_code='98'
     inv_something=''
     gst_compliances_expansion=[ '', '', '', '', '']
     invid=str(inv_date)+ ',' + str(inv_nmbr)
@@ -325,10 +320,21 @@ def get_company_details (sourcecompany, inv_toparty):
     customer_gst=customer_details[1]
     customer_pin=customer_details[9] + ', ' + customer_details[12]
     customer_state=customer_details[10]
-    customer_statecode='1220'
+    customer_statecode=customer_details[17]
     customer_phone=customer_details[13]
     
     return supplier_address, supplier_pin, supplier_phone, supplier_email, supplier_gst, supplier_state, supplier_statecode, customer_address, customer_pin, customer_phone, customer_gst, customer_state, customer_statecode 
     
-
+    
+def changed_companyname (self, nameentrywidget, placeofsupply_entry, posstate_code_entry):
+    try:
+        temp_name=str(nameentrywidget.get_text())
+        temp_details=guicommon.companytableins.readrow(temp_name)
+        #nameindex=guicommon.companytableins.rowlist.index(temp_name)
+        #tempplace=guicommon.companytableins.rowcollection[nameindex][9]
+        placeofsupply_entry.set_text(temp_details[9])
+        posstate_code_entry.set_text(temp_details[17])
+    except:
+        pass
+    
 

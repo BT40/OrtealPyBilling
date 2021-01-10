@@ -1,15 +1,11 @@
 Orteal-PyBilling
 
-A simple billing app UNDER DEVELOPMENT. 
+A simple billing app UNDER DEVELOPMENT. Open source.
+What works: Invoice, item, company, tax slabs creation and modification. Invoice printing.
 
-Many things are broken. Exception handling not implemented yet.
-What works: Item, company, tax slabs creation and modification. Invoice creation and printing.
-Not working yet: Existing invoice modification
+Warning: Some things might be broken. Exception handling not implemented yet.
 
-This app is implementing GTK3 GUI Library, coding is done in python. 
+Implementions: GTK3 GUI Library, python for coding, pickleDB database 
 
 Project started on 16 june 2020
-
 Original author: BT40
-
-Open source

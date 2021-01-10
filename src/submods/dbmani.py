@@ -100,7 +100,9 @@ def loadidbase():
         miscdb.set('checkpresence', 'present')    
         miscdb.set('itemgroups', ['none'])
         miscdb.set('taxontaxslabslist', stddata.taxontax_list_std)
-        miscdb.set('taxontaxslabsdata', stddata.taxontax_data_std)        
+        miscdb.set('taxontaxslabsdata', stddata.taxontax_data_std)    
+        miscdb.set('statelisthome', stddata.statelist_india_std)    
+        miscdb.set('statecodesgsthome', stddata.statecodesgst_india_std)        
         miscdb.set('roundoffenabled', 'yes')
         miscdb.set('autoinvoice_numbering', 'no')
         miscdb.set('hidepurchasedata', 'no')
@@ -109,6 +111,7 @@ def loadidbase():
         miscdb.set('termsline2', '')
         miscdb.set('termsline3', '')
         miscdb.set('termsline4', '')
+        miscdb.set('termsline5', '')
         miscdb.set('currentfinancialyear', 'Disabled')
         
         miscdb.set('mycompanyname', '')        
@@ -121,7 +124,6 @@ def loadidbase():
         miscdb.set('mycompanystatecode', '')
         miscdb.set('mycompanyphone', '')
         miscdb.set('mycompanyemail', '')
-        
                 
         miscdb.dump()
         itemgroups=miscdb.get('itemgroups')
