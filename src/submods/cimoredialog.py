@@ -15,7 +15,7 @@ from submods import guicommon
 class CImore():
      
 
-    def more_things (self, parentwindow, billcomments, ewaybill, furtherterms, rcvalue, transport_mode, companyname, ship_name, ship_addline, ship_state, ship_phone, ship_pin, more_opened, compchange_detector):
+    def more_things (self, parentwindow, billcomments, ewaybill, furtherterms, rcvalue, transport_mode, companyname, ship_name, ship_addline, ship_state, ship_phone, ship_pin, more_opened, compchange_detector, ship_statecode):
         #this modifies the pre-initiated default values
 
         more_dialog = Gtk.Dialog('More options', parentwindow, Gtk.DialogFlags.MODAL)
@@ -91,7 +91,21 @@ class CImore():
         self.shippingstate_entry = Gtk.Entry() 
         self.shippingstate_entry.set_width_chars(32)
         self.shippingstate_entry.set_max_length(32)  
-        self.shippingstate_entry.set_halign(Gtk.Align.START)        
+        self.shippingstate_entry.set_halign(Gtk.Align.START)   
+        
+        self.state_combo = Gtk.ComboBoxText.new_with_entry() 
+        for esn in guicommon.state_list:
+            self.state_combo.append_text(esn)
+        self.state_combo.set_hexpand(False)
+        self.state_combo.set_halign(Gtk.Align.START)
+        self.state_combo.get_child().set_width_chars(32)     
+        
+        shippingstatecode_label = Gtk.Label() 
+        shippingstatecode_label.set_markup("State code (Shipping) ")                    
+        self.shippingstatecode_entry = Gtk.Entry() 
+        self.shippingstatecode_entry.set_width_chars(8)
+        self.shippingstatecode_entry.set_max_length(2)  
+        self.shippingstatecode_entry.set_halign(Gtk.Align.START)           
         
         shippingpin_label = Gtk.Label() 
         shippingpin_label.set_markup("Shipping city, PIN")                    
@@ -121,13 +135,15 @@ class CImore():
         contentgrid.attach(shippingadd_label, 0, 6, 1, 1)
         contentgrid.attach(self.shippingadd_entry, 1, 6, 1, 1)
         contentgrid.attach(shippingstate_label, 0, 8, 1, 1)
-        contentgrid.attach(self.shippingstate_entry, 1, 8, 1, 1)
+        contentgrid.attach(self.state_combo, 1, 8, 1, 1)
+        contentgrid.attach(shippingstatecode_label, 0, 9, 1, 1)
+        contentgrid.attach(self.shippingstatecode_entry, 1, 9, 1, 1)
         contentgrid.attach(shippingpin_label, 0, 7, 1, 1)
         contentgrid.attach(self.shippingpin_entry, 1, 7, 1, 1)
-        contentgrid.attach(sphone_label, 0, 9, 1, 1)
-        contentgrid.attach(self.sphone_entry, 1, 9, 1, 1)
-        contentgrid.attach(rc_label, 0, 10, 1, 1)
-        contentgrid.attach(self.rccombo, 1, 10, 1, 1)
+        contentgrid.attach(sphone_label, 0, 10, 1, 1)
+        contentgrid.attach(self.sphone_entry, 1, 10, 1, 1)
+        contentgrid.attach(rc_label, 0, 12, 1, 1)
+        contentgrid.attach(self.rccombo, 1, 12, 1, 1)
         
         more_dialog.vbox.add(contentgrid)
         contentgrid.show_all()    
@@ -144,7 +160,7 @@ class CImore():
             
         else: #if second time opening more dialog
             if compchange_detector==companyname: #load prev values if company name is unchanged
-                self.load_prev_shipping(companyname, ship_name, ship_addline, ship_state, ship_phone, ship_pin)          
+                self.load_prev_shipping(companyname, ship_name, ship_addline, ship_state, ship_phone, ship_pin, ship_statecode)          
             else: #reload new address as company is changed
                 self.load_default_shipping(companyname)  
                 
@@ -157,7 +173,8 @@ class CImore():
             ship_name=self.shippingname_entry.get_text()
             ship_addline=self.shippingadd_entry.get_text()
             ship_pin=self.shippingpin_entry.get_text()
-            ship_state=self.shippingstate_entry.get_text()
+            ship_state=self.state_combo.get_active_text()
+            ship_statecode=self.shippingstatecode_entry.get_text()
             ship_phone=self.sphone_entry.get_text()
             rcvalue=self.rccombo.get_active_text()
                         
@@ -167,7 +184,7 @@ class CImore():
 
         more_dialog.destroy()
         #print('more dialog complete')
-        return billcomments, ewaybill, furtherterms, rcvalue, transport_mode, ship_name, ship_addline, ship_state, ship_phone, ship_pin, companyname
+        return billcomments, ewaybill, furtherterms, rcvalue, transport_mode, ship_name, ship_addline, ship_state, ship_phone, ship_pin, companyname, ship_statecode
     
     
     def load_default_shipping(self, companyname):  #values same as original database
@@ -175,15 +192,17 @@ class CImore():
             self.shippingname_entry.set_text(companyname)
             self.shippingadd_entry.set_text(customer_details[8])
             self.shippingpin_entry.set_text(customer_details[9]+','+ customer_details[12])
-            self.shippingstate_entry.set_text(customer_details[10])
+            self.state_combo.get_child().set_text(customer_details[10])
+            self.shippingstatecode_entry.set_text(customer_details[17])
             self.sphone_entry.set_text(customer_details[13])
     
     
-    def load_prev_shipping(self, companyname, ship_name, ship_addline, ship_state, ship_phone, ship_pin): #load from prev values
+    def load_prev_shipping(self, companyname, ship_name, ship_addline, ship_state, ship_phone, ship_pin, ship_statecode): #load from prev values
             self.shippingname_entry.set_text(ship_name)
             self.shippingadd_entry.set_text(ship_addline)
             self.shippingpin_entry.set_text(ship_pin)
-            self.shippingstate_entry.set_text(ship_state)
+            self.state_combo.get_child().set_text(ship_state)
+            self.shippingstatecode_entry.set_text(ship_statecode)
             self.sphone_entry.set_text(ship_phone)
             
     

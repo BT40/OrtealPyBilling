@@ -1,5 +1,7 @@
 # This file contains mechanism for printing sale invoice
-
+import sys
+import os
+import signal
 from submods import functions
 from submods import fpdfclass
 from submods import guicommon
@@ -34,9 +36,11 @@ class PdfSI():
         
 
     def printable_saleinvoice (self, invoiceid, invoicedata_temp):
-
+        
+        if not os.path.exists('invoices'): # check folder exist, if not create
+            os.makedirs('invoices')
         invoice_filename=invoiceid+ '.pdf'
-        invoice_output='udat/' + invoice_filename
+        invoice_output='invoices/' + invoice_filename
         
         document=self.some_initialisations()    
         self.pagecount=1

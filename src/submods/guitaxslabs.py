@@ -213,7 +213,7 @@ class GtkTaxSlabs():
         for eachchild in children:
             self.invoicingbox.remove(eachchild)
             eachchild.destroy()
-        self.bph=self.guiinvoicingins.generatepage(self.mainwindow)
+        self.bph=self.guiinvoicingins.generatepage(self.mainwindow, self.guiinvoicingins)
         self.invoicingbox.add(self.bph)
         self.invoicingbox.show_all()        
 
@@ -232,7 +232,7 @@ class GtkTaxSlabs():
         for eachchild in children:
             self.invoicingbox.remove(eachchild)
             eachchild.destroy()
-        self.bph=self.guiinvoicingins.generatepage(self.mainwindow)
+        self.bph=self.guiinvoicingins.generatepage(self.mainwindow, self.guiinvoicingins)
         self.invoicingbox.add(self.bph)
         self.invoicingbox.show_all()        
 

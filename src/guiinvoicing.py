@@ -23,7 +23,7 @@ class GtkInvoicing():
 
     #---------------------------Billbox contents start     
      
-    def generatepage(self, mainwindow):
+    def generatepage(self, mainwindow, guiinvoicingins):
        
         self.mainwindow=mainwindow
         self.newsaleins=guinewsale.GtkNewSale()
@@ -35,7 +35,7 @@ class GtkInvoicing():
         self.invostack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
         self.invostack.set_transition_duration(1000)        
         
-        newsibox=self.newsaleins.billingpage(self.mainwindow)        
+        newsibox=self.newsaleins.billingpage(self.mainwindow, guiinvoicingins)        
         self.invostack.add_titled(newsibox, "newsaleinvoice", "New Sale invoice")
         
         editsibox=self.editsaleins.billedit(self.mainwindow)        

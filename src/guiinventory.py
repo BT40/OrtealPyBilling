@@ -181,9 +181,10 @@ class GtkInventory():
         cigstlabel.set_markup("GST slab")
         
         self.citaxcombo = Gtk.ComboBoxText.new_with_entry()
-        self.citaxcombo.insert(position=0, id="g12", text="GST-12%")
-        self.citaxcombo.insert(position=1, id="g18", text="GST-18%")
-        self.citaxcombo.set_active(1)
+        for ets in guicommon.taxtableins.rowlist:
+            self.citaxcombo.append_text(ets)        
+        self.citaxcombo.set_active(3)
+        self.citaxcombo.get_child().set_width_chars(18)   
         
         citaxinclusive_label = Gtk.Label()
         citaxinclusive_label.set_markup("Tax inclusive ")
@@ -378,9 +379,10 @@ class GtkInventory():
         eigstlabel.set_markup("GST slab")
         
         self.eitaxcombo = Gtk.ComboBoxText.new_with_entry()
-        self.eitaxcombo.insert(position=0, id="g12", text="GST-12%")
-        self.eitaxcombo.insert(position=1, id="g18", text="GST-18%")
-        self.eitaxcombo.set_active(1)
+        for ets2 in guicommon.taxtableins.rowlist:
+            self.eitaxcombo.append_text(ets2)        
+        self.eitaxcombo.set_active(3)
+        self.eitaxcombo.get_child().set_width_chars(18)   
         
         self.eivarg=[self.einameentry, self.eihsnentry, self.eigroupcombo, self.eisubgroupentry, self.eiunitcombo, self.eitaxcombo, self.eiopenstentry, self.eicritentry, self.eilpentry, self.eisdentry, self.eispentry, self.eippentry, self.eicommentry]        
         
@@ -569,7 +571,7 @@ class GtkInventory():
         for eachchild in children:
             invoicingbox.remove(eachchild)
             eachchild.destroy()
-        bph=guiinvoicingins.generatepage(self.mainwindow)
+        bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
         invoicingbox.add(bph)
         invoicingbox.show_all()        
         
@@ -644,7 +646,7 @@ class GtkInventory():
         for eachchild in children:
             invoicingbox.remove(eachchild)
             eachchild.destroy()
-        bph=guiinvoicingins.generatepage(self.mainwindow)
+        bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
         invoicingbox.add(bph)
         invoicingbox.show_all()
         
@@ -714,7 +716,7 @@ class GtkInventory():
         for eachchild in children:
             invoicingbox.remove(eachchild)
             eachchild.destroy()
-        bph=guiinvoicingins.generatepage(self.mainwindow)
+        bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
         invoicingbox.add(bph)
         invoicingbox.show_all()
         return 1                  

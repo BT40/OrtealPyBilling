@@ -144,39 +144,69 @@ class Pdfsihfr():
         
         document.cell(w=85, h= 5.4, txt=str(inv_terms[3]), border='LR', fill=False, ln=0, align="L")
         #first tax
-        ftax_label=str(invoicedata_temp[38]) + '@' + str(invoicedata_temp[41]) + '%'
+        if invoicedata_temp[35]=='n':
+            ftax_label=''
+            ftax_amt='' 
+        else:    
+            ftax_label=str(invoicedata_temp[38]) + '@' + str(invoicedata_temp[41]) + '%'
+            ftax_amt=str(invoicedata_temp[62])
         document.cell(w=53, h= 5.4, txt=str(ftax_label), border='L', fill=False, ln=0, align="L")
-        document.cell(w=0, h= 5.4, txt=str(invoicedata_temp[62]), border='R', fill=False, ln=1, align="R")
+        document.cell(w=0, h= 5.4, txt=ftax_amt, border='R', fill=False, ln=1, align="R")
         
         document.cell(w=85, h= 5.4, txt=str(inv_terms[4]), border='LR', fill=False, ln=0, align="L")
         #second tax
-        stax_label=str(invoicedata_temp[39]) + '@' + str(invoicedata_temp[42]) + '%'
+        if invoicedata_temp[36]=='n':
+            stax_label=''
+            stax_amt='' 
+        else:    
+            stax_label=str(invoicedata_temp[39]) + '@' + str(invoicedata_temp[42]) + '%'
+            stax_amt=str(invoicedata_temp[63])
         document.cell(w=53, h= 5.4, txt=str(stax_label), border='L', fill=False, ln=0, align="L")
-        document.cell(w=0, h= 5.4, txt=str(invoicedata_temp[63]), border='R', fill=False, ln=1, align="R")
+        document.cell(w=0, h= 5.4, txt=stax_amt, border='R', fill=False, ln=1, align="R")
         
         document.cell(w=85, h= 5.4, txt=str(inv_terms[5]), border='LR', fill=False, ln=0, align="L")
         # third tax
-        ttax_label=str(invoicedata_temp[40]) + '@' + str(invoicedata_temp[43]) + '%'
+        if invoicedata_temp[37]=='n':
+            ttax_label='' 
+            ttax_amt=''  
+        else:    
+            ttax_label=str(invoicedata_temp[40]) + '@' + str(invoicedata_temp[43]) + '%'
+            ttax_amt=str(invoicedata_temp[64])
         document.cell(w=53, h= 5.4, txt=str(ttax_label), border='L', fill=False, ln=0, align="L")
-        document.cell(w=0, h= 5.4, txt=str(invoicedata_temp[64]), border='R', fill=False, ln=1, align="R")
+        document.cell(w=0, h= 5.4, txt=ttax_amt, border='R', fill=False, ln=1, align="R")
         
         document.cell(w=85, h= 5.4, txt='', border='LR', fill=False, ln=0, align="L")
-        #first tax on tax        
-        ftot_label=str(invoicedata_temp[49]) + '@' + str(invoicedata_temp[52]) + '%'
+        #first tax on tax       
+        if invoicedata_temp[46]=='n':
+            ftot_label=''
+            ftot_amt=''
+        else:     
+            ftot_label=str(invoicedata_temp[49]) + '@' + str(invoicedata_temp[52]) + '%'
+            ftot_amt=str(invoicedata_temp[66])
         document.cell(w=53, h= 5.4, txt=str(ftot_label), border='L', fill=False, ln=0, align="L")
-        document.cell(w=0, h= 5.4, txt=str(invoicedata_temp[66]), border='R', fill=False, ln=1, align="R")       
+        document.cell(w=0, h= 5.4, txt=ftot_amt, border='R', fill=False, ln=1, align="R")       
         
         document.cell(w=85, h= 5.4, txt='', border='LR', fill=False, ln=0, align="L")
         #second tax on tax
-        stot_label=str(invoicedata_temp[50]) + '@' + str(invoicedata_temp[53]) + '%'
+        if invoicedata_temp[47]=='n':
+            stot_label=''
+            stot_amt=''
+        else:    
+            stot_label=str(invoicedata_temp[50]) + '@' + str(invoicedata_temp[53]) + '%'
+            stot_amt=str(invoicedata_temp[67])
         document.cell(w=35, h= 5.4, txt=str(stot_label), border='L', fill=False, ln=0, align="L")
-        document.cell(w=0, h= 5.4, txt=str(invoicedata_temp[67]), border='R', fill=False, ln=1, align="R")
+        document.cell(w=0, h= 5.4, txt=stot_amt, border='R', fill=False, ln=1, align="R")
         
         document.cell(w=85, h= 5.4, txt='', border='LR', fill=False, ln=0, align="L")
         # third tax on tax
-        ttot_label=str(invoicedata_temp[51]) + '@' + str(invoicedata_temp[54]) + '%'
+        if invoicedata_temp[48]=='n':
+            ttot_label=''
+            ttot_amt=''
+        else:    
+            ttot_label=str(invoicedata_temp[51]) + '@' + str(invoicedata_temp[54]) + '%'
+            ttot_amt=str(invoicedata_temp[68])
         document.cell(w=53, h= 5.4, txt=str(ttot_label), border='L', fill=False, ln=0, align="L")
-        document.cell(w=0, h= 5.4, txt=str(invoicedata_temp[68]), border='R', fill=False, ln=1, align="R")
+        document.cell(w=0, h= 5.4, txt=ttot_amt, border='R', fill=False, ln=1, align="R")
         
         paymentmode = 'Payment mode: ' + invoicedata_temp[32]
         document.cell(w=85, h= 5.5, txt=str(paymentmode), border='TLB', fill=False, ln=0, align="L")

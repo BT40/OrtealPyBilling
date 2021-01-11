@@ -21,6 +21,7 @@ def ini_other_variables(objinstant, fetched_details):
         objinstant.ship_name=fetched_details[25]  
         objinstant.ship_addline=(fetched_details[26])  
         objinstant.ship_state=(fetched_details[29])  
+        objinstant.ship_statecode=(fetched_details[30])  
         objinstant.ship_phone=(fetched_details[28])  
         objinstant.ship_pin=(fetched_details[27])  
         objinstant.rcvalue=str(fetched_details[15])  

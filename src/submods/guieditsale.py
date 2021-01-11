@@ -349,21 +349,21 @@ class GtkEditSale():
         self.paymentmode_entry.set_max_length(20)
         self.paymentmode_entry.set_text(fetched_details[32]) 
         
-        transportmode_label = Gtk.Label() 
-        transportmode_label.set_markup("Transport mode")                    
-        self.transportmode_entry = Gtk.Entry() 
-        self.transportmode_entry.set_width_chars(18)
-        self.transportmode_entry.set_max_length(16)    
-        self.transportmode_entry.set_halign(Gtk.Align.START)                      
-        self.transportmode_entry.set_text(fetched_details[31])   
+        poscode_label = Gtk.Label() 
+        poscode_label.set_markup("State code place of sup.")                    
+        self.posstatecode_entry = Gtk.Entry() 
+        self.posstatecode_entry.set_width_chars(16)
+        self.posstatecode_entry.set_max_length(2)    
+        self.posstatecode_entry.set_halign(Gtk.Align.START)  
+        self.posstatecode_entry.set_text(fetched_details[83])
         
         roundofflabel = Gtk.Label() # tax on tax
         roundofflabel.set_margin_left(10)
         roundofflabel.set_margin_right(10)
         roundofflabel.set_markup("Roundoff")
         self.roundoff_button = Gtk.CheckButton()
-        self.roundoff_button.set_margin_left(33)
-        self.roundoff_button.set_margin_right(20)
+        self.roundoff_button.set_margin_left(55)
+        self.roundoff_button.set_margin_right(40)
         if fetched_details[69]=='yes':
             self.roundoff_button.set_active(True)
             self.roundoff_enabled='yes'
@@ -375,15 +375,15 @@ class GtkEditSale():
         invoicemorebutton = Gtk.Button.new_with_label("More")
         invoicemorebutton.get_child().set_width_chars(5)
         invoicemorebutton.connect("clicked", self.more_pressed)
-        invoicemorebutton.set_margin_left(110)
+        invoicemorebutton.set_margin_left(100)
         
         invoiceresetbutton = Gtk.Button.new_with_label("Cancel")
         invoiceresetbutton.get_child().set_width_chars(5)
         invoiceresetbutton.get_style_context().add_class("dangerbutton")
-        invoiceresetbutton.connect("clicked", self.resetncifields, fetched_details)
+        invoiceresetbutton.connect("clicked", self.resett, fetched_details)
         
         nextbutton = Gtk.Button.new_with_label("Save")
-        nextbutton.get_child().set_width_chars(5)
+        nextbutton.get_child().set_width_chars(6)
         nextbutton.get_style_context().add_class("suggested-action")
         nextbutton.connect("clicked", self.processnci)                 
         
@@ -394,13 +394,12 @@ class GtkEditSale():
         
         gridfooter.attach(paymentmode_label, 3, 0, 1, 1)
         gridfooter.attach(self.paymentmode_entry, 3, 1, 1, 1) 
-        gridfooter.attach(poslabel, 5, 0, 1, 1)
-        gridfooter.attach(self.placeofsupply_entry, 5, 1, 1, 1)       
-        
+        gridfooter.attach(poslabel, 4, 0, 1, 1)
+        gridfooter.attach(self.placeofsupply_entry, 4, 1, 1, 1)       
+        gridfooter.attach(poscode_label, 5, 0, 1, 1)
+        gridfooter.attach(self.posstatecode_entry, 5, 1, 1, 1)   
         gridfooter.attach(roundofflabel, 6, 0, 1, 1)
         gridfooter.attach(self.roundoff_button, 6, 1, 1, 1)
-        gridfooter.attach(transportmode_label, 4, 0, 1, 1)
-        gridfooter.attach(self.transportmode_entry, 4, 1, 1, 1)   
         gridfooter.attach(invoicemorebutton, 9, 1, 1, 1)     
         gridfooter.attach(invoiceresetbutton, 10, 1, 1, 1)
         gridfooter.attach(nextbutton, 11, 1, 1, 1)
@@ -454,9 +453,11 @@ class GtkEditSale():
         
         self.nsi_header_widgets=[self.invoicenmbr, self.invoicedate, self.invcompany, self.ponmbr, self.taxcombo, self.taxontaxcombo]
         
-        self.nsi_footer_widgets=[self.basicamtdisp, self.discountentry, self.placeofsupply_entry, self.mischentry, self.paymentmode_entry,  self.taxamount, self.taxontaxamount, self.gtotaldisp, self.transportmode_entry]
+        self.nsi_footer_widgets=[self.basicamtdisp, self.discountentry, self.placeofsupply_entry, self.mischentry, self.paymentmode_entry,  self.taxamount, self.taxontaxamount, self.gtotaldisp, self.posstatecode_entry]
          
         self.nsi_itemswidgets=[self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist,self.nciilb_ic, self.nciilb_iamtlist]   
+        
+        self.invcompany.connect("changed", saleinvoicingprocessor.changed_companyname, self.invcompany, self.placeofsupply_entry, self.posstatecode_entry ) 
            
         self.temp_basicamt=saleinvoicingprocessor.saleamounting(self.nciilb_iamtlist)
         self.basicamtdisp.set_markup(str(self.temp_basicamt))
@@ -480,7 +481,7 @@ class GtkEditSale():
          
     
     def estimate_tax(self, changedevent):         
-        self.estd_tax, self.taxable_amount =saleinvoicingprocessor.estimatetax(self.taxcombo, self.temp_basicamt, self.discountentry, self.mischentry)
+        self.estd_tax, self.taxable_amount =saleinvoicingprocessor.estimatetax_ei(self.taxcombo, self.temp_basicamt, self.discountentry, self.mischentry)
         self.taxamount.set_markup(str(self.estd_tax))     
     
         
@@ -495,7 +496,7 @@ class GtkEditSale():
            
     def processnci(self, nextbutton):
        
-        self.nsi_oth_val= [self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.rcvalue, self.more_opened ]
+        self.nsi_oth_val= [self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.rcvalue, self.more_opened, self.ship_statecode ]
         
         self.invoicedata_temp=saleinvoicingprocessor.processnci('edit', self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt )
         self.pdfsi_ins=pdfsaleinvoice.PdfSI()
@@ -503,20 +504,8 @@ class GtkEditSale():
         self.reload_screen('mimicsignal')         
         print('modified invoice successfully')
         
-    def resetncifields(self, button, fetched_details):
-        self.nciname_completion.set_model(guicommon.companyname_store) 
-        self.roundoff_enabled=guicommon.miscdbins.get('roundoffenabled') 
-        if self.roundoff_enabled=='yes':
-            self.roundoff_button.set_active(True) 
-        else:    
-            self.roundoff_button.set_active(False)
-        self.initialise_oth_variables(fetched_details)
-        self.paymentmode_entry.set_text('')
-        self.transportmode_entry.set_text('')
-        self.discountentry.set_text('')
-        self.placeofsupply_entry.set_text('')
-        self.mischentry.set_text('')
-        self.paymentmode_entry.set_text('')
+    def resett(self, button, fetched_details):
+        self.reload_screen('mimicsignal')  
         
         
     def more_pressed (self, button):    
@@ -525,7 +514,7 @@ class GtkEditSale():
             print ('Create company first')    
             self.moredialogins.not_more_things(self.mainwindow)    
         else:    
-            self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.compchange_detector =self.moredialogins.more_things(self.mainwindow, self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.invcompany.get_text(), self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.more_opened, self.compchange_detector)
+            self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.transmode, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.compchange_detector, self.ship_statecode =self.moredialogins.more_things(self.mainwindow, self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.transmode, self.invcompany.get_text(), self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.more_opened, self.compchange_detector, self.ship_statecode)
             self.more_opened='yes'
             
  

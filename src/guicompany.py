@@ -736,7 +736,7 @@ class GtkCompany():
         for eachchild in children:
             invoicingbox.remove(eachchild)
             eachchild.destroy()
-        bph=guiinvoicingins.generatepage(self.mainwindow)
+        bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
         invoicingbox.add(bph)
         invoicingbox.show_all()        
         print("Successfully created company")
@@ -807,7 +807,7 @@ class GtkCompany():
         for eachchild in children:
             invoicingbox.remove(eachchild)
             eachchild.destroy()
-        bph=guiinvoicingins.generatepage(self.mainwindow)
+        bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
         invoicingbox.add(bph)
         invoicingbox.show_all()        
         
@@ -828,7 +828,7 @@ class GtkCompany():
         for eachchild in children:
             invoicingbox.remove(eachchild)
             eachchild.destroy()
-        bph=guiinvoicingins.generatepage(self.mainwindow)
+        bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
         invoicingbox.add(bph)
         invoicingbox.show_all()        
         

@@ -5,6 +5,7 @@ from submods import functions
 from submods import guicommon
 from submods import guiprocessor
 from submods import saleinvoicingprocessor
+from submods import newsalesub
 from submods import cimoredialog
 from submods import pdfsaleinvoice
 from submods import printsihandler
@@ -18,9 +19,10 @@ from gi.repository import Gdk
 
 class GtkNewSale():   
      
-    def billingpage(self, mainwindow):      
+    def billingpage(self, mainwindow, guiinvoicingins):      
     
-        self.mainwindow=mainwindow       
+        self.mainwindow=mainwindow   
+        self.guiinvoicingins=guiinvoicingins    
         self.guiprocessor_ins=guiprocessor.GtkProcessor()   
         self.moredialogins=cimoredialog.CImore()      
         self.initialise_oth_variables()
@@ -275,18 +277,8 @@ class GtkNewSale():
                 ncii_tempcount=ncii_tempcount+1
             return ncii_listbox
             
-        def addmoreitems(event):
-            invoicesw.remove(invoicesw.get_child())
-            print('removed previous')
-            invoicesw.add(createinvoicerows("blankevent"))
-            print('added new')                
-        
+
         itemstobebilled=createinvoicerows(25) #25 invoice items support
-            
-        amibutton = Gtk.Button.new_with_label("Add more items") #add more items
-        amibutton.set_name('amibut')
-        #amibutton.get_style_context().add_class("dangerbutton")    
-        amibutton.connect("clicked", addmoreitems)
        
         iisw = Gtk.ScrolledWindow() #invoice items scroll window
         #iisw.set_min_content_width(720)      
@@ -440,14 +432,12 @@ class GtkNewSale():
         
         self.nsi_footer_widgets=[self.basicamtdisp, self.discountentry, self.placeofsupply_entry, self.mischentry, self.paymentmode_entry,  self.taxamount, self.taxontaxamount, self.gtotaldisp, self.posstatecode_entry]
          
-        self.nsi_itemswidgets=[self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist,self.nciilb_ic, self.nciilb_iamtlist]   
-       
+        self.nsi_itemswidgets=[self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist,self.nciilb_ic, self.nciilb_iamtlist]          
         
         self.invcompany.connect("changed", saleinvoicingprocessor.changed_companyname, self.invcompany, self.placeofsupply_entry, self.posstatecode_entry ) 
        
         invoicingmasterbox.pack_start(billbox, False, False, 0)      
-        
-        #self.invoicenmbr.grab_focus() trying to auto activate
+
         return invoicingmasterbox
             
         #---------------------------Billbox contents end  
@@ -457,7 +447,7 @@ class GtkNewSale():
         self.inv_prefix=guicommon.miscdbins.get('invoiceprefix')       
         self.temp_basicamt, self.taxable_amount, self.roundoff_amt = 0, 0, 0 #for tax combo compatibility
         self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.invoicedata_temp = '', '', '', '', ''
-        self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.ship_statecode ='', '', '', '', '', '75'
+        self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.ship_statecode ='', '', '', '', '', ''
         self.compchange_detector='' #mechanism to detect company change after more pressed and change shipping accordingly
         self.rcvalue='No' # reverse charge
         self.more_opened='no'    #mechanism to detect address change
@@ -482,7 +472,6 @@ class GtkNewSale():
         self.taxontaxamount.set_markup(str(self.estd_taxontax))
         geetotal, self.roundoff_amt=saleinvoicingprocessor.grand_saleamounting(self.temp_basicamt, self.discountentry, self.mischentry, self.estd_tax, self.estd_taxontax, self.roundoff_enabled, self.roundoff_amt)
         self.gtotaldisp.set_markup(str(geetotal))  
-        #print('grandcaller complete')
         
            
     def processnci(self, nextbutton):
@@ -495,19 +484,7 @@ class GtkNewSale():
         self.resetncifields('buttonmimic')
         
     def resetncifields(self, button):
-        self.nciname_completion.set_model(guicommon.companyname_store) 
-        self.roundoff_enabled=guicommon.miscdbins.get('roundoffenabled') 
-        if self.roundoff_enabled=='yes':
-            self.roundoff_button.set_active(True) 
-        else:    
-            self.roundoff_button.set_active(False)
-        self.initialise_oth_variables()
-        self.paymentmode_entry.set_text('')
-        self.discountentry.set_text('')
-        self.placeofsupply_entry.set_text('')
-        self.posstatecode_entry.set_text('')
-        self.mischentry.set_text('')
-        self.paymentmode_entry.set_text('')
+        newsalesub.reload_screen('mimicsignal',  self.mainwindow, self.guiinvoicingins)
         
         
     def more_pressed (self, button):    
@@ -516,7 +493,7 @@ class GtkNewSale():
             print ('Create company first')    
             self.moredialogins.not_more_things(self.mainwindow)    
         else:    
-            self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.transmode, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.compchange_detector =self.moredialogins.more_things(self.mainwindow, self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.transmode, self.invcompany.get_text(), self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.more_opened, self.compchange_detector)
+            self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.transmode, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.compchange_detector, self.ship_statecode =self.moredialogins.more_things(self.mainwindow, self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.transmode, self.invcompany.get_text(), self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.more_opened, self.compchange_detector, self.ship_statecode)
             self.more_opened='yes'
             
  

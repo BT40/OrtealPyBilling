@@ -55,6 +55,18 @@ def estimatetax(taxslab_combo, basicamt_float, discountentry, mischentry):
     return taxamount_estd, taxable_val
     
     
+def estimatetax_ei(taxslab_combo, basicamt_float, discountentry, mischentry):
+
+    taxslab_name=taxslab_combo.get_active_text()
+
+    tax_index_temp=guicommon.taxtableins.rowlist.index(taxslab_name)
+    overalltax_float=float(guicommon.taxtableins.rowcollection[tax_index_temp][10])
+    
+    taxable_val=taxable_value(basicamt_float, discountentry, mischentry)
+    taxamount_estd=taxable_val*overalltax_float/100
+    return taxamount_estd, taxable_val
+    
+    
 def estimate_taxontax(taxontaxslab_combo, taxamount_float):
 
     taxontaxslab_name=taxontaxslab_combo.get_active_text()

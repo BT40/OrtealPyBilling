@@ -47,20 +47,19 @@ class MainWindow(Gtk.ApplicationWindow):
         stacksidebar.set_stack(stack)
         leftvbox.pack_start(stacksidebar, True, True, 0)
         
-        invoicingbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        bph=guiinvoicingins.generatepage(self)
-        invoicingbox.add(bph)
-        stack.add_titled(invoicingbox, "billboxmain", "Invoicing") 
-        #invoicingbox_pass=[invoicingbox, bph, guiinvoicingins]   
+        self.invoicingbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        self.bph=guiinvoicingins.generatepage(self, guiinvoicingins)
+        self.invoicingbox.add(self.bph)
+        stack.add_titled(self.invoicingbox, "billboxmain", "Invoicing") 
            
         inventorybox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
-        iph=guiinventoryins.generatepage(invoicingbox, bph, guiinvoicingins, self) #iph=inventory page holder
+        iph=guiinventoryins.generatepage(self.invoicingbox, self.bph, guiinvoicingins, self) #iph=inventory page holder
         inventorybox.add(iph)
         stack.add_titled(inventorybox, "inventorymain", "Items")
         #print("Inventory box loaded, now trying loading Create box")        
         
         companybox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)        
-        cph=guicompanyins.generatepage(invoicingbox, bph, guiinvoicingins, self) # company page holder
+        cph=guicompanyins.generatepage(self.invoicingbox, self.bph, guiinvoicingins, self) # company page holder
         companybox.add(cph)
         stack.add_titled(companybox, "companyboxmain", "Company")        
         
@@ -74,7 +73,7 @@ class MainWindow(Gtk.ApplicationWindow):
         #stack.add_titled(reportsbox, "reportsboxmain", "Reports")              
         
         morebox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
-        mph=guimoreins.generatepage(applic, invoicingbox, bph, guiinvoicingins, companybox, cph, guicompanyins, self) #mph=more page holder
+        mph=guimoreins.generatepage(applic, self.invoicingbox, self.bph, guiinvoicingins, companybox, cph, guicompanyins, self) #mph=more page holder
         morebox.add(mph)
         stack.add_titled(morebox, "moremain", "More")
         
