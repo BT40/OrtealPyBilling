@@ -1,7 +1,6 @@
 # This file contains mechanism for printing sale invoice
 
 from submods import functions
-from submods import fpdfclass
 from submods import guicommon
 from submods import checkersalepdf
 from fpdf import FPDF
@@ -9,7 +8,12 @@ from fpdf import FPDF
 
 class Pdfsihfr():        
 
-    def create_header (self, invoicedata_temp, document):
+    def create_header (self, invoicedata_temp, document, copyname):
+
+        document.set_font('Times', '', 11)      
+        document.cell(w=70)   # Move curser to the right using blank cell
+        document.cell(w=30, h= 5.5, txt='TAX INVOICE', border= 0, ln=0, align='L', fill=False) #left aligned acc to cell
+        document.cell(w=0, h= 5.5, txt=copyname, border= 0, ln=1, align='R', fill=False) 
 
         longmyname=invoicedata_temp[7]
         

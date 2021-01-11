@@ -113,6 +113,7 @@ def loadidbase():
         miscdb.set('termsline4', '')
         miscdb.set('termsline5', '')
         miscdb.set('currentfinancialyear', 'Disabled')
+        miscdb.set('numberofinvcopies', '3')
         
         miscdb.set('mycompanyname', '')        
         miscdb.set('mycompanyaddress', '')

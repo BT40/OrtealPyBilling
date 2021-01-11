@@ -55,13 +55,17 @@ def estimatetax(taxslab_combo, basicamt_float, discountentry, mischentry):
     return taxamount_estd, taxable_val
     
     
-def estimatetax_ei(taxslab_combo, basicamt_float, discountentry, mischentry):
+def estimatetax_ei(taxslab_combo, basicamt_float, discountentry, mischentry, fetched_det):
 
     taxslab_name=taxslab_combo.get_active_text()
-
-    tax_index_temp=guicommon.taxtableins.rowlist.index(taxslab_name)
-    overalltax_float=float(guicommon.taxtableins.rowcollection[tax_index_temp][10])
-    
+    try:
+        tax_index_temp=guicommon.taxtableins.rowlist.index(taxslab_name)
+        overalltax_float=float(guicommon.taxtableins.rowcollection[tax_index_temp][10])
+    except:
+        if taxslab_name==fetched_det[34]:
+            overalltax_float=fetched_det[44]
+        else:
+            overalltax_float=0    
     taxable_val=taxable_value(basicamt_float, discountentry, mischentry)
     taxamount_estd=taxable_val*overalltax_float/100
     return taxamount_estd, taxable_val
@@ -75,6 +79,21 @@ def estimate_taxontax(taxontaxslab_combo, taxamount_float):
     #print (overalltax_float)    
     taxontaxamount_estd=taxamount_float*overalltaxontax_float/100
     #print(taxontaxamount_estd)
+    return taxontaxamount_estd    
+
+
+def estimate_taxontax_ei (taxontaxslab_combo, taxamount_float, fetched_det):
+
+    taxontaxslab_name=taxontaxslab_combo.get_active_text()
+    try:
+        tot_index_temp=guicommon.taxontax_list.index(taxontaxslab_name)
+        overalltaxontax_float=float(guicommon.taxontax_data[tot_index_temp][10])
+    except:
+        if taxontaxslab_name==fetched_det[45]:
+            overalltaxontax_float=fetched_det[55]
+        else:
+            overalltaxontax_float=0       
+    taxontaxamount_estd=taxamount_float*overalltaxontax_float/100
     return taxontaxamount_estd    
     
     

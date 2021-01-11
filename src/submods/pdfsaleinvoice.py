@@ -3,7 +3,6 @@ import sys
 import os
 import signal
 from submods import functions
-from submods import fpdfclass
 from submods import guicommon
 from submods import checkersalepdf
 from submods import pdfsaleinvoicehfr as phf
@@ -12,9 +11,10 @@ from fpdf import FPDF
 
 class PdfSI():
       
-    def some_initialisations(self):
-        document=fpdfclass.PDFD (orientation = 'P', unit = 'mm', format='A4')
-        document.set_title("Tax invoice-Original")
+    def some_initialisations(self, copyname):
+        document=FPDF (orientation = 'P', unit = 'mm', format='A4')
+        doctitle="Tax invoice - " + copyname
+        document.set_title(doctitle)
         document.set_margins(20, 20, 20) # left, top, right...... Define before creating page, otherwise will ruin formatting
         
         #Libreoffice ref: 11pt=3.88mm, 48 lines @1.2, 50 lines @1.15, 38 lines @1.5 line spacing
@@ -35,21 +35,21 @@ class PdfSI():
         return document
         
 
-    def printable_saleinvoice (self, invoiceid, invoicedata_temp):
+    def printable_saleinvoice (self, invoiceid, invoicedata_temp, copyname, namesuffix):
         
         if not os.path.exists('invoices'): # check folder exist, if not create
             os.makedirs('invoices')
-        invoice_filename=invoiceid+ '.pdf'
+        invoice_filename=invoiceid + '_' + namesuffix + '.pdf'
         invoice_output='invoices/' + invoice_filename
         
-        document=self.some_initialisations()    
+        document=self.some_initialisations(copyname)    
         self.pagecount=1
 
         #Align is wrt cell, not page or margins
         #ln Indicates where current position should go after call. Possible values are:0- to the right, 1- beginning of next line, 2: below
         
         hfi=phf.Pdfsihfr()
-        hfi.create_header (invoicedata_temp, document)
+        hfi.create_header (invoicedata_temp, document, copyname)
         
         document.set_font("Times", size=11)
         # invoice items
@@ -299,11 +299,9 @@ class PdfSI():
                 ianot=ianot+1    
             
             hfi.create_footer (invoicedata_temp, document)   
-               
-        
-            
+                           
         document.output(invoice_output)
-        print('successfully printed')
+
         
          
         #invoice_data=[invid, softwareversion, inv_nmbr, inv_date, inv_time, fy, invoicetype, sourcecompany, sourceaddress, sourcepin, 10 sourcephone, sourceemail, sourcetaxid, originstate, originstatecode, reverse_charge, ewaybill_nmbr, inv_po, inv_toparty,partyaddress,partypin 21, partyphone,  partytaxid, partystate, partystatecode, handovername, shippingaddress,shippingpin,shippingphone,shippingstate, shippingstatecode 31, transport_mode, payment_mode, terms, inv_taxslab, inv_firsttax_enabled, inv_secondtax_enabled, inv_thirdtax_enabled, inv_firsttax_colname,39 inv_secondtax_colname, inv_thirdtax_colname, inv_firsttax_rate, inv_secondtax_rate, inv_thirdtax_rate, inv_totaltax_rate,  inv_taxontaxslab46, inv_firsttot_enabled, inv_secondtot_enabled, inv_thirdtot_enabled,inv_firsttot_name, inv_secondtot_name, inv_thirdtot_name, inv_firsttot_rate53, inv_secondtot_rate, inv_thirdtot_rate, inv_totaltot_rate, inv_comments,  inv_basicamt, inv_discount, inv_freight, inv_othercharges,61,  inv_taxamount, inv_firsttaxamount, inv_secondtaxamount, inv_thirdtaxamount, inv_taxontaxamount, inv_firsttotamount, inv_secondtotamount,68,  inv_thirdtotamount, roundoff_enable, roundoff_amt, inv_grandamount,  numberofitems, nci_inameholder, nci_iqtyholder, nci_ispholder,76, nci_idischolder,nci_iamtholder, nci_icholder, nci_ihsnholder, nci_iunitholder, nsi_taxable_amount,placeofsupply, pos_code, 84 gst_compliances_expansion, misc, futureslot, g_fobli, rsim, emer] 90

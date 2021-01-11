@@ -6,6 +6,7 @@ from submods import guicommon
 from submods import guiprocessor
 from submods import saleinvoicingprocessor
 from submods import newsalesub
+from submods import subinvoicing
 from submods import cimoredialog
 from submods import pdfsaleinvoice
 from submods import printsihandler
@@ -479,8 +480,8 @@ class GtkNewSale():
         self.nsi_oth_val= [self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.rcvalue, self.more_opened, self.ship_statecode ]
         
         self.invoicedata_temp=saleinvoicingprocessor.processnci('new', self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt ) #new denotes creating fresh row in database
-        self.pdfsi_ins=pdfsaleinvoice.PdfSI()
-        self.pdfsi_ins.printable_saleinvoice(self.invoicedata_temp[0], self.invoicedata_temp)
+        
+        subinvoicing.print_invoice(self.invoicedata_temp)
         self.resetncifields('buttonmimic')
         
     def resetncifields(self, button):

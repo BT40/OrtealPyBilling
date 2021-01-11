@@ -6,6 +6,7 @@ from submods import guicommon
 from submods import guiprocessor
 from submods import saleinvoicingprocessor
 from submods import editsalesub
+from submods import subinvoicing
 from submods import cimoredialog
 from submods import pdfsaleinvoice
 from submods import printsihandler
@@ -33,6 +34,7 @@ class GtkEditSale():
         
         
     def generate_editableinvoice(self, fetched_details)   : 
+        self.fetched_det=fetched_details #only for estimate tax compatibility
         self.initialise_oth_variables(fetched_details)
         billbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)   
         
@@ -480,14 +482,14 @@ class GtkEditSale():
         self.grandcaller('mimicevent')
          
     
-    def estimate_tax(self, changedevent):         
-        self.estd_tax, self.taxable_amount =saleinvoicingprocessor.estimatetax_ei(self.taxcombo, self.temp_basicamt, self.discountentry, self.mischentry)
+    def estimate_tax(self, changedevent, fetched_det):         
+        self.estd_tax, self.taxable_amount =saleinvoicingprocessor.estimatetax_ei(self.taxcombo, self.temp_basicamt, self.discountentry, self.mischentry, fetched_det)
         self.taxamount.set_markup(str(self.estd_tax))     
     
         
     def grandcaller(self, changedevent):        
-        self.estimate_tax('mimicevent')
-        self.estd_taxontax=saleinvoicingprocessor.estimate_taxontax(self.taxontaxcombo, self.estd_tax) 
+        self.estimate_tax('mimicevent', self.fetched_det)
+        self.estd_taxontax=saleinvoicingprocessor.estimate_taxontax_ei(self.taxontaxcombo, self.estd_tax, self.fetched_det) 
         self.taxontaxamount.set_markup(str(self.estd_taxontax))
         geetotal, self.roundoff_amt=saleinvoicingprocessor.grand_saleamounting(self.temp_basicamt, self.discountentry, self.mischentry, self.estd_tax, self.estd_taxontax, self.roundoff_enabled, self.roundoff_amt)
         self.gtotaldisp.set_markup(str(geetotal))  
@@ -499,8 +501,8 @@ class GtkEditSale():
         self.nsi_oth_val= [self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.rcvalue, self.more_opened, self.ship_statecode ]
         
         self.invoicedata_temp=saleinvoicingprocessor.processnci('edit', self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt )
-        self.pdfsi_ins=pdfsaleinvoice.PdfSI()
-        self.pdfsi_ins.printable_saleinvoice(self.invoicedata_temp[0], self.invoicedata_temp)
+        
+        subinvoicing.print_invoice(self.invoicedata_temp)
         self.reload_screen('mimicsignal')         
         print('modified invoice successfully')
         
