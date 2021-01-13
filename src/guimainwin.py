@@ -6,6 +6,7 @@ import guiinventory
 import guicompany
 import guimore
 import time
+import importlib.resources
 
 from os.path import dirname
 
