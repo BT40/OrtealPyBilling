@@ -16,8 +16,8 @@ from gi.repository import Gdk
 
 class Startt():
         
-    def some_initialisations(self):
-        dbmani.loadidbase()                           
+    def some_initialisations(self, projectdirectory):
+        dbmani.loadidbase(projectdirectory)                           
         guicommon.loadguicommon()        
         #print('Completed b4gui')             
 

@@ -7,6 +7,8 @@ import pickledb
 from submods import tealordb
 from submods import stddata
 from datetime import datetime
+from os.path import dirname
+from pathlib import Path
 
 
 itemtableins=tealordb.Tealor()
@@ -15,7 +17,7 @@ invoicetableins=tealordb.Tealor()
 taxtableins=tealordb.Tealor()
     
 
-def loadidbase():     
+def loadidbase(projectdirectory):     
     itemtableins.loaddata('items')
     tmp_itemtable_colheadingslength=len(itemtableins.getcollist())
     if tmp_itemtable_colheadingslength==0:           
@@ -90,10 +92,22 @@ def loadidbase():
     global taxontax_list
     global taxontax_data
     
-    if not os.path.exists('udat'): # check folder udat exist, if not create
-        os.makedirs('udat')
+    
+    home_dir=Path.home()
+    user_dir=str(home_dir)+'/ortealbilling_data'     #change this address application wise 
+    wd=user_dir + '/udat'
+    mdb_pathname= wd + '/miscellaneous.db' 
+    #print (self.pathname)   
             
-    miscdb= pickledb.load('udat/miscellaneous.db', False)
+    if not os.path.exists(wd): # check folder exist, if not create
+        os.makedirs(wd)    
+
+    #userdatapath=projectdirectory + '/userdata'
+    #if not os.path.exists(userdatapath):
+    #    os.makedirs(userdatapath)
+    #    print('User data missing, new folder created')           
+            
+    miscdb= pickledb.load(mdb_pathname, False)
     miscdb_checkpresence=miscdb.get('checkpresence')
     if miscdb_checkpresence==False: 
         print ('Not found miscdb on disk, creating it')
@@ -131,5 +145,6 @@ def loadidbase():
     elif miscdb_checkpresence=='present':    
             itemgroups=miscdb.get('itemgroups')         
             print ('Loaded miscdb from disk')
-        
+    
+ 
       

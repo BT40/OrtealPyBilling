@@ -6,6 +6,7 @@ import os
 import signal
 import pickledb
 from datetime import datetime
+from pathlib import Path
 
 # notations: suffix f for function variables, suffix c for class variables
 # use print statements for debugging
@@ -27,7 +28,11 @@ class Tealor():
         self.checkpresence='present'
         
         self.diskname=self.thresher(tablename)+'.db'
-        self.pathname="udat/"+self.diskname
+        
+        home_dir=Path.home()
+        user_dir=str(home_dir)+'/ortealbilling_data'     #change this address application wise 
+        wd=user_dir + '/tealordb'
+        self.pathname= wd + '/' + self.diskname
         #print (self.pathname)
         self.db = pickledb.load(self.pathname, False)
         self.db.set('tablename', self.tablename)
@@ -43,10 +48,15 @@ class Tealor():
 
     def loaddata(self, which):
         tempdiskname=which+ '.db'
-        self.pathname="udat/"+tempdiskname
-        #print (self.pathname)       
-        if not os.path.exists('udat'): # check folder udat exist, if not create
-            os.makedirs('udat')
+        
+        home_dir=Path.home()
+        user_dir=str(home_dir)+'/ortealbilling_data'     #change this address application wise 
+        wd=user_dir + '/tealordb'
+        self.pathname= wd + '/' + tempdiskname
+        #print (self.pathname)   
+            
+        if not os.path.exists(wd): # check folder exist, if not create
+            os.makedirs(wd)
         #print('trying to load database with allocated disk name: ')
         #print(tempdiskname)
         #print('Reporting from tealordb loaddata' )

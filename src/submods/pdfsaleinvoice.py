@@ -35,12 +35,10 @@ class PdfSI():
         return document
         
 
-    def printable_saleinvoice (self, invoiceid, invoicedata_temp, copyname, namesuffix):
+    def printable_saleinvoice (self, invoiceid, invoicedata_temp, copyname, namesuffix, wd):
         
-        if not os.path.exists('invoices'): # check folder exist, if not create
-            os.makedirs('invoices')
         invoice_filename=invoiceid + '_' + namesuffix + '.pdf'
-        invoice_output='invoices/' + invoice_filename
+        invoice_output= wd+ '/' + invoice_filename   #wd is working directory
         
         document=self.some_initialisations(copyname)    
         self.pagecount=1

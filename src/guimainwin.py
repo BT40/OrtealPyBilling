@@ -7,6 +7,8 @@ import guicompany
 import guimore
 import time
 
+from os.path import dirname
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gio
 from gi.repository import Gtk
@@ -22,8 +24,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_border_width(10)
         
+        projectdirectory=dirname(dirname(__file__))   #directory path fetching, if reqd, can used for data storage
+        
         b4guiins=b4gui.Startt()
-        b4guiins.some_initialisations()    
+        b4guiins.some_initialisations(projectdirectory)    
         guiinvoicingins=guiinvoicing.GtkInvoicing()
         guiinventoryins=guiinventory.GtkInventory()
         guicompanyins=guicompany.GtkCompany() 
@@ -78,7 +82,13 @@ class MainWindow(Gtk.ApplicationWindow):
         stack.add_titled(morebox, "moremain", "More")
         
         style_provider = Gtk.CssProvider()      
-        style_provider.load_from_path("submods/styl.css")
+        
+        try:   #for normal running from source code
+            style_provider.load_from_path("submods/styl.css")            
+        except: #for zipapps, they cant read normal file in project directory
+            csscontent=importlib.resources.read_binary('submods', 'styl.css')            
+            style_provider.load_from_data(csscontent)   
+            
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(), style_provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
