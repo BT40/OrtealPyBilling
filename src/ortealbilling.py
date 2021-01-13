@@ -24,3 +24,7 @@ if __name__ == '__main__':
     
     app = App()
     app.run(sys.argv)
+    
+def zipprun(): #this function is used to create zipapp, which call this function to initiate application
+    app = App()
+    app.run(sys.argv)        
