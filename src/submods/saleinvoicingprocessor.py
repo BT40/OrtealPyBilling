@@ -1,5 +1,6 @@
 from submods import functions
 from submods import guicommon
+from submods import statementprocessor
 import sys
 import gi
 
@@ -182,7 +183,10 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
     tl3=guicommon.miscdbins.get('termsline3')
     tl4=guicommon.miscdbins.get('termsline4')
     tl5=guicommon.miscdbins.get('termsline5')
-    terms=[tl1, tl2, tl3, tl4, tl5, furtherterms]
+    bankac_nmbr=guicommon.miscdbins.get('mybankaccountnmbr')
+    bankifsc=guicommon.miscdbins.get('mybankifsc')
+    bankname=guicommon.miscdbins.get('mybankname')
+    terms=[tl1, tl2, tl3, tl4, tl5, furtherterms, bankac_nmbr, bankifsc, bankname ]
     amount_words='Implement One lac sixty six thousand five hundred sixty nine only'
     
     inv_firsttax_enabled, inv_secondtax_enabled, inv_thirdtax_enabled,inv_firsttax_colname, inv_secondtax_colname, inv_thirdtax_colname, inv_firsttax_rate, inv_secondtax_rate, inv_thirdtax_rate, inv_totaltax_rate=fetch_taxslab_details(inv_taxslab)
@@ -288,6 +292,7 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
         #print('invoice successfully modified')
     else:
         guicommon.invoicetableins.createrow(invid, invoice_data)
+        statementprocessor.create_statement_entry(invoice_data, 'newsale')
         #print('invoice successfully created')
             
     #reset fields

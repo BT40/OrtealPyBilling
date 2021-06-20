@@ -70,34 +70,49 @@ class GtkPreferences():
         self.inv_prefixentry.set_halign(Gtk.Align.START)
         self.inv_prefixentry.set_width_chars(10)
         self.inv_prefixentry.set_max_length(8)
-        
+       
         tl1_label = Gtk.Label() #Terms line 1
-        tl1_label.set_markup("Terms line 1 ")        
+        tl1_label.set_markup("Terms and conditions line 1 ")        
         self.tl1_entry = Gtk.Entry()
         self.tl1_entry.set_max_length(47)
         self.tl1_entry.set_width_chars(47)
         
         tl2_label = Gtk.Label() #Terms line 2
-        tl2_label.set_markup("Terms line 2 ")        
+        tl2_label.set_markup("Terms and conditions line 2 ")        
         self.tl2_entry = Gtk.Entry()
         self.tl2_entry.set_max_length(47)
         
         tl3_label = Gtk.Label() #Terms line 3
-        tl3_label.set_markup("Terms line 3 ")        
+        tl3_label.set_markup("Terms and conditions line 3 ")        
         self.tl3_entry = Gtk.Entry()
         self.tl3_entry.set_max_length(47)
         
         tl4_label = Gtk.Label() #Terms line 4
-        tl4_label.set_markup("Terms line 4 ")        
+        tl4_label.set_markup("Terms and conditions line 4 ")        
         self.tl4_entry = Gtk.Entry()
         self.tl4_entry.set_max_length(47)
         
         tl5_label = Gtk.Label() #Terms line 5
-        tl5_label.set_markup("Terms line 5 ")        
+        tl5_label.set_markup("Terms and conditions line 5 ")        
         self.tl5_entry = Gtk.Entry()
         self.tl5_entry.set_max_length(47)
+       
+        bank_details_label = Gtk.Label() 
+        bank_details_label.set_markup("Bank details: A/c no.  ")        
+        self.bankacc_entry = Gtk.Entry()
+        self.bankacc_entry.set_max_length(47)
+        
+        bankifsc_label = Gtk.Label()
+        bankifsc_label.set_markup("Bank details: IFSC  ")        
+        self.ifsc_entry = Gtk.Entry()
+        self.ifsc_entry.set_max_length(47)
+        
+        bankname_label = Gtk.Label()
+        bankname_label.set_markup("Additional bank details ")        
+        self.bankname_entry = Gtk.Entry()
+        self.bankname_entry.set_max_length(47)
       
-
+        
         pcancelbutton = Gtk.Button.new_with_label("Cancel")
         #pcancelbutton.get_style_context().add_class("suggested-action")
         pcancelbutton.set_margin_top(20)
@@ -130,15 +145,17 @@ class GtkPreferences():
         prefgrid.attach(self.tl4_entry, 1, 9, 1, 1)
         prefgrid.attach(tl5_label, 0, 10, 1, 1)
         prefgrid.attach(self.tl5_entry, 1, 10, 1, 1)
-        #prefgrid.attach(pcancelbutton, 0, 10, 1, 1)
-        #prefgrid.attach(presetbutton, 1, 10, 1, 1)
-        #prefgrid.attach(psavebutton, 2, 10, 1, 1)       
+        prefgrid.attach(bank_details_label, 0, 12, 1, 1)
+        prefgrid.attach(self.bankacc_entry, 1, 12, 1, 1)
+        prefgrid.attach(bankifsc_label, 0, 13, 1, 1)
+        prefgrid.attach(self.ifsc_entry, 1, 13, 1, 1)
+        prefgrid.attach(bankname_label, 0, 14, 1, 1)
+        prefgrid.attach(self.bankname_entry, 1, 14, 1, 1)
        
         ph_box= Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0) 
         ph_box.set_hexpand(False)
         ph_box.set_halign(Gtk.Align.START)
-        ph_box.pack_start(pcancelbutton, False, False, 0)   
-        #ph_box.pack_start(presetbutton, False, False, 0)  
+        ph_box.pack_start(pcancelbutton, False, False, 0)     
         ph_box.pack_start(psavebutton, False, False, 0)  
         pref_mainbox.pack_start(ph_box, False, False, 10)
          
@@ -161,6 +178,9 @@ class GtkPreferences():
         guicommon.miscdbins.set('termsline3', self.tl3_entry.get_text())
         guicommon.miscdbins.set('termsline4', self.tl4_entry.get_text())
         guicommon.miscdbins.set('termsline5', self.tl5_entry.get_text())
+        guicommon.miscdbins.set('mybankaccountnmbr', self.bankacc_entry.get_text())
+        guicommon.miscdbins.set('mybankifsc', self.ifsc_entry.get_text())
+        guicommon.miscdbins.set('mybankname', self.bankname_entry.get_text())
         
         if self.round_button.get_active():
             guicommon.miscdbins.set('roundoffenabled', 'yes')
@@ -195,6 +215,9 @@ class GtkPreferences():
         self.tl3_entry.set_text(guicommon.miscdbins.get('termsline3'))
         self.tl4_entry.set_text(guicommon.miscdbins.get('termsline4'))
         self.tl5_entry.set_text(guicommon.miscdbins.get('termsline5'))
+        self.bankacc_entry.set_text(guicommon.miscdbins.get('mybankaccountnmbr'))
+        self.ifsc_entry.set_text(guicommon.miscdbins.get('mybankifsc'))
+        self.bankname_entry.set_text(guicommon.miscdbins.get('mybankname'))
         
         
         if guicommon.miscdbins.get('roundoffenabled')=='yes':                

@@ -17,7 +17,7 @@ from gi.repository import Gdk
 
 class GtkCompany():
             
-    def generatepage(self, invoicingbox, bph, guiinvoicingins, mainwindow):
+    def generatepage(self, invoicingbox, bph, guiinvoicingins, mainwindow, guipaymentsins):
            
         self.companytableins=dbmani.companytableins     
         self.miscdb=dbmani.miscdb                 
@@ -674,6 +674,9 @@ class GtkCompany():
         
         ec_editbutton.connect("clicked", self.set_ecentries, self.ecentries)  
         
+        for anyentry in self.ecvarg:
+            anyentry.set_sensitive(False)   
+        self.ecvarg[0].set_sensitive(True) 
         self.companystack.add_titled(ecbox, "editcompanymain", "Edit Company")
               
  
@@ -682,17 +685,7 @@ class GtkCompany():
         companiesview_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6) 
         cvheaderbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6) #cv=companies viewer
         cvheaderbox.set_vexpand(False)
-        #cvheaderbox.get_style_context().add_class("testarea") 
-        
-        gridcv = Gtk.Grid() #cv=companies viewer
-        gridcv.set_vexpand(False)
-        cvheaderbox.pack_start(gridcv, False, False, 0)   
-              
-        cv_loadbutton = Gtk.Button.new_with_label("Refresh")
-        cv_loadbutton.set_name('loadcompaniesbutton')                 
-        cv_loadbutton.connect("clicked", self.refreshcl)        
-        gridcv.add(cv_loadbutton)    
-        
+        #cvheaderbox.get_style_context().add_class("testarea")                     
         companiesview_box.pack_start(cvheaderbox, False, False, 0)
         
         cvsw_headings=companyprocessor.sbh()        
@@ -730,15 +723,8 @@ class GtkCompany():
         self.ccresetfields('mimicevent', self.ccentries)    # set form fields to blank fields
         guicommon.loadguicommon()    
         self.ecname_completion.set_model(guicommon.companyname_store)
-        self.ecnameentry.set_completion(self.ecname_completion)   
-        
-        children=invoicingbox.get_children()
-        for eachchild in children:
-            invoicingbox.remove(eachchild)
-            eachchild.destroy()
-        bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
-        invoicingbox.add(bph)
-        invoicingbox.show_all()        
+        self.ecnameentry.set_completion(self.ecname_completion)          
+        self.reset_otherpages(invoicingbox, bph, guiinvoicingins)
         print("Successfully created company")
         return 1    
 
@@ -802,16 +788,12 @@ class GtkCompany():
         guicommon.loadguicommon()    
         self.ecname_completion.set_model(guicommon.companyname_store)
         self.ecnameentry.set_completion(self.ecname_completion)  
-        
-        children=invoicingbox.get_children()
-        for eachchild in children:
-            invoicingbox.remove(eachchild)
-            eachchild.destroy()
-        bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
-        invoicingbox.add(bph)
-        invoicingbox.show_all()        
+        self.reset_otherpages(invoicingbox, bph, guiinvoicingins)       
         
         self.nocte=''
+        for anyentry in self.ecvarg:
+            anyentry.set_sensitive(False)     
+        self.ecvarg[0].set_sensitive(True)      
         print("Successfully modified company")
         return 1        
 
@@ -823,14 +805,7 @@ class GtkCompany():
         guicommon.loadguicommon()
         self.ecname_completion.set_model(guicommon.companyname_store)
         self.ecnameentry.set_completion(self.ecname_completion)   
-              
-        children=invoicingbox.get_children()
-        for eachchild in children:
-            invoicingbox.remove(eachchild)
-            eachchild.destroy()
-        bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
-        invoicingbox.add(bph)
-        invoicingbox.show_all()        
+        self.reset_otherpages(invoicingbox, bph, guiinvoicingins) 
         
         print('deleted company successfully')
         return 2 
@@ -842,8 +817,28 @@ class GtkCompany():
         self.ecblacklistbutton.set_active(False) # By default false
         self.ecinstapaybutton.set_active(False)
         self.nocte=''
-        return 2     
-       
+        return 2   
+          
+    
+    def reset_otherpages(self, invoicingbox, bph, guiinvoicingins):
+        children=invoicingbox.get_children()
+        for eachchild in children:
+            invoicingbox.remove(eachchild)
+            eachchild.destroy()
+        bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
+        invoicingbox.add(bph)
+        invoicingbox.show_all()        
+        
+        childrenn=self.mainwindow.paymentsbox.get_children()
+        for everychild in childrenn:
+            self.mainwindow.paymentsbox.remove(everychild)
+            everychild.destroy()
+        self.mainwindow.abph=self.mainwindow.guipaymentsins.generatepage(self.mainwindow)
+        self.mainwindow.paymentsbox.add(self.mainwindow.abph)
+        self.mainwindow.paymentsbox.show_all()  
+        
+        self.refreshcl("mimicevent") #Refresh list of companies
+               
    
     def refreshcl(self, event):
         self.cvsw.remove(self.cvsw.get_child())

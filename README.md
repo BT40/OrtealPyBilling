@@ -6,7 +6,7 @@ What works: Invoice, item, company, tax slabs creation and modification. Invoice
 Note 1: Exception handling not fully implemented yet. GTK auto handling is good enough to avoid crashes. 
 
 Target OS: Ubuntu 20.04
-Dependencies: pickledb, appdirs, fpdf, GTK3, Python3
+Dependencies: pickledb, appdirs, fpdf,importlib.resources, vext.gi, GTK3, Python3
 Implementions: GTK3 GUI Library, python for coding, pickleDB database 
 
 Packaged release: https://github.com/BT40/OrtealPyBilling/releases/tag/0.1

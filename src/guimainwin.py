@@ -4,6 +4,7 @@ from submods import b4gui
 import guiinvoicing
 import guiinventory
 import guicompany
+import guipayments
 import guimore
 import time
 import importlib.resources
@@ -32,6 +33,7 @@ class MainWindow(Gtk.ApplicationWindow):
         guiinvoicingins=guiinvoicing.GtkInvoicing()
         guiinventoryins=guiinventory.GtkInventory()
         guicompanyins=guicompany.GtkCompany() 
+        guipaymentsins=guipayments.GtkPayments()
         guimoreins=guimore.GtkMore()       
         
         mainbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
@@ -56,6 +58,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self.bph=guiinvoicingins.generatepage(self, guiinvoicingins)
         self.invoicingbox.add(self.bph)
         stack.add_titled(self.invoicingbox, "billboxmain", "Invoicing") 
+        
+        paymentsbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
+        abph=guipaymentsins.generatepage(self)
+        paymentsbox.add(abph)
+        stack.add_titled(paymentsbox, "paymentsmain", "Payments")
+        self.paymentsbox=paymentsbox #For code compatibility, do ot remove else bugs will be introduced
+        self.guipaymentsins=guipaymentsins #For code compatibility, do ot remove else bugs will be introduced
            
         inventorybox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
         iph=guiinventoryins.generatepage(self.invoicingbox, self.bph, guiinvoicingins, self) #iph=inventory page holder
@@ -64,16 +73,10 @@ class MainWindow(Gtk.ApplicationWindow):
         #print("Inventory box loaded, now trying loading Create box")        
         
         companybox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)        
-        cph=guicompanyins.generatepage(self.invoicingbox, self.bph, guiinvoicingins, self) # company page holder
+        cph=guicompanyins.generatepage(self.invoicingbox, self.bph, guiinvoicingins, self, guipaymentsins) # company page holder
         companybox.add(cph)
         stack.add_titled(companybox, "companyboxmain", "Company")        
-        
-        #paymentbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
-        #stack.add_titled(paymentbox, "paymentmain", "Payments")
-        
-        #ledgerbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
-        #stack.add_titled(ledgerbox, "ledgermain", "Ledger")
-        
+       
         #reportsbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
         #stack.add_titled(reportsbox, "reportsboxmain", "Reports")              
         

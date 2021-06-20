@@ -15,9 +15,80 @@ itemtableins=tealordb.Tealor()
 companytableins=tealordb.Tealor()
 invoicetableins=tealordb.Tealor()
 taxtableins=tealordb.Tealor()
+statementstableins=tealordb.Tealor()
     
 
-def loadidbase(projectdirectory):     
+def loadidbase(projectdirectory):   
+
+    global miscdb    
+    global itemgroups
+    global taxontax_list
+    global taxontax_data 
+    
+    home_dir=Path.home()
+    user_dir=str(home_dir)+'/ortealbilling_data'     #change this address application wise 
+    wd=user_dir + '/udat'
+    mdb_pathname= wd + '/miscellaneous.db' 
+    #print (self.pathname)   
+            
+    if not os.path.exists(wd): # check folder exist, if not create
+        os.makedirs(wd)    
+
+    #userdatapath=projectdirectory + '/userdata'
+    #if not os.path.exists(userdatapath):
+    #    os.makedirs(userdatapath)
+    #    print('User data missing, new folder created')           
+            
+    miscdb= pickledb.load(mdb_pathname, False)
+    miscdb_checkpresence=miscdb.get('checkpresence')
+    if miscdb_checkpresence==False: 
+        print ('Not found miscdb on disk, creating it')
+        miscdb.set('checkpresence', 'present')    
+        miscdb.set('itemgroups', ['none'])
+        miscdb.set('taxontaxslabslist', stddata.taxontax_list_std)
+        miscdb.set('taxontaxslabsdata', stddata.taxontax_data_std)    
+        miscdb.set('statelisthome', stddata.statelist_india_std)    
+        miscdb.set('statecodesgsthome', stddata.statecodesgst_india_std)        
+        miscdb.set('roundoffenabled', 'yes')
+        miscdb.set('autoinvoice_numbering', 'no')
+        miscdb.set('hidepurchasedata', 'no')
+        miscdb.set('invoiceprefix', '')
+        miscdb.set('termsline1', 'Some terms')
+        miscdb.set('termsline2', '')
+        miscdb.set('termsline3', '')
+        miscdb.set('termsline4', '')
+        miscdb.set('termsline5', '')
+        miscdb.set('mybankaccountnmbr', '')
+        miscdb.set('mybankifsc', '')
+        miscdb.set('mybankname', '')
+        cystr=str(datetime.now().year)
+        cyint=int(datetime.now().year)
+        cmint=int(datetime.now().month)
+        if cmint<4:
+            fydef=str(cyint-1)+'-'+cystr
+        else:
+            fydef=cystr+"-"+str(cyint+1)
+        miscdb.set('currentfinancialyear', fydef)
+        miscdb.set('numberofinvcopies', '3')
+        
+        miscdb.set('mycompanyname', '')        
+        miscdb.set('mycompanyaddress', '')
+        miscdb.set('mycompanygstin', '')
+        miscdb.set('mycompanycity', '')
+        miscdb.set('mycompanypin', '')
+        miscdb.set('mycompanystate', '')
+        miscdb.set('mycompanycountry', '')
+        miscdb.set('mycompanystatecode', '')
+        miscdb.set('mycompanyphone', '')
+        miscdb.set('mycompanyemail', '')
+                
+        miscdb.dump()
+        itemgroups=miscdb.get('itemgroups')
+    elif miscdb_checkpresence=='present':    
+            itemgroups=miscdb.get('itemgroups')         
+            print ('Loaded miscdb from disk')
+
+
     itemtableins.loaddata('items')
     tmp_itemtable_colheadingslength=len(itemtableins.getcollist())
     if tmp_itemtable_colheadingslength==0:           
@@ -86,65 +157,23 @@ def loadidbase(projectdirectory):
         
     else:
         print('need to inspect invoice table column headings')
-            
-    global miscdb    
-    global itemgroups
-    global taxontax_list
-    global taxontax_data
     
-    
-    home_dir=Path.home()
-    user_dir=str(home_dir)+'/ortealbilling_data'     #change this address application wise 
-    wd=user_dir + '/udat'
-    mdb_pathname= wd + '/miscellaneous.db' 
-    #print (self.pathname)   
-            
-    if not os.path.exists(wd): # check folder exist, if not create
-        os.makedirs(wd)    
-
-    #userdatapath=projectdirectory + '/userdata'
-    #if not os.path.exists(userdatapath):
-    #    os.makedirs(userdatapath)
-    #    print('User data missing, new folder created')           
-            
-    miscdb= pickledb.load(mdb_pathname, False)
-    miscdb_checkpresence=miscdb.get('checkpresence')
-    if miscdb_checkpresence==False: 
-        print ('Not found miscdb on disk, creating it')
-        miscdb.set('checkpresence', 'present')    
-        miscdb.set('itemgroups', ['none'])
-        miscdb.set('taxontaxslabslist', stddata.taxontax_list_std)
-        miscdb.set('taxontaxslabsdata', stddata.taxontax_data_std)    
-        miscdb.set('statelisthome', stddata.statelist_india_std)    
-        miscdb.set('statecodesgsthome', stddata.statecodesgst_india_std)        
-        miscdb.set('roundoffenabled', 'yes')
-        miscdb.set('autoinvoice_numbering', 'no')
-        miscdb.set('hidepurchasedata', 'no')
-        miscdb.set('invoiceprefix', '')
-        miscdb.set('termsline1', 'Some terms')
-        miscdb.set('termsline2', '')
-        miscdb.set('termsline3', '')
-        miscdb.set('termsline4', '')
-        miscdb.set('termsline5', '')
-        miscdb.set('currentfinancialyear', 'Disabled')
-        miscdb.set('numberofinvcopies', '3')
+    cfy= str(miscdb.get('currentfinancialyear'))
+    statementstableins.loaddata('statements'+cfy)
+    tmp_statementstable_colheadingslength=len(statementstableins.getcollist())
+    if tmp_statementstable_colheadingslength==0:           
+        statements_colheadingslist=['partyname', 'edate', 'vnumber', 'debitamount', 'creditamount', 'typetransaction', 'emonth', 'eyear', 'sortpriority', 'comments', 'misc']
+       
+        statementstableins.setcolumnheadings(statements_colheadingslist)
+        #print('statements table column headings not found, created')  
+    elif tmp_statementstable_colheadingslength==11:               
+        #print ('Already set column headings for statements table')
+        pass
         
-        miscdb.set('mycompanyname', '')        
-        miscdb.set('mycompanyaddress', '')
-        miscdb.set('mycompanygstin', '')
-        miscdb.set('mycompanycity', '')
-        miscdb.set('mycompanypin', '')
-        miscdb.set('mycompanystate', '')
-        miscdb.set('mycompanycountry', '')
-        miscdb.set('mycompanystatecode', '')
-        miscdb.set('mycompanyphone', '')
-        miscdb.set('mycompanyemail', '')
-                
-        miscdb.dump()
-        itemgroups=miscdb.get('itemgroups')
-    elif miscdb_checkpresence=='present':    
-            itemgroups=miscdb.get('itemgroups')         
-            print ('Loaded miscdb from disk')
+    else:
+        print('need to inspect statements table column headings')
+        #print(tmp_statementstable_colheadingslength)
+    
     
  
       

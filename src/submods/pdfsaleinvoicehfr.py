@@ -3,6 +3,7 @@
 from submods import functions
 from submods import guicommon
 from submods import checkersalepdf
+from submods import amountwords
 from fpdf import FPDF
 
 
@@ -16,11 +17,13 @@ class Pdfsihfr():
         document.cell(w=0, h= 5.5, txt=copyname, border= 0, ln=1, align='R', fill=False) 
 
         longmyname=invoicedata_temp[7]
+        allsmallcapability_myname=30
+        lettercapability_myname=checkersalepdf.calc_letters_accomodation_myname(longmyname, allsmallcapability_myname)
         
-        if len(longmyname)>33:
+        if len(longmyname)>lettercapability_myname:
         
-            lineone_myname=longmyname[0:32]
-            linetwo_myname=longmyname[32:]
+            lineone_myname=longmyname[0:lettercapability_myname]
+            linetwo_myname=longmyname[lettercapability_myname:]
   
         else:
             lineone_myname=longmyname
@@ -179,7 +182,10 @@ class Pdfsihfr():
         document.cell(w=53, h= 5.4, txt=str(ttax_label), border='L', fill=False, ln=0, align="L")
         document.cell(w=0, h= 5.4, txt=ttax_amt, border='R', fill=False, ln=1, align="R")
         
-        document.cell(w=85, h= 5.4, txt='', border='LR', fill=False, ln=0, align="L")
+        bank_ac="Bank Ac no: " + str(inv_terms[6])
+        if len(bank_ac)<16:
+            bank_ac=''
+        document.cell(w=85, h= 5.4, txt=bank_ac, border='LR', fill=False, ln=0, align="L")
         #first tax on tax       
         if invoicedata_temp[46]=='n':
             ftot_label=''
@@ -190,7 +196,10 @@ class Pdfsihfr():
         document.cell(w=53, h= 5.4, txt=str(ftot_label), border='L', fill=False, ln=0, align="L")
         document.cell(w=0, h= 5.4, txt=ftot_amt, border='R', fill=False, ln=1, align="R")       
         
-        document.cell(w=85, h= 5.4, txt='', border='LR', fill=False, ln=0, align="L")
+        bankifsc="IFSC: " + str(inv_terms[7])
+        if len(bankifsc)<10:
+            bankifsc=''
+        document.cell(w=85, h= 5.4, txt=bankifsc, border='LR', fill=False, ln=0, align="L")
         #second tax on tax
         if invoicedata_temp[47]=='n':
             stot_label=''
@@ -201,7 +210,10 @@ class Pdfsihfr():
         document.cell(w=35, h= 5.4, txt=str(stot_label), border='L', fill=False, ln=0, align="L")
         document.cell(w=0, h= 5.4, txt=stot_amt, border='R', fill=False, ln=1, align="R")
         
-        document.cell(w=85, h= 5.4, txt='', border='LR', fill=False, ln=0, align="L")
+        bankname=str(inv_terms[8])
+        if len(bankname)<2:
+            bankname=''
+        document.cell(w=85, h= 5.4, txt=bankname, border='LR', fill=False, ln=0, align="L")
         # third tax on tax
         if invoicedata_temp[48]=='n':
             ttot_label=''
@@ -225,12 +237,20 @@ class Pdfsihfr():
         document.cell(w=0, h= 5.4, txt='', border='LR', fill=False, ln=1, align="R")
         
         #here is amount in words and sign
-        amwords='One lac sixty thousand ninety only '
-        document.cell(w=85, h= 5.4, txt=amwords, border='LR', fill=False, ln=0, align="L")        
+        
+        inv_grand_amount=invoicedata_temp[71]
+        amwords=amountwords.amount_indian_currency(inv_grand_amount)
+        if len(amwords)>48: #split in 2 lines if long
+            amwords_line1=amwords[0:48] + '-'
+            amwords_line2='-' + amwords[48:]
+        else: #keep in one line
+            amwords_line1=amwords  
+            amwords_line2="" 
+        #amwords='Rupees seven thousand eighty only '
+        document.cell(w=85, h= 5.4, txt=amwords_line1, border='LR', fill=False, ln=0, align="L")        
         document.cell(w=0, h= 5.4, txt='', border='LR', fill=False, ln=1, align="L")
         
-        amwords2='Seventy three lac sixty eight thousand ninety five only '
-        document.cell(w=85, h= 5.4, txt=amwords2, border='LRB', fill=False, ln=0, align="L")        
+        document.cell(w=85, h= 5.4, txt=amwords_line2, border='LRB', fill=False, ln=0, align="L")        
         document.cell(w=0, h= 5.4, txt='Authorised signatory', border='LRB', fill=False, ln=1, align="R")
         
         
@@ -241,11 +261,10 @@ class Pdfsihfr():
         document.cell(w=15, h= 5.4, txt='', border='LR', fill=False, ln=0, align="C")
         document.cell(w=17, h= 5.4, txt='', border='LR', fill=False, ln=0, align="C")
         document.cell(w=13, h= 5.4, txt='', border='LR', fill=False, ln=0, align="C")
-        document.cell(w=22, h= 5.4, txt='', border='LR', fill=False, ln=1, align="R")    
-        
+        document.cell(w=22, h= 5.4, txt='', border='LR', fill=False, ln=1, align="R")            
    
    
-    def create_irow(self, document, isome, invoicedata_temp, checker):
+    def create_irow(self, document, isome, invoicedata_temp, checker, lettercapability):
     
         iserial_temp=str(isome+1)
         iname_temp=str(invoicedata_temp[73][isome])
@@ -271,8 +290,8 @@ class Pdfsihfr():
 
         elif checker==2: #only name is long
               
-            iname_one=iname_temp[0:32]
-            iname_two=iname_temp[32:]
+            iname_one=iname_temp[0:lettercapability]
+            iname_two=iname_temp[lettercapability:]
             document.cell(w=8, h= 5.4, txt=iserial_temp, border='LR', fill=False, ln=0, align="C")
             document.cell(w=77, h= 5.4, txt=iname_one, border='LR', fill=False, ln=0, align="L")
             document.cell(w=18, h= 5.4, txt=ihsn_temp, border='LR', fill=False, ln=0, align="C")

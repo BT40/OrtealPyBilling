@@ -2,37 +2,41 @@
 # Examples are standard tax rates, countries list.
 
 
-countrieslist=['afghanistan', 'albania', 'algeria', 'andorra', 'angola', 'antigua and barbuda', 'argentina', 'armenia', 'australia', 'austria', 'azerbaijan', 
-    'bahamas', 'bahrain', 'bangladesh', 'barbados', 'belarus', 'belgium', 'belize', 'benin', 'bhutan', 'bolivia', 'bosnia and herzegovina', 'botswana', 'brazil', 'brunei', 'bulgaria', 'burkina faso', 'burundi', 
-     'cambodia', 'cameroon', 'canada', 'cape verde', 'central african republic', 'chad', 'chile', 'china', 'columbia', 'comoros', 'congo', 'costa rica', 'croatia', 'cuba', 'cyprus', 'czech republic czechia' 'cote d ivoire', 
-    'denmark', 'djibouti', 'dominica', 'dominician republic', 'dr congo' 
-     'ecuador', 'egypt', 'el salvador', 'equatorial guinea', 'eritrea', 'estonia', 'eswatini', 'ethiopia', 
-     'fiji', 'finland', 'france', 
-     'gabon', 'gambia', 'georgia', 'germany', 'ghana', 'greece', 'grenada', 'guatemala', 'guinea', 'guinea-bissau', 'guyana', 
-     'haiti', 'holy see (vatican city)', 'honduras', 'hungary', 
-     'iceland', 'india', 'indonesia', 'iran', 'iraq', 'ireland', 'israel', 'italy', 'ivory coast (Republic of cote d ivoire)'
-     'jamaica', 'japan', 'jordan', 
-     'kazakhstan', 'kenya', 'kiribati', 'kuwait', 'kyrgyztan' 
-     'laos', 'latvia', 'lebanon', 'lesotho', 'liberia', 'libya', 'liechtenstein', 'lithuania', 'luxembourg',
-     'madagaskar', 'malawi', 'malaysia', 'maldives', 'mali', 'malta', 'marshall islands', 'mauritania', 'mauritius', 'mexico', 'micronesia', 'moldova', 'monaco', 'mongolia', 'montenegro', 'morocco', 'mozambique', 'myanmar', 
-     'namibia', 'nauru', 'nepal', 'netherlands', 'new zealand', 'nicaragua', 'niger', 'nigeria', 'niue', 'north korea', 'north macedonia', 'norway', 
-     'oman', 
-     'pakistan', 'palau', 'palestine', 'panama', 'papua new guinea', 'paraguay', 'peru', 'philippines', 'poland', 'portugal',
-      'qatar', 
-      'Republic of cabo verde', 'republic of uzbekistan ', 'romania', 'russia', 'rwanda', 
+countrieslist=['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and barbuda', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 
+    'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and herzegovina', 'botswana', 'brazil', 'brunei', 'bulgaria', 'burkina faso', 'burundi', 
+     'Cambodia', 'Cameroon', 'Canada', 'Cape verde', 'Central african republic', 'Chad', 'Chile', 'China', 'Columbia', 'Comoros', 'Congo', 'Costa rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech republic czechia' 'Cote d ivoire', 
+    'Denmark', 'Djibouti', 'Dominica', 'Dominician republic', 'Dr congo' 
+     'Ecuador', 'Egypt', 'El salvador', 'Equatorial guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia', 
+     'Fiji', 'Finland', 'France', 
+     'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-bissau', 'Guyana', 
+     'Haiti', 'Holy see (Vatican city)', 'Honduras', 'Hungary', 
+     'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Ivory coast (Republic of cote d ivoire)'
+     'Jamaica', 'Japan', 'Jordan', 
+     'Kazakhstan', 'Kenya', 'Kiribati', 'Kuwait', 'Kyrgyztan' 
+     'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg',
+     'Madagaskar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 
+     'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Niue', 'North korea', 'North macedonia', 'Norway', 
+     'Oman', 
+     'Pakistan', 'Palau', 'Palestine', 'Panama', 'Papua new guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal',
+      'Qatar', 
+      'Republic of cabo verde', 'Republic of uzbekistan ', 'Romania', 'Russia', 'Rwanda', 
        
-     'saint kitts & nevis', 'saint lucia', 'saint vincent and the grenadines', 'samoa', 'san marino', 'sao tome & principe', 'saudi arabia', 'senegal', 'serbia', 'seychelles', 'sierra leone', 'singapore', 'slovakia', 'slovenia', 'solomon islands', 'somalia', 'south africa', 'south korea', 'south ossetia' 'south sudan', 'spain', 'sri lanka', 'st. vincent & grenadines', 'state of palestine', 'sudan', 'suriname', 'sweden', 'switzerland', 'syria',  
-     'taiwan', 'tajikistan', 'tanzania', 'thailand', 'timor-leste', 'togo', 'tonga', 'trinidad and tobago', 'tunisia', 'turkey', 'turkmenistan', 'tuvalu', 
-     'uganda', 'ukraine', 'united arab emirates', 'united kingdom', 'united states of america', 'uruguay', 'uzbekistan', 
-     'vanuatu', 'venezuela', 'vietnam', 
-     'yamen', 'zambia', 'zimbabwe' 
-     'usa', 'east timor', 'england', 'kosovo', 'britain', 'swaziland (eswatini)', 'vatican city (holy see)', 'other']
+     'Saint kitts & nevis', 'Saint lucia', 'Saint vincent and the grenadines', 'Samoa', 'San marino', 'Sao Tome & principe', 'Saudi arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon islands', 'Somalia', 'South africa', 'South korea', 'South ossetia' 'South sudan', 'Spain', 'Sri lanka', 'St. vincent & grenadines', 'State of palestine', 'Sudan', 'Suriname', 'Sweden', 'Switzerland', 'Syria',  
+     'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-leste', 'Togo', 'Tonga', 'Trinidad and tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 
+     'Uganda', 'Ukraine', 'United arab emirates', 'United kingdom', 'United states of america', 'Uruguay', 'Uzbekistan', 
+     'Vanuatu', 'Venezuela', 'Vietnam', 
+     'Yamen', 'Zambia', 'Zimbabwe' 
+     'USA', 'East timor', 'England', 'Kosovo', 'Great britain', 'Swaziland (eswatini)', 'Vatican city (Holy see)', 'Other']
 
 
 
 statelist_india_std=['Chandigarh', 'Delhi', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Karnataka', 'Punjab', 'Maharashtra', 'Tamil nadu']
 
 statecodesgst_india_std=['04', '07', '06', '2', '01', '29', '03', '27', '33']
+
+statelist_india_stdGST=['Jammu and Kashmir', 'Himachal Pradesh', 'Punjab', 'Chandigarh', 'Uttrakhand', 'Haryana', 'Delhi', 'Rajasthan', 'Uttar Pradesh', 'Bihar', 'Sikkim', 'Arunachal Pradesh', 'Nagaland', 'Manipur', 'Mizoram', 'Tripura', 'Meghalaya', 'Assam', 'West Bengal', 'Jharkhand', 'Odisha', 'Chhatisgarh', 'Madhya Pradesh', 'Gujarat', 'Dadra Nagar Haveli Daman Diu', 'Maharashtra', 'Andhra Pradesh Before devision', 'Karanataka', 'Goa', 'Lakshadweep', 'Kerala', 'Tamil Nadu', 'Puducherry', 'Andaman Nicobar Islands', 'Telangana', 'Andhra Pradesh', 'Ladakh'] #State codes are index number of states +1
+
+
 
 gstslabs_list_std=['GST 0% (SGST+CGST)', 'GST 5% (SGST+CGST)', 'GST 12% (SGST+CGST)', 'GST 18% (SGST+CGST)', 'GST 28% (SGST+CGST)', 'IGST 0%',  'IGST 5%', 'IGST 12%', 'IGST 18%', 'IGST 28%']
 

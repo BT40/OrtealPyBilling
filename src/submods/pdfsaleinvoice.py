@@ -56,10 +56,11 @@ class PdfSI():
         
         while proceed_signal=='yes':
             #print(isome)
-            checker=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)                       
-            rows_consumed =hfi.create_irow(document, isome, invoicedata_temp, checker)            
+            checker, lettercapability=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)                       
+            rows_consumed =hfi.create_irow(document, isome, invoicedata_temp, checker, lettercapability)            
             activerows=activerows+rows_consumed   
             rowcapability_current=rowcapability_current-rows_consumed
+            #print (str(rowcapability_current) + " line 63")
             items_remaining=items_remaining-1
             isome=isome+1
             aloop_limit_p1=min(rowcapability_current, items_remaining) #aloop is activeloop for page 1
@@ -68,9 +69,11 @@ class PdfSI():
                 proceed_signal='no'
             
             elif aloop_limit_p1>0:
-                temp_next_row_size=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)
+                #print ("in pi>0 elif loop line 74, here is limit detected" + str(aloop_limit_p1))
+                temp_next_row_size=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)[0]
                 if temp_next_row_size>rowcapability_current:
                     proceed_signal='no' #two rows needed but one available
+                    #print ("Not enough space for row, rep. from line 78, capability, nextrowsize:" + str(rowcapability_current) + "," + str(temp_next_row_size) )
                     document.cell(w=8, h= 5.4, txt='', border='LR', fill=False, ln=0, align="C")
                     document.cell(w=77, h= 5.4, txt='Continued on next page', border='LR', fill=False, ln=0, align="L")
                     document.cell(w=18, h= 5.4, txt='', border='LR', fill=False, ln=0, align="C")
@@ -127,7 +130,7 @@ class PdfSI():
        
         if self.pagecount==2:
             document.add_page()
-            hfi.create_header (invoicedata_temp, document)            
+            hfi.create_header (invoicedata_temp, document, copyname)            
             document.set_font("Times", size=11)
             # invoice items page 2
             activerows2, rowcapability_current2= 1, 16
@@ -144,8 +147,8 @@ class PdfSI():
             
             while proceed_signal=='yes':
 
-                checker=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)                
-                rows_consumed =hfi.create_irow(document, isome, invoicedata_temp, checker)               
+                checker, lettercapability=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)                
+                rows_consumed =hfi.create_irow(document, isome, invoicedata_temp, checker, lettercapability)               
                 activerows2=activerows2+rows_consumed                
                 rowcapability_current2=rowcapability_current2-rows_consumed
                 #print(rowcapability_current2)
@@ -157,7 +160,7 @@ class PdfSI():
                     proceed_signal='no'
             
                 elif aloop_limit_p1>0:
-                    temp_next_row_size=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)
+                    temp_next_row_size=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)[0]
                     if temp_next_row_size>rowcapability_current2:
                         proceed_signal='no' #two rows needed but one available
                         document.cell(w=8, h= 5.4, txt='', border='LR', fill=False, ln=0, align="C")
@@ -216,7 +219,7 @@ class PdfSI():
        
         if self.pagecount==3:
             document.add_page()
-            hfi.create_header (invoicedata_temp, document)            
+            hfi.create_header (invoicedata_temp, document, copyname)            
             document.set_font("Times", size=11)
             # invoice items page 3
             activerows3, rowcapability_current3= 1, 16
@@ -233,8 +236,8 @@ class PdfSI():
             
             while proceed_signal=='yes':
 
-                checker=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)                
-                rows_consumed =hfi.create_irow(document, isome, invoicedata_temp, checker)               
+                checker, lettercapability=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)                
+                rows_consumed =hfi.create_irow(document, isome, invoicedata_temp, checker, lettercapability)               
                 activerows3=activerows3+rows_consumed                
                 rowcapability_current3=rowcapability_current3-rows_consumed
                 #print(rowcapability_current3)
@@ -246,7 +249,7 @@ class PdfSI():
                     proceed_signal='no'
             
                 elif aloop_limit_p3>0:
-                    temp_next_row_size=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)
+                    temp_next_row_size=checkersalepdf.item_lines_reqd(invoicedata_temp, isome)[0]
                     if temp_next_row_size>rowcapability_current3:
                         proceed_signal='no' #two rows needed but one available
                         document.cell(w=8, h= 5.4, txt='', border='LR', fill=False, ln=0, align="C")

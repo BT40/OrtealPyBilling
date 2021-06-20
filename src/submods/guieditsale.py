@@ -554,12 +554,19 @@ class GtkEditSale():
         
         
     def generate_selector_box(self, somesignal) :  
-        selectorbox=Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)  
+        selectorbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)  
         #selectorbox.get_style_context().add_class("selectorboxgreyfil")
         selectorbox.set_halign(Gtk.Align.START)
+        selectorbox.set_hexpand(False)
         
         sel_label= Gtk.Label()
         sel_label.set_markup("Type and select invoice id from drop down")
+                
+        selhelp_label= Gtk.Label()
+        selhelp_label.set_markup("Invoice ID format example: 2020-06-29,71 (dashed date in reverse, comma, invoice number) ")
+        selhelp_label.set_hexpand(False)
+        selhelp_label.set_halign(Gtk.Align.START)
+        #selhelp_label.set_margin_top(20)
         
         self.sel_entry = Gtk.Entry()
         self.sel_entry.set_width_chars(32)
@@ -580,10 +587,15 @@ class GtkEditSale():
         inv_deletebutton.set_margin_right(245)
         inv_deletebutton.connect("clicked", self.delete_pressed)        
         
-        selectorbox.pack_start(sel_label, False, False, 0)
-        selectorbox.pack_start(self.sel_entry, False, False, 0)         
-        selectorbox.pack_start(inv_editbutton, False, False, 0) 
-        selectorbox.pack_start(inv_deletebutton, False, False, 0)    
+        hsel_box= Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0) 
+        
+        hsel_box.pack_start(sel_label, False, False, 0)
+        hsel_box.pack_start(self.sel_entry, False, False, 0)         
+        hsel_box.pack_start(inv_editbutton, False, False, 0) 
+        hsel_box.pack_start(inv_deletebutton, False, False, 0)  
+        
+        selectorbox.pack_start(hsel_box, False, False, 0) 
+        selectorbox.pack_start(selhelp_label, False, False, 20)   
         return selectorbox
      
      

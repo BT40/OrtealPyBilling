@@ -1,5 +1,5 @@
 # Table wrapper over Pickledb. Store data in tabular form utilizing nosql.
-# Revision 12 dec 2020
+# Revision 19 June 2021
 
 import sys
 import os
@@ -86,7 +86,7 @@ class Tealor():
             self.db.set('rowlist', self.rowlist)  
             self.db.set('rowcollection', self.rowcollection)        
             self.autosave()           
-            print("Data not available on disk, created a new one. Reporting from tealordb initialization")
+            print(str(self.tablename) + "database not found on disk, created new one. Reporting from tealordb initialization")
 
         elif self.checkpresence=='present':            
             self.tablename=self.db.get('tablename')
@@ -99,10 +99,10 @@ class Tealor():
             self.collist=self.db.get('collist')
             self.rowlist=self.db.get('rowlist')   
             self.rowcollection=self.db.get('rowcollection')
-            print("Loaded " + self.tablename + " database from disk. Reporting from else block in tealordb initialization")
+            #print("Loaded " + self.tablename + " database from disk. Reporting from else block in tealordb initialization")
          
         else:
-            print('Something went wrong in loading database')               
+            print('Something went wrong in loading database' + str(self.tablename))               
         
         # below are tests for initialization    
         #print(type(self.rowlist))
@@ -146,7 +146,7 @@ class Tealor():
         #print ("database row list after deletion operation, reporting from deleterow in Tealordb ")  
         #No need to remove from database self.db as it is auto updated due to mutation in lists       
         self.autosave()
-        print ("Successfully deleted the row, reporting from tealordb")
+        #print ("Successfully deleted the row, reporting from tealordb")
 
           
     def editrow(self, rownametomodify, rowdata):
@@ -158,6 +158,16 @@ class Tealor():
         #No need to remove from database self.db as it is auto updated due to mutation in lists      
         self.autosave()
         #print ("Successfully modified row, reporting from editrow in Tealordb ") 
+        
+
+    def editrow_without_namechange(self, rownametomodify, rowdata):
+        #print ("Finding Index for your requested row... ") 
+        rowindex=self.rowlist.index(rownametomodify) 
+        #rowname= self.rowlist[rowindex] # seems redundant and faulty, will mess with argument rowname
+        self.rowcollection[rowindex]=rowdata 
+        #No need to remove from database self.db as it is auto updated due to mutation in lists      
+        self.autosave()
+        #print ("Successfully modified row, reporting from editrow in Tealordb ")         
     	
    
     def setvalue(self, rowname, columnname, newvalue):
@@ -188,6 +198,21 @@ class Tealor():
         except:
             #print("Not found, reporting from tealordb readrow")    
             val='not_found_row'
+            return val
+	
+
+    def getval(self, rowname, columnname):
+        try:
+            rowindex=self.rowlist.index(rowname) 
+            colindex=self.collist.index(columnname)
+            rowdata=self.rowcollection[rowindex]
+            val=rowdata[colindex]
+            #print("Value of required field is : ")
+            #print (val)
+            return val
+        except:
+            #print("Not found, reporting from tealordb getval")    
+            val='not_found'
             return val
 	
 		
@@ -228,21 +253,6 @@ class Tealor():
     def printtable (self):
         print(self.rowcollection)
         return self.rowcollection	
-	
-
-    def getval(self, rowname, columnname):
-        try:
-            rowindex=self.rowlist.index(rowname) 
-            colindex=self.collist.index(columnname)
-            rowdata=self.rowcollection[rowindex]
-            val=rowdata[colindex]
-            #print("Value of required field is : ")
-            #print (val)
-            return val
-        except:
-            print("Not found, reporting from tealordb getval")    
-            val='not_found_row'
-            return val
 	
 	
     def thresher(self, tothresh):
@@ -290,14 +300,14 @@ class Tealor():
             pass                  
                 
         else:
-            print("Autosave not properly configured, enabling it as fallback, reporting from tealordb autosave function")   
+            print("Autosave not properly configured, reporting from tealordb autosave function")   
             self.db.dump() 
            
 		
     def saveitodisk(self):
-        print ("Saving table to HDD... ")
+        #print ("Saving table to disk... ")
         self.db.dump() 
-        print ("Saved successfully... ") 
+        #print ("Saved successfully... ") 
 		
 
 

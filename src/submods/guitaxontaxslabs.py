@@ -69,14 +69,17 @@ class GtkTaxonTaxSlabs():
         ftrlabel = Gtk.Label() #first tax rate 
         ftrlabel.set_markup("First tax rate")        
         self.ftrentry = Gtk.Entry()
+        self.ftrentry.set_text('0')
         
         strlabel = Gtk.Label() #second tax rate
         strlabel.set_markup("Second tax rate")        
         self.strentry = Gtk.Entry()
+        self.strentry.set_text('0')
         
         ttrlabel = Gtk.Label() #third tax rate 
         ttrlabel.set_markup("Third tax rate")        
         self.ttrentry = Gtk.Entry()
+        self.ttrentry.set_text('0')
         #-----------------------------------------------
         
         #----------------------------------------------
@@ -118,9 +121,10 @@ class GtkTaxonTaxSlabs():
         #totslabs_listlabel.set_margin_bottom(20)
         
         self.totl_combo = Gtk.ComboBoxText.new_with_entry() #tax on tax list
+        self.totl_combo.append_text('Select')
         for etots in guicommon.taxontax_list:
             self.totl_combo.append_text(etots)
-            #print (etots)
+        
         self.totl_combo.set_active(0)
         self.totl_combo.set_hexpand(False)
         self.totl_combo.set_halign(Gtk.Align.CENTER)

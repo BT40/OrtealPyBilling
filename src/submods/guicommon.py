@@ -1,6 +1,7 @@
 import sys
 import gi
 from submods import dbmani
+from submods import simpledialog
 import operator
 #from submods import functions
 
@@ -21,6 +22,8 @@ def loadguicommon():
     taxtableins=dbmani.taxtableins
     global invoicetableins
     invoicetableins=dbmani.invoicetableins
+    global statementstableins
+    statementstableins=dbmani.statementstableins
     global miscdbins
     miscdbins=dbmani.miscdb
     global itemgroups
@@ -70,7 +73,7 @@ def loadguicommon():
     invoicename_store = Gtk.ListStore(str)
     for eachinv_tmp in invoicetableins.rowlist:
         invoicename_store.append([eachinv_tmp])
-        #print (eachinv_tmp)  
+    #    print (eachinv_tmp)  
     
     global state_list
     state_list=miscdbins.get('statelisthome')     
@@ -78,5 +81,9 @@ def loadguicommon():
     global statecodes_list
     statecodes_list=miscdbins.get('statecodesgsthome')   
     
+    global simpledialogins
+    simpledialogins=simpledialog.SimpleGtkDialog()
+    #def display_message (parentwindow, dialogheading, msg_one, msg_two, msg_three ):
+    #msg 21&2 are spaced while 2 & 3 are not
     
       

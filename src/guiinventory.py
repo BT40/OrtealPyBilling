@@ -522,7 +522,7 @@ class GtkInventory():
 
     def processcitem(self, widget, civarg, invoicingbox, bph, guiinvoicingins):
     
-        iname=self.cinameentry.get_text().capitalize()
+        iname=self.cinameentry.get_text()#.capitalize()
         isoftversion='1'
         ihsn=self.cihsnentry.get_text()
         igroup=self.cigroupcombo.get_active_text()
@@ -574,8 +574,7 @@ class GtkInventory():
         bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
         invoicingbox.add(bph)
         invoicingbox.show_all()        
-        
-        print("Successfully created item")
+
         return 1
   
   
@@ -598,7 +597,6 @@ class GtkInventory():
     
     
     def process_eitem(self, widget, eivarg, invoicingbox, bph, guiinvoicingins):
-        print('process ei called')
         iname=self.einameentry.get_text()
         isoftversion='1'
         ihsn=self.eihsnentry.get_text()
@@ -649,8 +647,7 @@ class GtkInventory():
         bph=guiinvoicingins.generatepage(self.mainwindow, guiinvoicingins)
         invoicingbox.add(bph)
         invoicingbox.show_all()
-        
-        print("Successfully modified item")
+
         return 1 
     
         
@@ -730,7 +727,7 @@ class GtkInventory():
         self.ciglcombo.append_text(newig)
         self.cigroupcombo.append_text(newig)
         self.reset_eientries('mockpress', self.eientries)
-        print ('created new item group')
+        #print ('created new item group')
         
         
     def reset_cigentry(self, reseterwidget):    
@@ -757,9 +754,7 @@ class GtkInventory():
         
     def refreshil(self, event):
         self.ipsw.remove(self.ipsw.get_child())
-        print('removed previous, reporting from gui item list reload')
-        self.ipsw.add(self.loaditems("blankevent"))
-        print('added new')   
+        self.ipsw.add(self.loaditems("blankevent")) 
         
         
     def loaditems(self, event):

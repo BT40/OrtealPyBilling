@@ -243,9 +243,12 @@ class GtkNewSale():
                 def ncii_setterini(ncii_valuesig):
                     tempindex=self.nciilb_inamelist.index(ncii_valuesig)
                     tempname=ncii_valuesig.get_text()
-                    tempdbindex=guicommon.itemtableins.rowlist.index(tempname)
-                    tempmrp=guicommon.itemtableins.rowcollection[tempdbindex][17]
-                    self.nciilb_isplist[tempindex].set_text(str(tempmrp))
+                    try:
+                        tempdbindex=guicommon.itemtableins.rowlist.index(tempname)
+                        tempmrp=guicommon.itemtableins.rowcollection[tempdbindex][17]
+                        self.nciilb_isplist[tempindex].set_text(str(tempmrp))
+                    except:
+                        pass    
                 nciiname_tempentry.connect("changed", ncii_setterini) 
                 
                 def ncii_changedqty(ncii_valuesig):

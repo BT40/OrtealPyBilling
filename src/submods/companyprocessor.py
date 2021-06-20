@@ -10,7 +10,7 @@ from gi.repository import Gdk
 
 
 def extractccdata(ccvarg):
-        cname=ccvarg[0].get_text().capitalize()
+        cname=ccvarg[0].get_text()#.capitalize()
         cgst=ccvarg[1].get_text()
         caddress=ccvarg[2].get_text()
         ccity=ccvarg[3].get_text()
@@ -69,7 +69,7 @@ def extractccdata(ccvarg):
 
 
 def extractecdata(ecvarg):
-        cname=ecvarg[0].get_text().capitalize()
+        cname=ecvarg[0].get_text()#.capitalize()
         cgst=ecvarg[1].get_text()
         caddress=ecvarg[2].get_text()
         ccity=ecvarg[3].get_text()

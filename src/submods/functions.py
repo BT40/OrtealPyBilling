@@ -36,38 +36,25 @@ todaysdate_string=str(todayobj)
 current_timeobj=dobj.time()
 currenttime_string=str(current_timeobj) 
 
+def check_date_format(date_string):
 
-class Company():
-    def createcompany(self, namecf, gstcf, addresscf, statecf, contactcf, catcf):
-        self.namec=namecf
+    try:
+        yyyy=int(date_string[0:4])
+        mm=int(date_string[5:7])
+        dd=int(date_string[8]+date_string[9])    
+        #print(yyyy)
+        #print(mm)
+        #print(dd)
+    except:
+        #print("Date seems invalid, reporting from except block of check_date_format")
+        return 'invalid'   
+    #print('currently just above rules')
+    rules = [mm<13, dd<32, date_string[4]=='-', date_string[7]=='-', len(date_string)==10]
 
-	
-
-
-
-class Items():
-    def createitem(self, idata):
-        self.name=idata[0]
-        self.hsn=idata[1]
-        self.group=idata[2]
-        self.unit=idata[3]
-        self.tax=idata[4]
-        self.openstock=idata[5]
-        self.critical=idata[6]
-        self.listprice=idata[7]
-        self.stddisc=idata[8]
-        self.sellprice=idata[9]
-        self.purprice=idata[10]
-        self.comments=idata[11]
-        return idata
+    if all(rules):
+        #print("Date seems valid")
+        return 'valid'
         
-        
-    
-    def precreateitem(self): #preprocessor for creating item
-        pass
-
-    
-
-        
-        
-
+    else:
+        #print('date seems invalid, reporting from else block')    
+        return 'invalid' 

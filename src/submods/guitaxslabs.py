@@ -68,14 +68,17 @@ class GtkTaxSlabs():
         ftrlabel = Gtk.Label() #first tax rate 
         ftrlabel.set_markup("First tax rate")        
         self.ftrentry = Gtk.Entry()
-        
+        self.ftrentry.set_text('0')
+                
         strlabel = Gtk.Label() #second tax rate
         strlabel.set_markup("Second tax rate")        
         self.strentry = Gtk.Entry()
-        
+        self.strentry.set_text('0')
+                
         ttrlabel = Gtk.Label() #third tax rate 
         ttrlabel.set_markup("Third tax rate")        
         self.ttrentry = Gtk.Entry()
+        self.ttrentry.set_text('0')
         #-----------------------------------------------
         
         #----------------------------------------------
