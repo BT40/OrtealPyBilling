@@ -20,5 +20,6 @@ def reload_screen(somesignal, mainwindow, guiinvoicingins) :
         guicommon.loadguicommon()
         mainwindow.bph=guiinvoicingins.generatepage(mainwindow, guiinvoicingins)
         mainwindow.invoicingbox.add(mainwindow.bph)
-        mainwindow.invoicingbox.show_all()        
+        mainwindow.invoicingbox.show_all()  
+        print('successfully reloaded sucreen, reporting from newsalesub line 24')      
        

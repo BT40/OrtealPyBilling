@@ -138,6 +138,7 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
     inv_nmbr=nsi_header_widgets[0].get_text()
     inv_date=nsi_header_widgets[1].get_text()
     inv_toparty=nsi_header_widgets[2].get_text()
+    #print (str(inv_toparty) + "reporting from line 141, saleinvoicing processor" )
     inv_po=nsi_header_widgets[3].get_text()
     inv_taxslab=nsi_header_widgets[4].get_active_text()
     inv_taxontaxslab=nsi_header_widgets[5].get_active_text()
@@ -163,6 +164,7 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
     sourceaddress, sourcepin, sourcephone, sourceemail, sourcetaxid, originstate, originstatecode, partyaddress, partypin, partyphone, partytaxid, partystate, partystatecode = get_company_details(sourcecompany, inv_toparty)  
     
     if nsi_oth_val[10]=='yes': #more opened is yes
+        #print('more pressed found, reporting from if sale invoicing processor')
         handovername=nsi_oth_val[4]
         shippingaddress=nsi_oth_val[5]
         shippingpin=nsi_oth_val[8]
@@ -171,6 +173,7 @@ def processnci(ssignaltype, nsi_header_widgets, nsi_footer_widgets, nsi_oth_val,
         shippingstatecode=nsi_oth_val[11]
         
     else: #more not opened, use default  
+        #print('more not pressed, reporting from else block, sale invoicing processor')
         handovername=inv_toparty
         shippingaddress=partyaddress
         shippingpin=partypin
@@ -362,7 +365,7 @@ def get_company_details (sourcecompany, inv_toparty):
     return supplier_address, supplier_pin, supplier_phone, supplier_email, supplier_gst, supplier_state, supplier_statecode, customer_address, customer_pin, customer_phone, customer_gst, customer_state, customer_statecode 
     
     
-def changed_companyname (self, nameentrywidget, placeofsupply_entry, posstate_code_entry):
+def changed_companyname (eventt, nameentrywidget, placeofsupply_entry, posstate_code_entry, more_opened): #currently not in use
     try:
         temp_name=str(nameentrywidget.get_text())
         temp_details=guicommon.companytableins.readrow(temp_name)
@@ -370,7 +373,13 @@ def changed_companyname (self, nameentrywidget, placeofsupply_entry, posstate_co
         #tempplace=guicommon.companytableins.rowcollection[nameindex][9]
         placeofsupply_entry.set_text(temp_details[9])
         posstate_code_entry.set_text(temp_details[17])
+        #print(more_opened + "- prior moreopened value")
+        more_opened='no'
+        #print((more_opened) + " -rep. from changed company name fn in saleinvoicingprocessor")
+                
     except:
+        #print('exception occured at changed_companyname, saleinvoicingprocessor')
         pass
-    
+
+
 

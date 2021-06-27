@@ -178,7 +178,18 @@ class CImore():
             ship_phone=self.sphone_entry.get_text()
             rcvalue=self.rccombo.get_active_text()
                         
-        else:
+        else:  #same because closing dialog causes bug in which these parameters are set to 0
+            ewaybill=self.ewayentry.get_text()
+            billcomments=self.bcommentry.get_text()
+            furtherterms=self.furthertermsline1_entry.get_text()
+            transport_mode=self.transportmode_entry.get_text()
+            ship_name=self.shippingname_entry.get_text()
+            ship_addline=self.shippingadd_entry.get_text()
+            ship_pin=self.shippingpin_entry.get_text()
+            ship_state=self.state_combo.get_active_text()
+            ship_statecode=self.shippingstatecode_entry.get_text()
+            ship_phone=self.sphone_entry.get_text()
+            rcvalue=self.rccombo.get_active_text()
             pass    
         
 

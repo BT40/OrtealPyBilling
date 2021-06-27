@@ -459,7 +459,7 @@ class GtkEditSale():
          
         self.nsi_itemswidgets=[self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist,self.nciilb_ic, self.nciilb_iamtlist]   
         
-        self.invcompany.connect("changed", saleinvoicingprocessor.changed_companyname, self.invcompany, self.placeofsupply_entry, self.posstatecode_entry ) 
+        self.invcompany.connect("changed", self.changed_companyname, self.invcompany, self.placeofsupply_entry, self.posstatecode_entry, self.more_opened) 
            
         self.temp_basicamt=saleinvoicingprocessor.saleamounting(self.nciilb_iamtlist)
         self.basicamtdisp.set_markup(str(self.temp_basicamt))
@@ -610,3 +610,18 @@ class GtkEditSale():
         self.invoicingmasterbox.pack_start(self.sb, False, False, 0)
         self.invoicingmasterbox.show_all()   
        
+       
+    def changed_companyname (self, eventt, nameentrywidget, placeofsupply_entry, posstate_code_entry, more_opened):
+        try:
+            temp_name=str(nameentrywidget.get_text())
+            temp_details=guicommon.companytableins.readrow(temp_name)
+            #nameindex=guicommon.companytableins.rowlist.index(temp_name)
+            #tempplace=guicommon.companytableins.rowcollection[nameindex][9]
+            placeofsupply_entry.set_text(temp_details[9])
+            posstate_code_entry.set_text(temp_details[17])
+            #print(more_opened + "- prior moreopened value")
+            self.more_opened='no'
+                               
+        except:
+            #print('exception occured at changed_companyname, saleinvoicingprocessor')  
+            pass

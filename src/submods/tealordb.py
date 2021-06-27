@@ -197,7 +197,7 @@ class Tealor():
         
         except:
             #print("Not found, reporting from tealordb readrow")    
-            val='not_found_row'
+            val='not_found_row' # do not change words for compatibility
             return val
 	
 

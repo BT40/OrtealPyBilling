@@ -438,10 +438,9 @@ class GtkNewSale():
          
         self.nsi_itemswidgets=[self.nciilb_inamelist, self.nciilb_iqtylist, self.nciilb_isplist, self.nciilb_idiscountlist,self.nciilb_ic, self.nciilb_iamtlist]          
         
-        self.invcompany.connect("changed", saleinvoicingprocessor.changed_companyname, self.invcompany, self.placeofsupply_entry, self.posstatecode_entry ) 
+        self.invcompany.connect("changed", self.changed_companyname, self.invcompany, self.placeofsupply_entry, self.posstatecode_entry, self.more_opened) 
        
         invoicingmasterbox.pack_start(billbox, False, False, 0)      
-
         return invoicingmasterbox
             
         #---------------------------Billbox contents end  
@@ -479,7 +478,7 @@ class GtkNewSale():
         
            
     def processnci(self, nextbutton):
-       
+        #print (self.more_opened + "-- more opened checking") #yes or no
         self.nsi_oth_val= [self.billcomments, self.transmode, self.ewaybill, self.furtherterms, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.rcvalue, self.more_opened, self.ship_statecode ]
         
         self.invoicedata_temp=saleinvoicingprocessor.processnci('new', self.nsi_header_widgets, self.nsi_footer_widgets, self.nsi_oth_val, self.nsi_itemswidgets, self.taxable_amount,  self.roundoff_enabled, self.roundoff_amt ) #new denotes creating fresh row in database
@@ -493,15 +492,25 @@ class GtkNewSale():
         
     def more_pressed (self, button):    
         comp_name_checkpresence=guicommon.companytableins.readrow(self.invcompany.get_text())
-        if comp_name_checkpresence=='not_found_row': 
-            print ('Create company first')    
+        if comp_name_checkpresence=='not_found_row':  
             self.moredialogins.not_more_things(self.mainwindow)    
         else:    
             self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.transmode, self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.compchange_detector, self.ship_statecode =self.moredialogins.more_things(self.mainwindow, self.billcomments, self.ewaybill, self.furtherterms, self.rcvalue, self.transmode, self.invcompany.get_text(), self.ship_name, self.ship_addline, self.ship_state, self.ship_phone, self.ship_pin, self.more_opened, self.compchange_detector, self.ship_statecode)
             self.more_opened='yes'
+   
             
- 
-    def print_sinvoice(self, buttonevent):
-        #printsi_handlerins=printsihandler.PrintSaleInvoiceHander()
-        #printsi_handlerins.print_dialog(self.mainwindow, 'invno')
-        pass
+    def changed_companyname (self, eventt, nameentrywidget, placeofsupply_entry, posstate_code_entry, more_opened):
+        try:
+            temp_name=str(nameentrywidget.get_text())
+            temp_details=guicommon.companytableins.readrow(temp_name)
+            #nameindex=guicommon.companytableins.rowlist.index(temp_name)
+            #tempplace=guicommon.companytableins.rowcollection[nameindex][9]
+            placeofsupply_entry.set_text(temp_details[9])
+            posstate_code_entry.set_text(temp_details[17])
+            #print(more_opened + "- prior moreopened value")
+            self.more_opened='no'
+                    
+        except:
+            #print('exception occured at changed_companyname, saleinvoicingprocessor')
+            return "no"
+
